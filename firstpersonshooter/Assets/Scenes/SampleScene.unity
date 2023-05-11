@@ -170,6 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drag: 5
   smooth: 10
+  bobbingSpeed: 0.05
+  bobbingAmount: 0.01
 --- !u!1 &591290980
 GameObject:
   m_ObjectHideFlags: 0
