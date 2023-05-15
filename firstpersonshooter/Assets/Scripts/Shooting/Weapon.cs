@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 
-[RequireComponent(typeof(IWeaponBehavior))]
 public abstract class Weapon : MonoBehaviour
 {
     public IWeaponBehavior weaponBehavior;
     public bool isAutomatic;
     public float firerate;
     public float damage;
-    [SerializeField] private Projectile projectile;
-    [SerializeField] private ParticleSystem muzzleFlash;
+    public Projectile projectile;
+    public ParticleSystem muzzleFlash;
+    public ParticleSystem impactEffect;
 
     private void Start()
     {
         weaponBehavior = GetComponent<IWeaponBehavior>();
+        weaponBehavior.OnHit += DealDamage;
     }
 
     private float nextTimeToFire = 0f;
@@ -27,7 +27,6 @@ public abstract class Weapon : MonoBehaviour
         if(Time.time >= nextTimeToFire)
         {
             muzzleFlash.Play();
-
             nextTimeToFire = Time.time + (1f / firerate);
             weaponBehavior.Shoot(this);
         }
@@ -45,5 +44,18 @@ public abstract class Weapon : MonoBehaviour
         projectile = obj.GetComponent<Projectile>();
         projectile.weapon = this;
         return obj;
+    }
+
+    /// <summary>
+    /// Deal Damage to a Target
+    /// </summary>
+    /// <param name="target">Has to be an enemy in order to deal Damage</param>
+    public void DealDamage(object sender, ShootEventArgs e)
+    {
+        Enemy enemy = e.hitObject.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            enemy.takeDamage(damage);
+        }
     }
 }

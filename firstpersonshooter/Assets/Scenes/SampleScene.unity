@@ -6595,7 +6595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapons: []
-  currentWeapon: {fileID: 1889828294260972401}
+  currentWeapon: {fileID: 1889828294260972402}
   weaponHolder: {fileID: 486544716}
 --- !u!4 &181155215152287518
 Transform:
@@ -6923,8 +6923,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1257019411854262730}
-  - component: {fileID: 1889828294260972401}
   - component: {fileID: 1889828294260972402}
+  - component: {fileID: 1889828294260972401}
   m_Layer: 0
   m_Name: Weapon_02
   m_TagString: Untagged
@@ -6941,14 +6941,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1889828294260972400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96fcc480983c8294eb6ab2592df574ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fc518468c99fbe48a9c2903a0659658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAutomatic: 1
-  firerate: 5
-  damage: 10
-  projectile: {fileID: 0}
-  muzzleFlash: {fileID: 613286067}
 --- !u!114 &1889828294260972402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6958,9 +6953,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1889828294260972400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fc518468c99fbe48a9c2903a0659658, type: 3}
+  m_Script: {fileID: 11500000, guid: 96fcc480983c8294eb6ab2592df574ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAutomatic: 1
+  firerate: 5
+  damage: 10
+  projectile: {fileID: 0}
+  muzzleFlash: {fileID: 613286067}
+  impactEffect: {fileID: 0}
 --- !u!1 &1911804018045727756
 GameObject:
   m_ObjectHideFlags: 0
