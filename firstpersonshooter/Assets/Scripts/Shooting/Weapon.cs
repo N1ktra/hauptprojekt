@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 
+[RequireComponent(typeof(IWeaponBehavior))]
 public abstract class Weapon : MonoBehaviour
 {
     public IWeaponBehavior weaponBehavior;
