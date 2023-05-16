@@ -5971,7 +5971,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24158
+  m_Name: pb_Mesh23214
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6279,7 +6279,7 @@ GameObject:
   - component: {fileID: 136877098082826978}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6594,7 +6594,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57e8f47edec3f146994d4155a247055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons: []
+  weapons:
+  - {fileID: 1889828294260972402}
   currentWeapon: {fileID: 1889828294260972402}
   weaponHolder: {fileID: 486544716}
 --- !u!4 &181155215152287518
@@ -6924,7 +6925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1257019411854262730}
   - component: {fileID: 1889828294260972402}
-  - component: {fileID: 1889828294260972401}
+  - component: {fileID: 1889828294260972403}
   m_Layer: 0
   m_Name: Weapon_02
   m_TagString: Untagged
@@ -6932,18 +6933,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1889828294260972401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889828294260972400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fc518468c99fbe48a9c2903a0659658, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1889828294260972402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6959,9 +6948,22 @@ MonoBehaviour:
   isAutomatic: 1
   firerate: 5
   damage: 10
-  projectile: {fileID: 0}
+  projectile: {fileID: -371216005052055197, guid: 995beccf00e0ced4d883363ff2244035, type: 3}
+  projectileSpeed: 30
   muzzleFlash: {fileID: 613286067}
   impactEffect: {fileID: 0}
+--- !u!114 &1889828294260972403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889828294260972400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efca56366c2d3364bafed805193e3386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1911804018045727756
 GameObject:
   m_ObjectHideFlags: 0

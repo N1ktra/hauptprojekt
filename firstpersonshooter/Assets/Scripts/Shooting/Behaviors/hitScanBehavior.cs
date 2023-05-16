@@ -7,9 +7,14 @@ public class hitScanBehavior : MonoBehaviour, IWeaponBehavior
 {
     public event IWeaponBehavior.ShootEvent OnHit;
 
+    private GameObject cam;
+    private void Start()
+    {
+        cam = Camera.main.gameObject;
+    }
+
     public void Shoot(Weapon weapon)
     {
-        GameObject cam = weapon.transform.parent.parent.gameObject;
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
         {

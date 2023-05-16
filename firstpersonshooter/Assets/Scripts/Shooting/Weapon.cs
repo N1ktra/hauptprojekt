@@ -9,6 +9,7 @@ public abstract class Weapon : MonoBehaviour
     public float firerate;
     public float damage;
     public Projectile projectile;
+    public float projectileSpeed;
     public ParticleSystem muzzleFlash;
     public ParticleSystem impactEffect;
 
@@ -30,20 +31,6 @@ public abstract class Weapon : MonoBehaviour
             nextTimeToFire = Time.time + (1f / firerate);
             weaponBehavior.Shoot(this);
         }
-    }
-
-    /// <summary>
-    /// Instanziiert ein neues Projektil und setzt die Referenz auf diese Waffe
-    /// </summary>
-    /// <param name="pos">Position des Projektils</param>
-    /// <param name="rot">Rotation des Projektils</param>
-    /// <returns></returns>
-    public GameObject InstantiateProjectile(Vector3 pos, Quaternion rot)
-    {
-        GameObject obj = Instantiate(projectile.gameObject, pos, rot);
-        projectile = obj.GetComponent<Projectile>();
-        projectile.weapon = this;
-        return obj;
     }
 
     /// <summary>

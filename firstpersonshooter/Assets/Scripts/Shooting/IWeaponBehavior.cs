@@ -18,6 +18,9 @@ public class ShootEventArgs
 public interface IWeaponBehavior
 {
     public delegate void ShootEvent(object sender, ShootEventArgs e);
+    /// <summary>
+    /// Has to be raised when the weapon (or Projectile) hits something (like an enemy)
+    /// </summary>
     public event ShootEvent OnHit;
 
     /// <summary>
