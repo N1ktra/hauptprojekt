@@ -5,18 +5,25 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     public IWeaponBehavior weaponBehavior;
+
+    [Header("Attributes")]
     public bool isAutomatic;
     public float firerate;
     public float damage;
+
+    [Header("Projectiles")]
     public Projectile projectile;
     public float projectileSpeed;
+
+    [Header("VFX")]
     public ParticleSystem muzzleFlash;
-    public ParticleSystem impactEffect;
+    public GameObject impactEffect;
 
     private void Start()
     {
         weaponBehavior = GetComponent<IWeaponBehavior>();
         weaponBehavior.OnHit += DealDamage;
+        weaponBehavior.OnHit += PlayImpactEffect;
     }
 
     private float nextTimeToFire = 0f;
@@ -44,5 +51,11 @@ public abstract class Weapon : MonoBehaviour
         {
             enemy.takeDamage(damage);
         }
+    }
+
+    private void PlayImpactEffect(object sender, ShootEventArgs e)
+    {
+        GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
+        Destroy(impactGO, 1f);
     }
 }
