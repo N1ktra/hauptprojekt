@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -11,6 +12,12 @@ public abstract class Weapon : MonoBehaviour
     public float firerate;
     public float damage;
 
+    [Header("Recoil")]
+    [SerializeField] private float recoilAmount;
+    [SerializeField] private float recoverySpeed;
+    private Quaternion originalRotation;
+    private Vector3 originalPosition;
+
     [Header("Projectiles")]
     public Projectile projectile;
     public float projectileSpeed;
@@ -21,9 +28,15 @@ public abstract class Weapon : MonoBehaviour
 
     private void Start()
     {
+        originalRotation = transform.rotation;
         weaponBehavior = GetComponent<IWeaponBehavior>();
         weaponBehavior.OnHit += DealDamage;
         weaponBehavior.OnHit += PlayImpactEffect;
+    }
+
+    private void Update()
+    {
+        RecoverFromRecoil();
     }
 
     private float nextTimeToFire = 0f;
@@ -37,6 +50,7 @@ public abstract class Weapon : MonoBehaviour
             muzzleFlash.Play();
             nextTimeToFire = Time.time + (1f / firerate);
             weaponBehavior.Shoot(this);
+            ApplyRecoilForce();
         }
     }
 
@@ -57,5 +71,17 @@ public abstract class Weapon : MonoBehaviour
     {
         GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
         Destroy(impactGO, 1f);
+    }
+
+    private void ApplyRecoilForce()
+    {
+        transform.Rotate(new Vector3(0, 0, -recoilAmount * 15));
+        transform.localPosition -= recoilAmount * Vector3.forward;
+    }
+
+    void RecoverFromRecoil()
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, Time.deltaTime * recoverySpeed);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, originalRotation, Time.deltaTime * recoverySpeed);
     }
 }

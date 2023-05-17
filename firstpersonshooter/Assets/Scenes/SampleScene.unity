@@ -6946,8 +6946,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 1
-  firerate: 5
+  firerate: 10
   damage: 10
+  recoilAmount: 0.1
+  recoverySpeed: 5
   projectile: {fileID: -371216005052055197, guid: 995beccf00e0ced4d883363ff2244035, type: 3}
   projectileSpeed: 30
   muzzleFlash: {fileID: 613286067}
