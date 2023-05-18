@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class hitScanBehavior : MonoBehaviour, IWeaponBehavior
 {
-    public event IWeaponBehavior.ShootEvent OnHit;
+    public event ShootEventHandler OnHit;
 
     private GameObject cam;
     private void Start()

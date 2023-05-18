@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
     public IWeaponBehavior weaponBehavior;
-    private CameraShake camShake;
+    private CameraShake cameraShake;
 
     [Header("Attributes")]
     public bool isAutomatic;
@@ -29,7 +28,7 @@ public abstract class Weapon : MonoBehaviour
 
     private void Start()
     {
-        camShake = Camera.main.GetComponent<CameraShake>();
+        cameraShake = Camera.main.GetComponent<CameraShake>();
         originalRotation = transform.rotation;
         weaponBehavior = GetComponent<IWeaponBehavior>();
         weaponBehavior.OnHit += DealDamage;
@@ -53,7 +52,7 @@ public abstract class Weapon : MonoBehaviour
             nextTimeToFire = Time.time + (1f / firerate);
             weaponBehavior.Shoot(this);
             ApplyRecoilForce();
-            camShake.Shake(.1f, .005f);
+            cameraShake.Shake(.1f, .005f);
         }
     }
 
