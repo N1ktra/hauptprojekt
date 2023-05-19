@@ -2,13 +2,13 @@
 
 public class FirstPersonLook : MonoBehaviour
 {
-    [SerializeField]
-    Transform character;
+    [SerializeField] private CameraFunctions cameraFunctions;
+    [SerializeField] private Transform character;
     public float sensitivity = 2;
     public float smoothing = 1.5f;
 
-    Vector2 velocity;
-    Vector2 frameVelocity;
+    private Vector2 velocity;
+    private Vector2 frameVelocity;
 
 
     void Reset()
@@ -21,6 +21,7 @@ public class FirstPersonLook : MonoBehaviour
     {
         // Lock the mouse cursor to the game screen.
         Cursor.lockState = CursorLockMode.Locked;
+        cameraFunctions = transform.parent.gameObject.GetComponent<CameraFunctions>();
     }
 
     void Update()
@@ -30,7 +31,9 @@ public class FirstPersonLook : MonoBehaviour
         Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * sensitivity);
         frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1 / smoothing);
         velocity += frameVelocity;
-        velocity.y = Mathf.Clamp(velocity.y, -90, 90);
+
+        Vector3 cameraRot = cameraFunctions.getRotation();
+        velocity.y = Mathf.Clamp(velocity.y, -90 + cameraRot.x, 90 + cameraRot.x);
 
         // Rotate camera up-down and controller left-right from velocity.
         transform.localRotation = Quaternion.AngleAxis(-velocity.y, Vector3.right);

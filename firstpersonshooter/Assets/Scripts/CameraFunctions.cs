@@ -2,8 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraShake : MonoBehaviour
+public class CameraFunctions : MonoBehaviour
 {
+    [SerializeField] private Vector3 startRotation;
+    [SerializeField] private Vector3 rotationApplied = Vector3.zero;
+
+    private void Start()
+    {
+        startRotation = transform.rotation.eulerAngles;
+    }
+
+    public Vector3 getRotation()
+    {
+        return startRotation + rotationApplied;
+    }
+
+    public void Rotate(Vector3 rotation)
+    {
+        rotationApplied += rotation;
+        transform.Rotate(rotation);
+    }
+
+    public void RotateTo(Quaternion rotation)
+    {
+        rotationApplied += (Quaternion.Inverse(transform.localRotation) * rotation).eulerAngles;
+        transform.localRotation = rotation;
+    }
+
     public void Shake(float duration, float magnitude)
     {
         StartCoroutine(performShake(duration, magnitude));
@@ -28,4 +53,5 @@ public class CameraShake : MonoBehaviour
 
         transform.localPosition = originalPos;
     }
+    
 }

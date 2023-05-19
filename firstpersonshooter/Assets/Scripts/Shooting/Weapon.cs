@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     public IWeaponBehavior weaponBehavior;
-    private CameraShake cameraShake;
+    private CameraFunctions cameraFunctions;
 
     [Header("Attributes")]
     public bool isAutomatic;
@@ -13,10 +13,12 @@ public abstract class Weapon : MonoBehaviour
     public float damage;
 
     [Header("Recoil")]
-    [SerializeField] private float recoilAmount;
+    [SerializeField] private float recoilForce;
     [SerializeField] private float recoverySpeed;
-    private Quaternion originalRotation;
-    private Vector3 originalPosition;
+    [SerializeField] private float maxRecoilAngle;
+    [SerializeField] private float recoilAmount;
+    private Quaternion originalWeaponRotation;
+    private Vector3 originalWeaponPosition;
 
     [Header("Projectiles")]
     public Projectile projectile;
@@ -28,8 +30,9 @@ public abstract class Weapon : MonoBehaviour
 
     private void Start()
     {
-        cameraShake = Camera.main.GetComponent<CameraShake>();
-        originalRotation = transform.rotation;
+        cameraFunctions = Camera.main.transform.parent.gameObject.GetComponent<CameraFunctions>();
+        originalWeaponRotation = transform.localRotation;
+        originalWeaponPosition = transform.localPosition;
         weaponBehavior = GetComponent<IWeaponBehavior>();
         weaponBehavior.OnHit += DealDamage;
         weaponBehavior.OnHit += PlayImpactEffect;
@@ -52,7 +55,6 @@ public abstract class Weapon : MonoBehaviour
             nextTimeToFire = Time.time + (1f / firerate);
             weaponBehavior.Shoot(this);
             ApplyRecoilForce();
-            cameraShake.Shake(.1f, .005f);
         }
     }
 
@@ -77,13 +79,25 @@ public abstract class Weapon : MonoBehaviour
 
     private void ApplyRecoilForce()
     {
-        transform.Rotate(new Vector3(0, 0, -recoilAmount * 15));
-        transform.localPosition -= recoilAmount * Vector3.forward;
+        //Weapon recoil
+        transform.RotateAround(transform.position, cameraFunctions.transform.right, -recoilForce * 30f);
+        transform.localPosition -= recoilForce * Vector3.forward;
+
+        //Camera recoil
+        cameraFunctions.Shake(.1f, .001f);
+        Vector3 cameraRot = cameraFunctions.getRotation();
+        if (Mathf.Abs(cameraRot.x) < maxRecoilAngle)
+            cameraFunctions.Rotate(new Vector3(-recoilAmount, 0, 0));
     }
 
     void RecoverFromRecoil()
     {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, Time.deltaTime * recoverySpeed);
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, originalRotation, Time.deltaTime * recoverySpeed);
+        //Weapon recoil
+        transform.localPosition = Vector3.Lerp(transform.localPosition, originalWeaponPosition, Time.deltaTime * recoverySpeed);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, originalWeaponRotation, Time.deltaTime * recoverySpeed);
+
+        //Camera recoil
+        if (!Input.GetMouseButton(0))
+            cameraFunctions.RotateTo(Quaternion.Slerp(cameraFunctions.transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed));
     }
 }
