@@ -19,7 +19,6 @@ public class hitScanBehavior : MonoBehaviour, IWeaponBehavior
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
         {
             OnHit?.Invoke(this, new ShootEventArgs(hit.transform.gameObject, hit.point, hit.normal));
-            Debug.Log(hit.transform.name);
         }
     }
 

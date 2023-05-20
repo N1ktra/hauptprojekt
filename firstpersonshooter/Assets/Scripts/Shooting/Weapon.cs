@@ -38,7 +38,7 @@ public abstract class Weapon : MonoBehaviour
         weaponBehavior.OnHit += PlayImpactEffect;
     }
 
-    private void Update()
+    public void Update()
     {
         RecoverFromRecoil();
     }
@@ -84,13 +84,12 @@ public abstract class Weapon : MonoBehaviour
         transform.localPosition -= recoilForce * Vector3.forward;
 
         //Camera recoil
-        cameraFunctions.Shake(.1f, .001f);
-        Vector3 cameraRot = cameraFunctions.getRotation();
-        if (Mathf.Abs(cameraRot.x) < maxRecoilAngle)
-            cameraFunctions.Rotate(new Vector3(-recoilAmount, 0, 0));
+        //cameraFunctions.ScreenShake(.1f, .001f);
+        if (Mathf.Abs(cameraFunctions.getAngle()) < maxRecoilAngle)
+            cameraFunctions.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
     }
 
-    void RecoverFromRecoil()
+    private void RecoverFromRecoil()
     {
         //Weapon recoil
         transform.localPosition = Vector3.Lerp(transform.localPosition, originalWeaponPosition, Time.deltaTime * recoverySpeed);
@@ -98,6 +97,9 @@ public abstract class Weapon : MonoBehaviour
 
         //Camera recoil
         if (!Input.GetMouseButton(0))
-            cameraFunctions.RotateTo(Quaternion.Slerp(cameraFunctions.transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed));
+        {
+            cameraFunctions.StopRotating();
+            cameraFunctions.transform.localRotation = Quaternion.Slerp(cameraFunctions.transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed);
+        }
     }
 }

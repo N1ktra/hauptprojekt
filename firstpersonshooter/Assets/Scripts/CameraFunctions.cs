@@ -4,32 +4,44 @@ using UnityEngine;
 
 public class CameraFunctions : MonoBehaviour
 {
-    [SerializeField] private Vector3 startRotation;
-    [SerializeField] private Vector3 rotationApplied = Vector3.zero;
 
-    private void Start()
+    public float getAngle()
     {
-        startRotation = transform.rotation.eulerAngles;
+        var vecA = transform.forward;
+        var vecB = transform.parent.forward;
+
+        float angle = -Vector3.SignedAngle(vecA, vecB, transform.right);
+        return angle;
     }
 
-    public Vector3 getRotation()
+    private Coroutine runningRotationCoroutine;
+    public void RotateBy(Vector3 rotation, float duration)
     {
-        return startRotation + rotationApplied;
+        StopRotating();
+        runningRotationCoroutine = StartCoroutine(rotateSmooth(Quaternion.Euler(rotation) * transform.localRotation, duration));
+    }
+    public void RotateTo(Quaternion rotation, float duration)
+    {
+        StopRotating();
+        runningRotationCoroutine = StartCoroutine(rotateSmooth(rotation, duration));
+    }
+    private IEnumerator rotateSmooth(Quaternion targetRotation, float duration)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < duration)
+        {
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    }
+    public void StopRotating()
+    {
+        if (runningRotationCoroutine != null)
+            StopCoroutine(runningRotationCoroutine);
     }
 
-    public void Rotate(Vector3 rotation)
-    {
-        rotationApplied += rotation;
-        transform.Rotate(rotation);
-    }
-
-    public void RotateTo(Quaternion rotation)
-    {
-        rotationApplied += (Quaternion.Inverse(transform.localRotation) * rotation).eulerAngles;
-        transform.localRotation = rotation;
-    }
-
-    public void Shake(float duration, float magnitude)
+    public void ScreenShake(float duration, float magnitude)
     {
         StartCoroutine(performShake(duration, magnitude));
     }
