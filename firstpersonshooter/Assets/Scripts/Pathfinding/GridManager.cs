@@ -12,6 +12,9 @@ public class GridManager : MonoBehaviour
     public LayerMask unwalkableMask;
     private int gridAmountX, gridAmountY; //amount of nodes in X-Dimension / y-dimension
 
+    public List<Node> path;
+    public Transform p1;
+
 
     // Start is called before the first frame update
     private void Start()
@@ -47,18 +50,22 @@ public class GridManager : MonoBehaviour
         }
     }
 
+
     //gets a Vector from the "real world" and returns the node from the grid. The node where the "real world" Vector is in.
     public Node getNodeFromWorldPosition(Vector3 worldPos)
     {
         //verschiebe World Nullpunkt auf Grid Nullpunkt
-        Vector3 newWorldPos = new Vector3(worldPos.x + gridSize.x, worldPos.y, worldPos.z + gridSize.y );
+        Vector3 newWorldPos = new Vector3(worldPos.x + gridSize.x/2, worldPos.y, worldPos.z + gridSize.y/2 );
 
         float prozentualerWegX = newWorldPos.x / gridSize.x;
-        int gridX = Mathf.RoundToInt(prozentualerWegX * gridAmountX);
+        //Debug.Log("proz X: " + prozentualerWegX.ToString());
+        int gridX = Mathf.RoundToInt(prozentualerWegX * (gridAmountX-1));
 
-        float prozentualerWegY = newWorldPos.y / gridSize.y;
-        int gridY = Mathf.RoundToInt(prozentualerWegY * gridAmountY);
+        float prozentualerWegY = newWorldPos.z / gridSize.y;
+        //Debug.Log("proz Y: " + prozentualerWegY.ToString());
+        int gridY = Mathf.RoundToInt(prozentualerWegY * (gridAmountY-1));
 
+        //Debug.Log("Position im Gird: x: " + gridX + " y: " + gridY);
         return grid[gridX,gridY];
     }
 
@@ -94,11 +101,19 @@ public class GridManager : MonoBehaviour
 
         if (grid != null)
         {
-
+            Node testNode = getNodeFromWorldPosition(p1.position);
             foreach( Node a in grid)
             {
                 if (a.walkable) { Gizmos.color = Color.cyan; }
                 else { Gizmos.color = Color.black; }
+                if(path != null)
+                {
+                    if (path.Contains(a))
+                    {
+                        Gizmos.color = Color.yellow;
+                    }
+                }
+                if(a == testNode) { Gizmos.color= Color.red; }
                 Gizmos.DrawCube(a.worldPosition, new Vector3(1,1,1) * (nodeLength - 0.3f));
             }
         }
