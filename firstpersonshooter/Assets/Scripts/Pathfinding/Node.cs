@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : MonoBehaviour
+public class Node 
 {
     public bool walkable;
     public Vector3 worldPosition;
@@ -11,7 +11,9 @@ public class Node : MonoBehaviour
 
     public int g_cost; //distance from starting node to this node
     public int h_cost; //distance from this node to end node (approximated)
-                        //f_cost = g_cost + h_cost
+                       //f_cost = g_cost + h_cost
+
+    public Node parent;
 
     public Node(bool walkable_, Vector3 worldPos, int gridPosX_, int gridPosY_)
     {
@@ -19,6 +21,7 @@ public class Node : MonoBehaviour
         worldPosition = worldPos;
         gridPosX = gridPosX_;
         gridPosY = gridPosY_;
+        parent = null;
     }
 
     public int getf_cost()
