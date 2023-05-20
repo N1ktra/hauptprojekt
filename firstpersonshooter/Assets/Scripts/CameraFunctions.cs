@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class CameraFunctions : MonoBehaviour
 {
+    public Camera fpsCamera;
+    public Quaternion lastSavedRotation = Quaternion.identity;
 
-    public float getAngle()
+    private void Reset()
+    {
+        fpsCamera = Camera.main;
+    }
+
+    public float getVerticalAngle()
     {
         var vecA = transform.forward;
         var vecB = transform.parent.forward;
 
         float angle = -Vector3.SignedAngle(vecA, vecB, transform.right);
         return angle;
+    }
+    public void resetRotation()
+    {
+        float angle = getVerticalAngle();
+        fpsCamera.transform.parent = null;
+        Quaternion fpsRot = fpsCamera.transform.rotation;
+        transform.localRotation = Quaternion.identity;
+        lastSavedRotation = Quaternion.identity;
+        fpsCamera.transform.SetParent(transform, false);
+        fpsCamera.transform.localPosition = Vector3.zero;
+        fpsCamera.transform.rotation = fpsRot;
+        //adjust the Camera that it also looks at the correct new position
+        fpsCamera.GetComponent<FirstPersonLook>().SetVerticalOrientation(angle);
     }
 
     private Coroutine runningRotationCoroutine;

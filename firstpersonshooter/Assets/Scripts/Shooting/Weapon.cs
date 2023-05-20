@@ -11,6 +11,10 @@ public abstract class Weapon : MonoBehaviour
     public bool isAutomatic;
     public float firerate;
     public float damage;
+    public int maxAmmo;
+    [SerializeField] private int currentAmmo;
+    [SerializeField] private float reloadTime;
+    private bool isReloading;
 
     [Header("Recoil")]
     [SerializeField] private float recoilForce;
@@ -30,12 +34,14 @@ public abstract class Weapon : MonoBehaviour
 
     private void Start()
     {
-        cameraFunctions = Camera.main.transform.parent.gameObject.GetComponent<CameraFunctions>();
+        cameraFunctions = GetComponentInParent<CameraFunctions>();
+        weaponBehavior = GetComponent<IWeaponBehavior>();
         originalWeaponRotation = transform.localRotation;
         originalWeaponPosition = transform.localPosition;
-        weaponBehavior = GetComponent<IWeaponBehavior>();
+
         weaponBehavior.OnHit += DealDamage;
         weaponBehavior.OnHit += PlayImpactEffect;
+        currentAmmo = maxAmmo;
     }
 
     public void Update()
@@ -47,15 +53,34 @@ public abstract class Weapon : MonoBehaviour
     /// <summary>
     /// Schieﬂt (beachtet jedoch Feuerrate)
     /// </summary>
-    public void Shoot()
+    /// <param name="firstShot">auf true setzen, falls das der erste Schuss ist (bei automatik)</param>
+    public void Shoot(bool firstShot)
     {
+        if (isReloading) return;
+        if(currentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
         if(Time.time >= nextTimeToFire)
         {
-            muzzleFlash.Play();
-            nextTimeToFire = Time.time + (1f / firerate);
+            if(firstShot)
+                cameraFunctions.resetRotation();
             weaponBehavior.Shoot(this);
+            currentAmmo--;
+            nextTimeToFire = Time.time + (1f / firerate);
+            muzzleFlash.Play();
             ApplyRecoilForce();
         }
+    }
+
+    public IEnumerator Reload()
+    {
+        Debug.Log("Reloading...");
+        isReloading = true;
+        yield return new WaitForSeconds(reloadTime);
+        isReloading = false;
+        currentAmmo = maxAmmo;
     }
 
     /// <summary>
@@ -80,12 +105,12 @@ public abstract class Weapon : MonoBehaviour
     private void ApplyRecoilForce()
     {
         //Weapon recoil
-        transform.RotateAround(transform.position, cameraFunctions.transform.right, -recoilForce * 30f);
+        transform.RotateAround(transform.position, cameraFunctions.transform.right, -recoilForce * 10f);
         transform.localPosition -= recoilForce * Vector3.forward;
 
         //Camera recoil
-        //cameraFunctions.ScreenShake(.1f, .001f);
-        if (Mathf.Abs(cameraFunctions.getAngle()) < maxRecoilAngle)
+        cameraFunctions.ScreenShake(.1f, .001f);
+        if (Mathf.Abs(cameraFunctions.getVerticalAngle()) < maxRecoilAngle)
             cameraFunctions.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
     }
 
@@ -96,10 +121,10 @@ public abstract class Weapon : MonoBehaviour
         transform.localRotation = Quaternion.Slerp(transform.localRotation, originalWeaponRotation, Time.deltaTime * recoverySpeed);
 
         //Camera recoil
-        if (!Input.GetMouseButton(0))
+        if (!Input.GetMouseButton(0) || isReloading)
         {
             cameraFunctions.StopRotating();
-            cameraFunctions.transform.localRotation = Quaternion.Slerp(cameraFunctions.transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed);
+            cameraFunctions.transform.localRotation = Quaternion.Slerp(cameraFunctions.transform.localRotation, cameraFunctions.lastSavedRotation, Time.deltaTime * recoverySpeed);
         }
     }
 }
