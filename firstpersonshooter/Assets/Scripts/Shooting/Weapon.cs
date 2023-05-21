@@ -53,7 +53,7 @@ public abstract class Weapon : MonoBehaviour
         RecoverFromRecoil();
     }
 
-    public float nextTimeToFire = 0f;
+    [HideInInspector] public float nextTimeToFire = 0f;
     /// <summary>
     /// Schieﬂt (beachtet jedoch Feuerrate)
     /// </summary>

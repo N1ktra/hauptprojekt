@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +39,11 @@ public class WeaponHandler : MonoBehaviour
         {
             if (Input.GetKeyDown(keyCodes[i]))
             {
-                setCurrentWeapon(i);
+                switchWeapon(i);
             }
         }
+
+        if (currentWeapon == null) return;
 
         if ((currentWeapon.isAutomatic && Input.GetMouseButton(0)) || Input.GetMouseButtonDown(0))
         {
@@ -66,8 +69,8 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="weapon"></param>
     public void removeWeapon(Weapon weapon)
     {
-        if(currentWeapon == weapon)
-            currentWeapon = weapons[0];
+        if (currentWeapon == weapon)
+            switchWeapon(0);
         weapons.Remove(weapon);
         Destroy(weapon);
     }
@@ -80,16 +83,42 @@ public class WeaponHandler : MonoBehaviour
     {
         return currentWeapon;
     }
+    public int getCurrentWeaponIndex()
+    {
+        return weapons.IndexOf(currentWeapon);
+    }
 
     /// <summary>
     /// Setzt die aktuell ausgerüstete Waffe
     /// </summary>
     /// <param name="index">Der Index, an dem die Waffe in der Liste steht</param>
-    public void setCurrentWeapon(int index)
+    public void switchWeapon(int index)
     {
-        if (weapons.Count < index + 1) return;
-        currentWeapon.gameObject.SetActive(false);
-        weapons[index].gameObject.SetActive(true);
-        currentWeapon = weapons[index];
+        if (weapons.Count < index + 1 || getCurrentWeaponIndex() == index) return;
+
+        Weapon oldWeapon = currentWeapon;
+        Weapon newWeapon = weapons[index];
+        currentWeapon = null;
+
+        Sequence weaponSwitchStart = DOTween.Sequence();
+        weaponSwitchStart.Append(oldWeapon.transform.DOLocalMove(new Vector3(0,-1f, -.5f), .5f));
+        weaponSwitchStart.Join(oldWeapon.transform.DOLocalRotate(new Vector3(90, 0, 0), .5f));
+
+        weaponSwitchStart.OnComplete(() =>
+        {
+            oldWeapon.gameObject.SetActive(false);
+            weapons[index].transform.rotation = oldWeapon.transform.rotation;
+            weapons[index].transform.localPosition = oldWeapon.transform.localPosition;
+            weapons[index].gameObject.SetActive(true);
+
+            Sequence weaponSwitchEnd = DOTween.Sequence();
+            weaponSwitchEnd.Append(newWeapon.transform.DOLocalMove(new Vector3(0, 0, 0), .5f));
+            weaponSwitchEnd.Join(newWeapon.transform.DOLocalRotate(new Vector3(0, 0, 0), .5f));
+
+            weaponSwitchEnd.OnComplete(() =>
+            {
+                currentWeapon = newWeapon;
+            });
+        });
     }
 }
