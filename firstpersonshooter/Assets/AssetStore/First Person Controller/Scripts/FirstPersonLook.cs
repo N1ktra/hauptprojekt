@@ -2,7 +2,7 @@
 
 public class FirstPersonLook : MonoBehaviour
 {
-    [SerializeField] private CameraFunctions cameraFunctions;
+    [SerializeField] private CameraMovement cameraFunctions;
     [SerializeField] private Transform character;
     public float sensitivity = 1f;
     public float smoothing = 1.5f;
@@ -13,7 +13,7 @@ public class FirstPersonLook : MonoBehaviour
     {
         // Get the character from the FirstPersonMovement in parents.
         character = GetComponentInParent<FirstPersonMovement>().transform;
-        cameraFunctions = GetComponentInParent<CameraFunctions>();
+        cameraFunctions = GetComponentInParent<CameraMovement>();
     }
 
     void Start()

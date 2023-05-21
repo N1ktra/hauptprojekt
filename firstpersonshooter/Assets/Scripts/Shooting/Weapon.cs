@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     public IWeaponBehavior weaponBehavior;
-    private CameraFunctions cameraFunctions;
+    [SerializeField] private CameraMovement cameraMovement;
 
     [Header("Attributes")]
     public bool isAutomatic;
@@ -32,9 +33,13 @@ public abstract class Weapon : MonoBehaviour
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
 
+    private void Reset()
+    {
+        cameraMovement = GetComponentInParent<CameraMovement>();
+    }
+
     private void Start()
     {
-        cameraFunctions = GetComponentInParent<CameraFunctions>();
         weaponBehavior = GetComponent<IWeaponBehavior>();
         originalWeaponRotation = transform.localRotation;
         originalWeaponPosition = transform.localPosition;
@@ -53,19 +58,23 @@ public abstract class Weapon : MonoBehaviour
     /// <summary>
     /// Schieﬂt (beachtet jedoch Feuerrate)
     /// </summary>
-    /// <param name="firstShot">auf true setzen, falls das der erste Schuss ist (bei automatik)</param>
-    public void Shoot(bool firstShot)
+    /// <param name="isFirstShot">auf true setzen, falls das der erste Schuss ist (bei automatik)</param>
+    public void Shoot(bool isFirstShot)
     {
-        if (isReloading) return;
+        if (isReloading)
+        {
+            cameraMovement.resetRotation();
+            return;
+        }
         if(currentAmmo <= 0)
         {
-            StartCoroutine(Reload());
+            Reload();
             return;
         }
         if(Time.time >= nextTimeToFire)
         {
-            if(firstShot)
-                cameraFunctions.resetRotation();
+            if(isFirstShot)
+                cameraMovement.resetRotation();
             weaponBehavior.Shoot(this);
             currentAmmo--;
             nextTimeToFire = Time.time + (1f / firerate);
@@ -74,13 +83,15 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    public IEnumerator Reload()
+    public void Reload()
     {
         Debug.Log("Reloading...");
         isReloading = true;
-        yield return new WaitForSeconds(reloadTime);
-        isReloading = false;
-        currentAmmo = maxAmmo;
+        transform.DOLocalRotate(new Vector3(360, 0, 0), reloadTime, RotateMode.FastBeyond360).SetRelative(true).OnComplete(() =>
+        {
+            isReloading = false;
+            currentAmmo = maxAmmo;
+        });
     }
 
     /// <summary>
@@ -105,13 +116,13 @@ public abstract class Weapon : MonoBehaviour
     private void ApplyRecoilForce()
     {
         //Weapon recoil
-        transform.RotateAround(transform.position, cameraFunctions.transform.right, -recoilForce * 10f);
+        transform.Rotate(-recoilForce * 10f, 0, 0);
         transform.localPosition -= recoilForce * Vector3.forward;
 
         //Camera recoil
-        cameraFunctions.ScreenShake(.1f, .001f);
-        if (Mathf.Abs(cameraFunctions.getVerticalAngle()) < maxRecoilAngle)
-            cameraFunctions.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
+        cameraMovement.ScreenShake(.1f, .001f);
+        if (Mathf.Abs(cameraMovement.getVerticalAngle()) < maxRecoilAngle)
+            cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
     }
 
     private void RecoverFromRecoil()
@@ -123,8 +134,8 @@ public abstract class Weapon : MonoBehaviour
         //Camera recoil
         if (!Input.GetMouseButton(0) || isReloading)
         {
-            cameraFunctions.StopRotating();
-            cameraFunctions.transform.localRotation = Quaternion.Slerp(cameraFunctions.transform.localRotation, cameraFunctions.lastSavedRotation, Time.deltaTime * recoverySpeed);
+            cameraMovement.StopRotating();
+            cameraMovement.transform.localRotation = Quaternion.Slerp(cameraMovement.transform.localRotation, cameraMovement.lastSavedRotation, Time.deltaTime * recoverySpeed);
         }
     }
 }

@@ -4,8 +4,9 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SwayNBobScript : MonoBehaviour
+public class WeaponMovement : MonoBehaviour
 {
+    [Header("Sway")]
     public float drag = 2.5f;
     public float smooth = 5;
 
@@ -36,7 +37,7 @@ public class SwayNBobScript : MonoBehaviour
         transform.localRotation = Quaternion.Lerp(transform.localRotation, newRotation, (Time.deltaTime * smooth));
     }
 
-
+    [Header("Bob")]
     // Variables for weapon bobbing
     public float bobbingSpeed = 0.05f;  // Speed of the bobbing motion
     public float bobbingAmount = 0.01f; // Amount of bobbing motion

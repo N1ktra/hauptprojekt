@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFunctions : MonoBehaviour
+public class CameraMovement : MonoBehaviour
 {
     public Camera fpsCamera;
     public Quaternion lastSavedRotation = Quaternion.identity;
