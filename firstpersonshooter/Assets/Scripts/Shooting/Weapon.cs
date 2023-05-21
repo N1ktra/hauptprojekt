@@ -24,12 +24,14 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] private float recoilAmount;
 
     [Header("Projectiles")]
+    public Transform BulletSpawnPoint;
     public Projectile projectile;
     public float projectileSpeed;
 
     [Header("VFX")]
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
+    public TrailRenderer bulletTrail;
 
     public void Reset()
     {
@@ -38,6 +40,7 @@ public abstract class Weapon : MonoBehaviour
 
     public void Start()
     {
+        muzzleFlash = Instantiate(muzzleFlash, BulletSpawnPoint.position, Quaternion.identity, transform);
         weaponBehavior = GetComponent<IWeaponBehavior>();
         if(weaponBehavior != null)
         {
@@ -114,7 +117,7 @@ public abstract class Weapon : MonoBehaviour
     {
         if (impactEffect == null) return;
         GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
-        Destroy(impactGO, 1f);
+        //Destroy(impactGO, 1f);
     }
 
     public void ApplyRecoilForce()
