@@ -52,7 +52,7 @@ public class WeaponMovement : MonoBehaviour
     {
         float mx = -keyboardInput.x * drag;
         float my = keyboardInput.y * drag;
-        Quaternion newRotation = Quaternion.Euler(localRotation.x + my, localRotation.y + mx, localRotation.z + mx);
+        Quaternion newRotation = Quaternion.Euler(localRotation.x, localRotation.y + mx, localRotation.z + mx);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, newRotation, (Time.deltaTime * smooth));
     }
 

@@ -31,12 +31,12 @@ public abstract class Weapon : MonoBehaviour
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
 
-    private void Reset()
+    public void Reset()
     {
         cameraMovement = GetComponentInParent<CameraMovement>();
     }
 
-    private void Start()
+    public void Start()
     {
         weaponBehavior = GetComponent<IWeaponBehavior>();
 
@@ -74,7 +74,7 @@ public abstract class Weapon : MonoBehaviour
             weaponBehavior.Shoot(this);
             currentAmmo--;
             nextTimeToFire = Time.time + (1f / firerate);
-            muzzleFlash.Play();
+            if(muzzleFlash != null) muzzleFlash.Play();
             ApplyRecoilForce();
         }
     }
@@ -109,6 +109,7 @@ public abstract class Weapon : MonoBehaviour
 
     private void PlayImpactEffect(object sender, ShootEventArgs e)
     {
+        if (impactEffect == null) return;
         GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
         Destroy(impactGO, 1f);
     }

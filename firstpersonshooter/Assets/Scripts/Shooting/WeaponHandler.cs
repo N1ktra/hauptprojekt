@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WeaponHandler : MonoBehaviour
@@ -8,15 +9,35 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private Weapon currentWeapon;
     [SerializeField] private GameObject weaponHolder;
 
+    private KeyCode[] keyCodes;
     // Start is called before the first frame update
     private void Start()
     {
-        
+        keyCodes = new KeyCode[] {
+            KeyCode.Alpha1,
+            KeyCode.Alpha2,
+            KeyCode.Alpha3,
+            KeyCode.Alpha4,
+            KeyCode.Alpha5,
+            KeyCode.Alpha6,
+            KeyCode.Alpha7,
+            KeyCode.Alpha8,
+            KeyCode.Alpha9
+        };
     }
 
     private void Update()
     {
         if (currentWeapon == null) return;
+
+        for (int i = 0; i < keyCodes.Length; i++)
+        {
+            if (Input.GetKeyDown(keyCodes[i]))
+            {
+                setCurrentWeapon(i);
+            }
+        }
+
         if ((currentWeapon.isAutomatic && Input.GetMouseButton(0)) || Input.GetMouseButtonDown(0))
         {
             currentWeapon.Shoot(Input.GetMouseButtonDown(0));
@@ -62,10 +83,9 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="index">Der Index, an dem die Waffe in der Liste steht</param>
     public void setCurrentWeapon(int index)
     {
-        for(int i = 0; i < weapons.Count; i++)
-        {
-            weapons[i].gameObject.SetActive(i == index);
-            currentWeapon = weapons[index];
-        }
+        if (weapons.Count < index + 1) return;
+        currentWeapon.gameObject.SetActive(false);
+        weapons[index].gameObject.SetActive(true);
+        currentWeapon = weapons[index];
     }
 }
