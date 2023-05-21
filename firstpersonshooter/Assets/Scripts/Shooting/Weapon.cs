@@ -39,9 +39,12 @@ public abstract class Weapon : MonoBehaviour
     public void Start()
     {
         weaponBehavior = GetComponent<IWeaponBehavior>();
+        if(weaponBehavior != null)
+        {
+            weaponBehavior.OnHit += DealDamage;
+            weaponBehavior.OnHit += PlayImpactEffect;
+        }
 
-        weaponBehavior.OnHit += DealDamage;
-        weaponBehavior.OnHit += PlayImpactEffect;
         currentAmmo = maxAmmo;
     }
 
@@ -50,12 +53,12 @@ public abstract class Weapon : MonoBehaviour
         RecoverFromRecoil();
     }
 
-    private float nextTimeToFire = 0f;
+    public float nextTimeToFire = 0f;
     /// <summary>
     /// Schieﬂt (beachtet jedoch Feuerrate)
     /// </summary>
     /// <param name="isFirstShot">auf true setzen, falls das der erste Schuss ist (bei automatik)</param>
-    public void Shoot(bool isFirstShot)
+    public virtual void Shoot(bool isFirstShot)
     {
         if (isReloading)
         {
@@ -98,7 +101,7 @@ public abstract class Weapon : MonoBehaviour
     /// Deal Damage to a Target
     /// </summary>
     /// <param name="target">Has to be an enemy in order to deal Damage</param>
-    public void DealDamage(object sender, ShootEventArgs e)
+    public virtual void DealDamage(object sender, ShootEventArgs e)
     {
         Enemy enemy = e.hitObject.GetComponent<Enemy>();
         if (enemy != null)
@@ -107,14 +110,14 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    private void PlayImpactEffect(object sender, ShootEventArgs e)
+    public void PlayImpactEffect(object sender, ShootEventArgs e)
     {
         if (impactEffect == null) return;
         GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
         Destroy(impactGO, 1f);
     }
 
-    private void ApplyRecoilForce()
+    public void ApplyRecoilForce()
     {
         //Weapon recoil
         transform.Rotate(-recoilForce * 10f, 0, 0);
@@ -126,7 +129,7 @@ public abstract class Weapon : MonoBehaviour
             cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
     }
 
-    private void RecoverFromRecoil()
+    public void RecoverFromRecoil()
     {
         //Weapon recoil
         transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * recoverySpeed);

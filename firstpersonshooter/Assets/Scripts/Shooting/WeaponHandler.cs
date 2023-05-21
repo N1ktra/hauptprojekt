@@ -24,6 +24,10 @@ public class WeaponHandler : MonoBehaviour
             KeyCode.Alpha8,
             KeyCode.Alpha9
         };
+        foreach(Weapon weapon in weapons)
+        {
+            weapon.transform.gameObject.SetActive(weapon == currentWeapon);
+        }
     }
 
     private void Update()
