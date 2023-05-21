@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drag: 5
   smooth: 10
-  bobbingSpeed: 0.03
+  bobbingSpeed: 0.1
   bobbingAmount: 0.01
 --- !u!1 &591290980
 GameObject:
@@ -6236,7 +6236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
-  weaponMovement: {fileID: 486544718}
   isAutomatic: 1
   firerate: 10
   damage: 10
@@ -7382,7 +7381,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f8c14f2814b4b124a894a65c32c44987, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

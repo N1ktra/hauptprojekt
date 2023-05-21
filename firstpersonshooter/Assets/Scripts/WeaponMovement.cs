@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -6,69 +7,82 @@ using UnityEngine.UIElements;
 
 public class WeaponMovement : MonoBehaviour
 {
+    Vector2 mouseInput;
+    Vector2 keyboardInput;
+    private Quaternion localRotation;
+    private Vector3 localPosition;
+
     [Header("Sway")]
     public float drag = 2.5f;
     public float smooth = 5;
 
-    private Quaternion localRotation;
-    private Vector3 localPosition;
+    [Header("Bob")]
+    public float bobbingSpeed = 0.05f;  // Speed of the bobbing motion
+    public float bobbingAmount = 0.01f; // Amount of bobbing motion
+    private Sequence bobbing;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         localRotation = transform.localRotation;
         localPosition = transform.localPosition;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Sway();
+        keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        MouseSway();
+        KeyboardSway();
         Bob();
+        recover();
     }
 
-    private void Sway()
+    private void MouseSway()
     {
-        float mx = -(Input.GetAxis("Mouse X")) * drag;
-        float my = (Input.GetAxis("Mouse Y")) * drag;
+        float mx = -mouseInput.x * drag;
+        float my = mouseInput.y * drag;
 
         //weapon default rotation transform has to be (0, 0, 0)
         Quaternion newRotation = Quaternion.Euler(localRotation.x + my, localRotation.y + mx, localRotation.z + mx);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, newRotation, (Time.deltaTime * smooth));
     }
 
-    [Header("Bob")]
-    // Variables for weapon bobbing
-    public float bobbingSpeed = 0.05f;  // Speed of the bobbing motion
-    public float bobbingAmount = 0.01f; // Amount of bobbing motion
+    private void KeyboardSway()
+    {
+        float mx = -keyboardInput.x * drag;
+        float my = keyboardInput.y * drag;
+        Quaternion newRotation = Quaternion.Euler(localRotation.x + my, localRotation.y + mx, localRotation.z + mx);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, newRotation, (Time.deltaTime * smooth));
+    }
 
-    // Variables for timing and position calculation
-    private float timer = 0.0f;
     private void Bob()
     {
-        // Calculate the vertical position offset based on time
-        float waveslice = 0.0f;
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
+        if (keyboardInput == Vector2.zero)
         {
-            timer = 0.0f;
-        }
-        else
-        {
-            waveslice = Mathf.Sin(timer);
-            timer += bobbingSpeed;
-            if (timer > Mathf.PI * 2)
-            {
-                timer -= Mathf.PI * 2;
-            }
+            bobbing.Pause();
         }
 
-        waveslice = waveslice * bobbingAmount;
+        if(bobbing == null || !bobbing.IsActive())
+        {
+            bobbing = DOTween.Sequence();
+            bobbing.Append(transform.DOLocalMove(transform.localPosition - transform.up * bobbingAmount, bobbingSpeed));
+            bobbing.Append(transform.DOLocalMove(transform.localPosition + transform.up * bobbingAmount, bobbingSpeed * 3));
+            bobbing.SetAutoKill(false);
+            bobbing.Pause();
+        }
 
-        // Apply the calculated offset to the weapon's position
-        transform.localPosition = new Vector3(localPosition.x, localPosition.y + waveslice, localPosition.z);
+        if (keyboardInput != Vector2.zero && !bobbing.IsPlaying())
+        {
+            bobbing.Restart();
+        }
+
+    }
+
+    private void recover()
+    {
+        if (keyboardInput == Vector2.zero)
+            transform.localPosition = Vector3.Lerp(transform.localPosition, localPosition, Time.deltaTime * 10f);
     }
 
 }

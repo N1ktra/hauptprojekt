@@ -22,8 +22,6 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] private float recoverySpeed;
     [SerializeField] private float maxRecoilAngle;
     [SerializeField] private float recoilAmount;
-    private Quaternion originalWeaponRotation;
-    private Vector3 originalWeaponPosition;
 
     [Header("Projectiles")]
     public Projectile projectile;
@@ -41,8 +39,6 @@ public abstract class Weapon : MonoBehaviour
     private void Start()
     {
         weaponBehavior = GetComponent<IWeaponBehavior>();
-        originalWeaponRotation = transform.localRotation;
-        originalWeaponPosition = transform.localPosition;
 
         weaponBehavior.OnHit += DealDamage;
         weaponBehavior.OnHit += PlayImpactEffect;
@@ -87,10 +83,14 @@ public abstract class Weapon : MonoBehaviour
     {
         Debug.Log("Reloading...");
         isReloading = true;
-        transform.DOLocalRotate(new Vector3(360, 0, 0), reloadTime, RotateMode.FastBeyond360).SetRelative(true).OnComplete(() =>
+        transform.DOLocalRotate(new Vector3(45, 0, 0), reloadTime/2).SetEase(Ease.InOutElastic)
+        .OnComplete(() =>
         {
-            isReloading = false;
-            currentAmmo = maxAmmo;
+            transform.DOLocalRotate(new Vector3(0, 0, 0), reloadTime/2).SetEase(Ease.InOutElastic).OnComplete(() =>
+            {
+                isReloading = false;
+                currentAmmo = maxAmmo;
+            });
         });
     }
 
@@ -128,8 +128,8 @@ public abstract class Weapon : MonoBehaviour
     private void RecoverFromRecoil()
     {
         //Weapon recoil
-        transform.localPosition = Vector3.Lerp(transform.localPosition, originalWeaponPosition, Time.deltaTime * recoverySpeed);
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, originalWeaponRotation, Time.deltaTime * recoverySpeed);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * recoverySpeed);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed);
 
         //Camera recoil
         if (!Input.GetMouseButton(0) || isReloading)
