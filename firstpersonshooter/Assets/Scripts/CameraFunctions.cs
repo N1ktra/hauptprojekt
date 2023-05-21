@@ -23,12 +23,9 @@ public class CameraFunctions : MonoBehaviour
     public void resetRotation()
     {
         float angle = getVerticalAngle();
-        fpsCamera.transform.parent = null;
         Quaternion fpsRot = fpsCamera.transform.rotation;
         transform.localRotation = Quaternion.identity;
         lastSavedRotation = Quaternion.identity;
-        fpsCamera.transform.SetParent(transform, false);
-        fpsCamera.transform.localPosition = Vector3.zero;
         fpsCamera.transform.rotation = fpsRot;
         //adjust the Camera that it also looks at the correct new position
         fpsCamera.GetComponent<FirstPersonLook>().SetVerticalOrientation(angle);
