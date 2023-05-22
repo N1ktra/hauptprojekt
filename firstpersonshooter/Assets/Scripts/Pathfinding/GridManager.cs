@@ -14,7 +14,7 @@ public class GridManager : MonoBehaviour
 
     public List<Node> path;
     public Transform p1;
-
+    public bool showGizmos;
 
     // Start is called before the first frame update
     private void Start()
@@ -96,26 +96,30 @@ public class GridManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridSize.x, 1, gridSize.y));
-
-        if (grid != null)
+        if (showGizmos)
         {
-            Node testNode = getNodeFromWorldPosition(p1.position);
-            foreach( Node a in grid)
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(transform.position, new Vector3(gridSize.x, 1, gridSize.y));
+
+            if (grid != null)
             {
-                if (a.walkable) { Gizmos.color = Color.cyan; }
-                else { Gizmos.color = Color.black; }
-                if(path != null)
+                Node testNode = getNodeFromWorldPosition(p1.position);
+                foreach (Node a in grid)
                 {
-                    if (path.Contains(a))
+                    if (a.walkable) { Gizmos.color = Color.cyan; }
+                    else { Gizmos.color = Color.black; }
+                    if (path != null)
                     {
-                        Gizmos.color = Color.yellow;
+                        if (path.Contains(a))
+                        {
+                            Gizmos.color = Color.yellow;
+                        }
                     }
+                    if (a == testNode) { Gizmos.color = Color.red; }
+                    Gizmos.DrawCube(a.worldPosition, new Vector3(1, 1, 1) * (nodeLength - 0.3f));
                 }
-                if(a == testNode) { Gizmos.color= Color.red; }
-                Gizmos.DrawCube(a.worldPosition, new Vector3(1,1,1) * (nodeLength - 0.3f));
             }
         }
+        
     }
 }
