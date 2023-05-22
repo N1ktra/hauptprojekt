@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class projectileBehavior : MonoBehaviour, IGunBehavior
 {
-    public event ShootEventHandler OnHit;
-
     private GameObject cam;
     private void Start()
     {
@@ -24,6 +22,6 @@ public class projectileBehavior : MonoBehaviour, IGunBehavior
             direction = hit.point - gun.BulletSpawnPoint.position;
         }
         rb_projectile.velocity = direction.normalized * gun.projectileSpeed;
-        projectile.GetComponent<Projectile>().OnCollision += (object sender, ShootEventArgs e) => { OnHit?.Invoke(this, e); };
+        projectile.GetComponent<Projectile>().OnCollision += gun.RaiseOnHitEvent;
     }
 }

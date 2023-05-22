@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class hitScanBehavior : MonoBehaviour, IGunBehavior
 {
-    public event ShootEventHandler OnHit;
-
     private GameObject cam;
     private void Start()
     {
@@ -19,7 +17,8 @@ public class hitScanBehavior : MonoBehaviour, IGunBehavior
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
         {
-            OnHit?.Invoke(this, new ShootEventArgs(hit.transform.gameObject, hit.point, hit.normal));
+            //OnHit?.Invoke(this, new AttackEventArgs(hit.transform.gameObject, hit.point, hit.normal));
+            gun.RaiseOnHitEvent(this, new AttackEventArgs(hit.transform.gameObject, hit.point, hit.normal));
             CreateTrail(gun, hit.point);
         }
         else

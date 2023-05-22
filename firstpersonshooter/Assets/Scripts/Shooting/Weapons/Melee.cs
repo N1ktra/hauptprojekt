@@ -3,12 +3,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Melee : Weapon
 {
     public float recoverySpeed = 5f;
-    public void Update()
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    protected void Update()
     {
         transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * recoverySpeed);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed);
@@ -43,10 +48,12 @@ public class Melee : Weapon
     {
         if (swinging)
         {
+            var collisionPoint = other.ClosestPointOnBounds(transform.position);
+            var collisionNormal = transform.position - collisionPoint;
+            RaiseOnHitEvent(this, new AttackEventArgs(other.gameObject, collisionPoint, collisionNormal));
             Debug.Log(other.gameObject.name);
-            DealDamage(other.gameObject);
         }
     }
 
-    
+
 }

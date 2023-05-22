@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public event ShootEventHandler OnCollision;
+    public event AttackEventHandler OnCollision;
 
     private void Start()
     {
@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        OnCollision?.Invoke(this, new ShootEventArgs(collision.gameObject, collision.GetContact(0).point, collision.GetContact(0).normal));
+        OnCollision?.Invoke(this, new AttackEventArgs(collision.gameObject, collision.GetContact(0).point, collision.GetContact(0).normal));
         //...
         Destroy(gameObject);
         //Oder Explodieren oder so...

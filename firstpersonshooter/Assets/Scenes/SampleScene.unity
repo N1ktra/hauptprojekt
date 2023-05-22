@@ -469,6 +469,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 286575192}
+  - {fileID: 1318415610}
   m_Father: {fileID: 4207292516511579}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -545,7 +546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &534009055
 Transform:
   m_ObjectHideFlags: 0
@@ -575,9 +576,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
+  isAutomatic: 0
   attackSpeed: 2
   damage: 25
-  isAutomatic: 0
+  impactEffect: {fileID: 0}
+  hitmarker: {fileID: 1318415608}
   nextTimeToAttack: 0
   recoverySpeed: 5
 --- !u!54 &534009057
@@ -1280,7 +1283,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23222
+  m_Name: pb_Mesh23638
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1455,7 +1458,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1027293721
 Transform:
   m_ObjectHideFlags: 0
@@ -1498,9 +1501,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
+  isAutomatic: 1
   attackSpeed: 10
   damage: 10
-  isAutomatic: 1
+  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
+  hitmarker: {fileID: 1318415608}
   nextTimeToAttack: 0
   maxAmmo: 30
   currentAmmo: 0
@@ -1513,8 +1518,80 @@ MonoBehaviour:
   projectile: {fileID: -371216005052055197, guid: 995beccf00e0ced4d883363ff2244035, type: 3}
   projectileSpeed: 30
   muzzleFlash: {fileID: 198234346748616026, guid: 6014645e5057df34d810bb14bde767c5, type: 3}
-  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   bulletTrail: {fileID: 2411976952047390544, guid: 6545162c557e414449060facf05d5561, type: 3}
+--- !u!1 &1318415607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1318415610}
+  - component: {fileID: 1318415609}
+  - component: {fileID: 1318415608}
+  m_Layer: 5
+  m_Name: Hitmarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1318415608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318415607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.9528302, g: 0.18183881, b: 0.085395135, a: 0.78431374}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 561014ebce5289a4d876bbad11928822, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1318415609
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318415607}
+  m_CullTransparentMesh: 1
+--- !u!224 &1318415610
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318415607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 449624016}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1481828468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,9 +1652,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
+  isAutomatic: 0
   attackSpeed: 4
   damage: 15
-  isAutomatic: 0
+  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
+  hitmarker: {fileID: 1318415608}
   nextTimeToAttack: 0
   maxAmmo: 10
   currentAmmo: 0
@@ -1590,7 +1669,6 @@ MonoBehaviour:
   projectile: {fileID: 0}
   projectileSpeed: 0
   muzzleFlash: {fileID: 198234346748616026, guid: 6014645e5057df34d810bb14bde767c5, type: 3}
-  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   bulletTrail: {fileID: 2411976952047390544, guid: 6545162c557e414449060facf05d5561, type: 3}
 --- !u!1 &1664879082
 GameObject:

@@ -27,23 +27,17 @@ public class Gun : Weapon
 
     [Header("VFX")]
     public ParticleSystem muzzleFlash;
-    public GameObject impactEffect;
     public TrailRenderer bulletTrail;
 
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
         muzzleFlash = Instantiate(muzzleFlash, BulletSpawnPoint.position, Quaternion.identity, transform);
         gunBehavior = GetComponent<IGunBehavior>();
-        if (gunBehavior != null)
-        {
-            gunBehavior.OnHit += (object sender, ShootEventArgs e) => { DealDamage(e.hitObject); };
-            gunBehavior.OnHit += PlayImpactEffect;
-        }
-
         currentAmmo = maxAmmo;
     }
 
-    public void Update()
+    protected void Update()
     {
         RecoverFromRecoil();
     }
@@ -72,7 +66,7 @@ public class Gun : Weapon
         }
     }
 
-    public void Reload()
+    protected void Reload()
     {
         Debug.Log("Reloading...");
         isReloading = true;
@@ -87,14 +81,8 @@ public class Gun : Weapon
         });
     }
 
-    public void PlayImpactEffect(object sender, ShootEventArgs e)
-    {
-        if (impactEffect == null) return;
-        GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
-        //Destroy(impactGO, 1f);
-    }
 
-    public void ApplyRecoilForce()
+    protected void ApplyRecoilForce()
     {
         //Weapon recoil
         transform.Rotate(-recoilForce * 10f, 0, 0);
@@ -106,7 +94,7 @@ public class Gun : Weapon
             cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
     }
 
-    public void RecoverFromRecoil()
+    protected void RecoverFromRecoil()
     {
         //Weapon recoil
         transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * recoverySpeed);
