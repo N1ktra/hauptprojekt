@@ -1,17 +1,25 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class MeleeWeapon : Weapon
+public class Melee : Weapon
 {
-    public override void Shoot(bool isFirstShot)
+    public float recoverySpeed = 5f;
+    public void Update()
     {
-        if (Time.time >= nextTimeToFire)
+        transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * recoverySpeed);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * recoverySpeed);
+    }
+
+    public override void Attack(bool isFirstShot)
+    {
+        if (Time.time >= nextTimeToAttack)
         {
             swing();
-            nextTimeToFire = Time.time + (1f / firerate);
+            nextTimeToAttack = Time.time + (1f / attackSpeed);
         }
     }
     private bool swinging = false;
@@ -20,7 +28,7 @@ public class MeleeWeapon : Weapon
         Camera cam = Camera.main;
         Vector3 hitPos = cam.transform.position + cam.transform.forward * 3;
 
-        float duration = 1/firerate;
+        float duration = 1/attackSpeed;
         swinging = true;
         Sequence swingSequence = DOTween.Sequence();
         swingSequence.Append(transform.DOLocalMove(new Vector3(.5f, .5f, 0), duration * 3 / 4));
@@ -31,13 +39,14 @@ public class MeleeWeapon : Weapon
         swingSequence.SetEase(Ease.InCubic);
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (swinging)
         {
             Debug.Log(other.gameObject.name);
-            DealDamage(this, new ShootEventArgs(other.gameObject, other.transform.position, other.transform.forward));
+            DealDamage(other.gameObject);
         }
     }
+
+    
 }

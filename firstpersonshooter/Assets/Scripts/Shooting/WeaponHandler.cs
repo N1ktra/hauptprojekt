@@ -47,7 +47,7 @@ public class WeaponHandler : MonoBehaviour
 
         if ((currentWeapon.isAutomatic && Input.GetMouseButton(0)) || Input.GetMouseButtonDown(0))
         {
-            currentWeapon.Shoot(Input.GetMouseButtonDown(0));
+            currentWeapon.Attack(Input.GetMouseButtonDown(0));
         }
     }
 

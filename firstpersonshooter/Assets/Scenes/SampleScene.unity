@@ -575,23 +575,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
-  isAutomatic: 0
-  firerate: 2
+  attackSpeed: 2
   damage: 25
-  maxAmmo: 0
-  currentAmmo: 0
-  reloadTime: 0
-  recoilForce: 0
+  isAutomatic: 0
+  nextTimeToAttack: 0
   recoverySpeed: 5
-  maxRecoilAngle: 0
-  recoilAmount: 0
-  BulletSpawnPoint: {fileID: 0}
-  projectile: {fileID: 0}
-  projectileSpeed: 0
-  muzzleFlash: {fileID: 0}
-  impactEffect: {fileID: 0}
-  bulletTrail: {fileID: 0}
-  nextTimeToFire: 0
 --- !u!54 &534009057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1510,9 +1498,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
-  isAutomatic: 1
-  firerate: 10
+  attackSpeed: 10
   damage: 10
+  isAutomatic: 1
+  nextTimeToAttack: 0
   maxAmmo: 30
   currentAmmo: 0
   reloadTime: 1.5
@@ -1526,7 +1515,6 @@ MonoBehaviour:
   muzzleFlash: {fileID: 198234346748616026, guid: 6014645e5057df34d810bb14bde767c5, type: 3}
   impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   bulletTrail: {fileID: 2411976952047390544, guid: 6545162c557e414449060facf05d5561, type: 3}
-  nextTimeToFire: 0
 --- !u!1 &1481828468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,9 +1575,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 342530519}
-  isAutomatic: 0
-  firerate: 4
+  attackSpeed: 4
   damage: 15
+  isAutomatic: 0
+  nextTimeToAttack: 0
   maxAmmo: 10
   currentAmmo: 0
   reloadTime: 1.5
@@ -1602,8 +1591,7 @@ MonoBehaviour:
   projectileSpeed: 0
   muzzleFlash: {fileID: 198234346748616026, guid: 6014645e5057df34d810bb14bde767c5, type: 3}
   impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
-  bulletTrail: {fileID: 0}
-  nextTimeToFire: 0
+  bulletTrail: {fileID: 2411976952047390544, guid: 6545162c557e414449060facf05d5561, type: 3}
 --- !u!1 &1664879082
 GameObject:
   m_ObjectHideFlags: 0

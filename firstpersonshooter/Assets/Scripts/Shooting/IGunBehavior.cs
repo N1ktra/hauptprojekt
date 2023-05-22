@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface IWeaponBehavior
+public interface IGunBehavior
 {
     /// <summary>
     /// Has to be raised when the weapon (or Projectile) hits something (like an enemy)
@@ -11,7 +11,7 @@ public interface IWeaponBehavior
     /// <summary>
     /// Führt einen Schuss aus
     /// </summary>
-    /// <param name="weapon">Die Waffe, mit der der Schuss gemacht werden soll</param>
-    public void Shoot(Weapon weapon);
+    /// <param name="gun">Die Waffe, mit der der Schuss gemacht werden soll</param>
+    public void Shoot(Gun gun);
 }
 
