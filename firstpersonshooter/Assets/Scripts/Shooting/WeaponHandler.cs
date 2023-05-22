@@ -1,11 +1,14 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class WeaponHandler : MonoBehaviour
 {
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private List<Weapon> weapons = new List<Weapon>();
     [SerializeField] private Weapon currentWeapon;
     [SerializeField] private GameObject weaponHolder;
@@ -28,6 +31,7 @@ public class WeaponHandler : MonoBehaviour
         foreach(Weapon weapon in weapons)
         {
             weapon.transform.gameObject.SetActive(weapon == currentWeapon);
+            weapon.OnHit += uiManager.showHitmarker;
         }
     }
 
@@ -39,7 +43,7 @@ public class WeaponHandler : MonoBehaviour
         {
             if (Input.GetKeyDown(keyCodes[i]))
             {
-                switchWeapon(i);
+                switchWeapon(i, () => uiManager.SetWeaponSymbol(currentWeapon.Symbol));
             }
         }
 
@@ -70,9 +74,18 @@ public class WeaponHandler : MonoBehaviour
     public void removeWeapon(Weapon weapon)
     {
         if (currentWeapon == weapon)
-            switchWeapon(0);
-        weapons.Remove(weapon);
-        Destroy(weapon);
+        {
+            switchWeapon(0, () =>
+            {
+                weapons.Remove(weapon);
+                Destroy(weapon);
+            });
+        }
+        else
+        {
+            weapons.Remove(weapon);
+            Destroy(weapon);
+        }
     }
 
     /// <summary>
@@ -92,7 +105,7 @@ public class WeaponHandler : MonoBehaviour
     /// Setzt die aktuell ausgerüstete Waffe
     /// </summary>
     /// <param name="index">Der Index, an dem die Waffe in der Liste steht</param>
-    public void switchWeapon(int index)
+    public void switchWeapon(int index, Action callback)
     {
         if (weapons.Count < index + 1 || getCurrentWeaponIndex() == index) return;
 
@@ -118,6 +131,7 @@ public class WeaponHandler : MonoBehaviour
             weaponSwitchEnd.OnComplete(() =>
             {
                 currentWeapon = newWeapon;
+                callback?.Invoke();
             });
         });
     }

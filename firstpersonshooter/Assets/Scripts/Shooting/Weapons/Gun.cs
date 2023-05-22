@@ -10,7 +10,7 @@ public class Gun : Weapon
 
     [Header("Ammo")]
     public int maxAmmo;
-    [SerializeField] private int currentAmmo;
+    public int currentAmmo;
     [SerializeField] private float reloadTime;
     private bool isReloading;
 

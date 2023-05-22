@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public abstract class Weapon : MonoBehaviour
 {
-    protected event AttackEventHandler OnHit;
+    public event AttackEventHandler OnHit;
     [SerializeField] protected CameraMovement cameraMovement;
 
     [Header("Attributes")]
@@ -15,11 +15,11 @@ public abstract class Weapon : MonoBehaviour
     public float attackSpeed;
     public float damage;
 
-    [Header("Effects")]
-    [SerializeField] protected GameObject impactEffect;
-    [SerializeField] protected RawImage hitmarker;
-
+    [Header("Visuals")]
+    public GameObject impactEffect;
+    public Texture Symbol;
     [HideInInspector] public float nextTimeToAttack = 0f;
+
     protected void Reset()
     {
         cameraMovement = GetComponentInParent<CameraMovement>();
@@ -29,7 +29,6 @@ public abstract class Weapon : MonoBehaviour
     {
         OnHit += DealDamage;
         OnHit += PlayImpactEffect;
-        OnHit += showHitmarker;
     }
 
     public void RaiseOnHitEvent(object sender, AttackEventArgs e)
@@ -58,19 +57,4 @@ public abstract class Weapon : MonoBehaviour
         GameObject impactGO = Instantiate(impactEffect, e.hitPosition, Quaternion.LookRotation(e.hitDirection));
         //Destroy(impactGO, 1f);
     }
-
-    protected void showHitmarker(object sender, AttackEventArgs e)
-    {
-        if (hitmarker == null) return;
-        if(!hitmarker.gameObject.activeSelf)
-            StartCoroutine(showGameObject(hitmarker.gameObject, .1f));
-    }
-    private IEnumerator showGameObject(GameObject obj, float duration)
-    {
-        obj.SetActive(true);
-        yield return new WaitForSeconds(duration);
-        obj.SetActive(false);
-    }
-
-
 }
