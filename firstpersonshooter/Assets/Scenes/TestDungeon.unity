@@ -2371,6 +2371,7 @@ MonoBehaviour:
   Enemy: {fileID: 689654290}
   Player: {fileID: 287869556}
   pathfinding: {fileID: 0}
+  check: 1
 --- !u!114 &1418842477
 MonoBehaviour:
   m_ObjectHideFlags: 0

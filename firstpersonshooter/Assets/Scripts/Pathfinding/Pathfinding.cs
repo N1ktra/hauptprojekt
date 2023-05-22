@@ -47,8 +47,8 @@ public class Pathfinding : MonoBehaviour
 
             if (currentNode == endNode)
             {
-                return getCalculatedPath(startNode, endNode);
-                
+                List<Node> path = getCalculatedPath(startNode, endNode);
+                return path;
                 //parent path must be given
             }
 
