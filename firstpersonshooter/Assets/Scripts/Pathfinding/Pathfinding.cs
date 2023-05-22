@@ -17,7 +17,7 @@ public class Pathfinding : MonoBehaviour
     {
         grid = GetComponent<GridManager>();
     }
-
+    /*Methode nur zum Testen in TestSzeneAStar
     // Update is called once per frame
     void Update()
     {
@@ -25,10 +25,11 @@ public class Pathfinding : MonoBehaviour
         //Debug.Log(test.gridPosX.ToString());
         AStar(p1.position, p2.position);
     }
+    */
 
-    void AStar(Vector3 startVector, Vector3 endVector)
+    public List<Node> AStar(Vector3 startVector, Vector3 endVector)
     {
-        //Debug.Log("A Star");
+        Debug.Log("A Star");
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>(); 
         Node startNode = grid.getNodeFromWorldPosition(startVector);
@@ -46,8 +47,8 @@ public class Pathfinding : MonoBehaviour
 
             if (currentNode == endNode)
             {
-                getCalculatedPath(startNode, endNode);
-                return;
+                List<Node> path = getCalculatedPath(startNode, endNode);
+                return path;
                 //parent path must be given
             }
 
@@ -77,10 +78,12 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Fehler in AStar");
+        return null;
 
     }
 
-    private void getCalculatedPath(Node startNode, Node endNode)
+    private List<Node> getCalculatedPath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node activeNode = endNode;
@@ -92,6 +95,11 @@ public class Pathfinding : MonoBehaviour
         path.Reverse();
         //Debug.Log("finished");
         grid.path = path;
+        foreach(Node a in path)
+        {
+            Debug.Log("Path from startNode: " + startNode.worldPosition + " NEW Node: x: " + a.gridPosX + " , y: " + a.gridPosY + " , WorldPosition: " + a.worldPosition);
+        }
+        return path;
     }
 
     private int getDistanceBetweenNodes(Node node1, Node node2)
