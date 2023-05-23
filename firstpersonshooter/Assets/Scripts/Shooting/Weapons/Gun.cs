@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class Gun : Weapon
 {
-    public IGunBehavior gunBehavior;
+    [Header("Behavior")]
+    public ShootBehavior shootBehavior;
 
     [Header("Ammo")]
     public int maxAmmo;
@@ -33,7 +34,6 @@ public class Gun : Weapon
     {
         base.Start();
         muzzleFlash = Instantiate(muzzleFlash, BulletSpawnPoint.position, Quaternion.identity, transform);
-        gunBehavior = GetComponent<IGunBehavior>();
         currentAmmo = maxAmmo;
     }
 
@@ -44,26 +44,14 @@ public class Gun : Weapon
 
     public override void Attack(bool isFirstShot)
     {
-        if (isReloading)
-        {
-            cameraMovement.resetRotation();
-            return;
-        }
-        if (currentAmmo <= 0)
-        {
-            Reload();
-            return;
-        }
-        if (Time.time >= nextTimeToAttack)
-        {
-            if (isFirstShot)
-                cameraMovement.resetRotation();
-            gunBehavior.Shoot(this);
-            currentAmmo--;
-            nextTimeToAttack = Time.time + (1f / attackSpeed);
-            if (muzzleFlash != null) muzzleFlash.Play();
-            ApplyRecoilForce();
-        }
+        if (Time.time < nextTimeToAttack || isReloading) return;
+        if (isFirstShot) cameraMovement.resetRotation();
+
+        shootBehavior.Shoot(this);
+        nextTimeToAttack = Time.time + (1f / attackSpeed);
+        if (muzzleFlash != null) muzzleFlash.Play();
+        ApplyRecoilForce();
+        if (--currentAmmo <= 0) Reload();
     }
 
     protected void Reload()
@@ -77,6 +65,7 @@ public class Gun : Weapon
             {
                 isReloading = false;
                 currentAmmo = maxAmmo;
+                cameraMovement.resetRotation();
             });
         });
     }
@@ -91,7 +80,7 @@ public class Gun : Weapon
         //Camera recoil
         cameraMovement.ScreenShake(.1f, .001f);
         if (Mathf.Abs(cameraMovement.getVerticalAngle()) < maxRecoilAngle)
-            cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .5f);
+            cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .05f);
     }
 
     protected void RecoverFromRecoil()
@@ -103,7 +92,7 @@ public class Gun : Weapon
         //Camera recoil
         if (!Input.GetMouseButton(0) || isReloading)
         {
-            cameraMovement.StopRotating();
+            //cameraMovement.StopRotating();
             cameraMovement.transform.localRotation = Quaternion.Slerp(cameraMovement.transform.localRotation, cameraMovement.lastSavedRotation, Time.deltaTime * recoverySpeed);
         }
     }

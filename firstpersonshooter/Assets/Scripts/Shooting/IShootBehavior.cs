@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface IGunBehavior
+public interface IShootBehavior
 {
     /// <summary>
     /// Führt einen Schuss aus

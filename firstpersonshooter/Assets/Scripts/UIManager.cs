@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
     {
         Weapon currentWeapon = weaponHandler.getCurrentWeapon();
         if (currentWeapon == null) return;
-        if (currentWeapon.GetType() == typeof(Gun))
+        if (currentWeapon is Gun)
         {
             Gun gun = (Gun)currentWeapon;
             AmmoText.text = gun.currentAmmo +  " / " + gun.maxAmmo;

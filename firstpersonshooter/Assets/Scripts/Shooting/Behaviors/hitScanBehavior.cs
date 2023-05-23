@@ -4,20 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class hitScanBehavior : MonoBehaviour, IGunBehavior
+[CreateAssetMenu(menuName = "Gun Behaviors/Hit Scan")]
+public class hitScanBehavior : ShootBehavior
 {
-    private GameObject cam;
-    private void Start()
+    public override void Shoot(Gun gun)
     {
-        cam = Camera.main.gameObject;
-    }
-
-    public void Shoot(Gun gun)
-    {
+        GameObject cam = Camera.main.gameObject;
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
         {
-            //OnHit?.Invoke(this, new AttackEventArgs(hit.transform.gameObject, hit.point, hit.normal));
             gun.RaiseOnHitEvent(this, new AttackEventArgs(hit.transform.gameObject, hit.point, hit.normal));
             CreateTrail(gun, hit.point);
         }

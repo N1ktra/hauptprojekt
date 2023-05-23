@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class projectileBehavior : MonoBehaviour, IGunBehavior
+[CreateAssetMenu(menuName = "Gun Behaviors/Projectile")]
+public class projectileBehavior : ShootBehavior
 {
-    private GameObject cam;
-    private void Start()
+    public override void Shoot(Gun gun)
     {
-        cam = Camera.main.gameObject;
-    }
-
-    public void Shoot(Gun gun)
-    {
+        if(gun.projectile == null)
+        {
+            Debug.LogWarning("Please attach a projectile to the following gun: " + gun.name);
+            return;
+        }
+        GameObject cam = Camera.main.gameObject;
         GameObject projectile = gun.projectile.Instantiate(gun.BulletSpawnPoint.position, Quaternion.identity);
         Rigidbody rb_projectile = projectile.GetComponent<Rigidbody>();
         Vector3 direction = cam.transform.forward;

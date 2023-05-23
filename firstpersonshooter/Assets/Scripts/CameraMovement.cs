@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +38,7 @@ public class CameraMovement : MonoBehaviour
         StopRotating();
         runningRotationCoroutine = StartCoroutine(rotateSmooth(Quaternion.Euler(rotation) * transform.localRotation, duration));
     }
-    public void RotateTo(Quaternion rotation, float duration)
+    public void RotateTo(Quaternion rotation, float duration, Action callback)
     {
         StopRotating();
         runningRotationCoroutine = StartCoroutine(rotateSmooth(rotation, duration));
@@ -70,8 +71,8 @@ public class CameraMovement : MonoBehaviour
 
         while(elapsed < duration)
         {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
 
             transform.localPosition += new Vector3 (x, y,0);
 
