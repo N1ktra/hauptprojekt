@@ -80,7 +80,7 @@ public class Gun : Weapon
         //Camera recoil
         cameraMovement.ScreenShake(.1f, .001f);
         if (Mathf.Abs(cameraMovement.getVerticalAngle()) < maxRecoilAngle)
-            cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .05f);
+            cameraMovement.RotateBy(new Vector3(-recoilAmount, 0, 0), .1f);
     }
 
     protected void RecoverFromRecoil()

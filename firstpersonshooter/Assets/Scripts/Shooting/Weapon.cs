@@ -15,7 +15,7 @@ public abstract class Weapon : MonoBehaviour
     public float attackSpeed;
     public float damage;
 
-    [Header("Visuals")]
+    [Header("VFX")]
     public GameObject impactEffect;
     public Texture Symbol;
     [HideInInspector] public float nextTimeToAttack = 0f;
