@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class Enemy : MonoBehaviour
 {
@@ -29,16 +31,37 @@ public class Enemy : MonoBehaviour
         UpdateHealthBar();
     }
 
+
     public void Update()
     {
         healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
-        if (path.Count<=4) // || getDistanceBetween2Vectors(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) > 30
-        {
-            Debug.Log("test");
-            path = pathfinding.AStar(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
-        }
-        
+        //if (path.Count==0) // || getDistanceBetween2Vectors(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) > 30
+        //{
+        //    Debug.Log("test");
+        //    path = pathfinding.AStar(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
+        //}
+        //move();
+
     }
+
+    //moves one node and deletes it from path List
+    private void move()
+    {
+        if (path.Count >= 1) { 
+            Node next = path.First();
+            path.RemoveAt(0);
+            this.GetComponent<Rigidbody>().transform.position += vectorFromTo(transform.position, next.worldPosition) *  Time.fixedDeltaTime;
+            Debug.Log("bewegt");
+        }
+    }
+
+    private Vector3 vectorFromTo(Vector3 start, Vector3 end)
+    {
+        Vector3 way = new Vector3(end.x - start.x, end.y - start.y, end.z - start.z);
+        Debug.Log("Way: x: " + way.x + " z: " + way.z);
+        return way;
+    }
+
 
     private int getDistanceBetween2Vectors(Vector3 v1, Vector3 v2)
     {
