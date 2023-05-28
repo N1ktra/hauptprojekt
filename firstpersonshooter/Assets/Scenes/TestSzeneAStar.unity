@@ -379,8 +379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57e8f47edec3f146994d4155a247055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
   weapons: []
-  currentWeapon: {fileID: 1599609112}
+  currentWeapon: {fileID: 0}
   weaponHolder: {fileID: 953079836}
 --- !u!114 &107916690
 MonoBehaviour:
@@ -937,6 +938,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   p1: {fileID: 383568808}
+  showGizmos: 1
 --- !u!4 &445398316
 Transform:
   m_ObjectHideFlags: 0
@@ -2810,17 +2812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96fcc480983c8294eb6ab2592df574ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAutomatic: 1
-  firerate: 5
-  damage: 10
-  recoilForce: 0
-  recoverySpeed: 0
-  maxRecoilAngle: 0
-  recoilAmount: 0
-  projectile: {fileID: 0}
-  projectileSpeed: 0
-  muzzleFlash: {fileID: 1987259123}
-  impactEffect: {fileID: 0}
 --- !u!1 &1727559287
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,6 +3138,8 @@ MonoBehaviour:
   character: {fileID: 107916695}
   sensitivity: 1
   smoothing: 1.5
+  velocity: {x: 0, y: 0}
+  frameVelocity: {x: 0, y: 0}
 --- !u!81 &1893950435
 AudioListener:
   m_ObjectHideFlags: 0

@@ -4,31 +4,41 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Pathfinding : MonoBehaviour
+public class TEST_Pathfinding : MonoBehaviour
 {
 
-    public GridManager grid;
+    TEST_GridManager grid;
 
+    public Transform p1, p2;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        grid = GetComponent<TEST_GridManager>();
     }
-
+    //Methode nur zum Testen in TestSzeneAStar
+    // Update is called once per frame
+    void Update()
+    {
+        //Node test = grid.getNodeFromWorldPosition(p1.position);
+        //Debug.Log(test.gridPosX.ToString());
+        AStar(p1.position, p2.position);
+    }
+    
 
     public List<Node> AStar(Vector3 startVector, Vector3 endVector)
     {
         Debug.Log("A Star");
         List<Node> openList = new List<Node>();
-        List<Node> closedList = new List<Node>();
+        List<Node> closedList = new List<Node>(); 
         Node startNode = grid.getNodeFromWorldPosition(startVector);
         Node endNode = grid.getNodeFromWorldPosition(endVector);
         //Debug.Log("test");
-        openList.Add(startNode);
+        openList.Add(startNode); 
         //Debug.Log("test2");
 
-        while (openList.Count > 0)
+        while(openList.Count > 0)
         {
             //Debug.Log("while-loop");
             Node currentNode = getNodeWithLowestCost(openList);
@@ -45,16 +55,16 @@ public class Pathfinding : MonoBehaviour
             else
             {
                 //Debug.Log("currentNode =");
-                foreach (Node neighbour in grid.getNeighbours(currentNode))
+                foreach(Node neighbour in grid.getNeighbours(currentNode))
                 {
-                    if (!neighbour.walkable || closedList.Contains(neighbour))
+                    if(!neighbour.walkable || closedList.Contains(neighbour))
                     {
                         //go to next neighbour
                     }
                     else
                     {
                         int newPathCost = currentNode.g_cost + getDistanceBetweenNodes(currentNode, neighbour);
-                        if (newPathCost < neighbour.g_cost || !openList.Contains(neighbour))
+                        if(newPathCost < neighbour.g_cost || !openList.Contains(neighbour)) 
                         {
                             neighbour.g_cost = newPathCost;
                             neighbour.h_cost = getDistanceBetweenNodes(neighbour, endNode);
@@ -77,15 +87,15 @@ public class Pathfinding : MonoBehaviour
     {
         List<Node> path = new List<Node>();
         Node activeNode = endNode;
-        while (activeNode != startNode)
-        {
+        while(activeNode != startNode) 
+        { 
             path.Add(activeNode);
             activeNode = activeNode.parent;
         }
         path.Reverse();
         //Debug.Log("finished");
         grid.path = path;
-        foreach (Node a in path)
+        foreach(Node a in path)
         {
             Debug.Log("Path from startNode: " + startNode.worldPosition + " NEW Node: x: " + a.gridPosX + " , y: " + a.gridPosY + " , WorldPosition: " + a.worldPosition);
         }
@@ -96,7 +106,7 @@ public class Pathfinding : MonoBehaviour
     {
         int distanceX = Mathf.Abs(node1.gridPosX - node2.gridPosX);
         int distanceY = Mathf.Abs(node1.gridPosY - node2.gridPosY);
-        if (distanceX > distanceY)
+        if(distanceX > distanceY)
         {
             return 14 * distanceY + 10 * (distanceX - distanceY);
         }
@@ -110,9 +120,9 @@ public class Pathfinding : MonoBehaviour
     {
         if (nodes.Count == 0) return null;
         Node currentNode = nodes[0];
-        for (int x = 1; x < nodes.Count; x++)
+        for(int x=1; x<nodes.Count; x++)
         {
-            if (nodes[x].getf_cost() < currentNode.getf_cost())
+            if(nodes[x].getf_cost() < currentNode.getf_cost())
             {
                 currentNode = nodes[x];
             }

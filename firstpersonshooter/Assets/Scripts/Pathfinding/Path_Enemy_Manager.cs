@@ -8,14 +8,14 @@ public class Path_Enemy_Manager : MonoBehaviour
 
     public GameObject Enemy;
     public GameObject Player;
-    public Pathfinding pathfinding;
+    public TEST_Pathfinding pathfinding;
 
     public bool check;
     private List<Node> path;
     
     private void Awake()
     {
-        pathfinding = GetComponent<Pathfinding>();
+        pathfinding = GetComponent<TEST_Pathfinding>();
     }
     
     // Start is called before the first frame update

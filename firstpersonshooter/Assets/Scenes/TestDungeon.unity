@@ -548,6 +548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57e8f47edec3f146994d4155a247055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
   weapons:
   - {fileID: 981267287}
   - {fileID: 753673288}
@@ -940,6 +941,7 @@ GameObject:
   - component: {fileID: 689654293}
   - component: {fileID: 689654292}
   - component: {fileID: 689654291}
+  - component: {fileID: 689654295}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1022,10 +1024,26 @@ Transform:
   m_LocalPosition: {x: -14, y: 0, z: 17.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1418842479}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &689654295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689654290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6a3d4ae0662764b82dea865f7bda42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
+  healthBar: {fileID: 0}
 --- !u!1 &753673285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,8 +1105,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 958826782}
   isAutomatic: 0
-  firerate: 4
+  attackSpeed: 0
   damage: 15
+  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
+  Symbol: {fileID: 0}
+  nextTimeToAttack: 0
+  shootBehavior: {fileID: 0}
   maxAmmo: 10
   currentAmmo: 0
   reloadTime: 1.5
@@ -1100,9 +1122,7 @@ MonoBehaviour:
   projectile: {fileID: 0}
   projectileSpeed: 0
   muzzleFlash: {fileID: 198234346748616026, guid: 6014645e5057df34d810bb14bde767c5, type: 3}
-  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   bulletTrail: {fileID: 0}
-  nextTimeToFire: 0
 --- !u!1 &799529320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,8 +1671,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 958826782}
   isAutomatic: 1
-  firerate: 10
+  attackSpeed: 0
   damage: 10
+  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
+  Symbol: {fileID: 0}
+  nextTimeToAttack: 0
+  shootBehavior: {fileID: 0}
   maxAmmo: 30
   currentAmmo: 0
   reloadTime: 1.5
@@ -1664,9 +1688,7 @@ MonoBehaviour:
   projectile: {fileID: -371216005052055197, guid: 995beccf00e0ced4d883363ff2244035, type: 3}
   projectileSpeed: 30
   muzzleFlash: {fileID: 198234346748616026, guid: 6014645e5057df34d810bb14bde767c5, type: 3}
-  impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   bulletTrail: {fileID: 2411976952047390544, guid: 6545162c557e414449060facf05d5561, type: 3}
-  nextTimeToFire: 0
 --- !u!1 &1009391120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,7 +2385,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418842475}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a358bfeff138f524ba38e6cbaab4487d, type: 3}
   m_Name: 
@@ -2412,13 +2434,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418842475}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 14, y: 0, z: -17.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 689654294}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1551694151
 GameObject:
@@ -2884,22 +2906,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 958826782}
   isAutomatic: 0
-  firerate: 2
+  attackSpeed: 0
   damage: 25
-  maxAmmo: 0
-  currentAmmo: 0
-  reloadTime: 0
-  recoilForce: 0
-  recoverySpeed: 5
-  maxRecoilAngle: 0
-  recoilAmount: 0
-  BulletSpawnPoint: {fileID: 0}
-  projectile: {fileID: 0}
-  projectileSpeed: 0
-  muzzleFlash: {fileID: 0}
   impactEffect: {fileID: 0}
-  bulletTrail: {fileID: 0}
-  nextTimeToFire: 0
+  Symbol: {fileID: 0}
+  nextTimeToAttack: 0
+  recoverySpeed: 5
 --- !u!1 &1876950635
 GameObject:
   m_ObjectHideFlags: 0
