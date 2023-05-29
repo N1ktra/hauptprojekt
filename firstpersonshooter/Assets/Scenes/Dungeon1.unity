@@ -5354,7 +5354,7 @@ MonoBehaviour:
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 64
-  showGizmos: 0
+  showGizmos: 1
   player: {fileID: 48215272}
 --- !u!4 &1641834364
 Transform:
