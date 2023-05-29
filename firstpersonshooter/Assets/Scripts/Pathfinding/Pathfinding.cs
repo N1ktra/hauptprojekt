@@ -23,6 +23,7 @@ public class Pathfinding : MonoBehaviour
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
         Node startNode = grid.getNodeFromWorldPosition(startVector);
+        Debug.Log(startNode.worldPosition);
         Node endNode = grid.getNodeFromWorldPosition(endVector);
         //Debug.Log("test");
         openList.Add(startNode);

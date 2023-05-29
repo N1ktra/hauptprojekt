@@ -67,7 +67,8 @@ public class GridManager : MonoBehaviour
         int gridY = Mathf.RoundToInt(prozentualerWegY * (gridAmountY - 1));
 
         //Debug.Log("Position im Gird: x: " + gridX + " y: " + gridY);
-        return grid[gridX, gridY];
+        Node x = grid[gridX, gridY];
+        return x;
     }
 
     //returns a List of the neighbour nodes from the grid, so the 8 nodes around activeNode
