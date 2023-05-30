@@ -4,44 +4,68 @@ using UnityEngine;
 
 public class Room
 {
+    public struct Coords
+    {
+        public int left;
+        public int right;
+        public int top;
+        public int bottom;
+
+        public Coords(int left, int right, int top, int bottom)
+        {
+            this.left = left;
+            this.right = right;
+            this.top = top; 
+            this.bottom = bottom;
+        }
+        public Coords(int width, int height) : this(0, width, height, 0) { }
+
+        public int GetWidth()
+        {
+            return right - left + 1;
+        }
+        public int GetHeight()
+        {
+            return top - bottom + 1;
+        }
+        public Coords withLeft(int left)
+        {
+            return new Coords(left, right, top, bottom);
+        }
+        public Coords withRight(int right)
+        {
+            return new Coords(left, right, top, bottom);
+        }
+        public Coords withTop(int top)
+        {
+            return new Coords(left, right, top, bottom);
+        }
+        public Coords withBottom(int bottom)
+        {
+            return new Coords(left, right, top, bottom);
+        }
+    }
+
     public GameObject tilePrefab;
     public Vector3 tileSize;
 
-    public int left { get; protected set; }
-    public int right { get; protected set; }
-    public int top { get; protected set; }
-    public int bottom { get; protected set; }
+    public Coords coords;
 
-    protected int GetWidth()
+    public Room(Coords coords, GameObject tilePrefab)
     {
-        return right - left + 1;
-    }
-
-    protected int GetHeight()
-    {
-        return top - bottom + 1;
-    }
-
-    public Room(int width, int height, GameObject tilePrefab) : this(0, width, height, 0, tilePrefab) { }
-
-    public Room(int left, int right, int top, int bottom, GameObject tilePrefab)
-    {
-        this.left = left;
-        this.right = right;
-        this.top = top;
-        this.bottom = bottom;
+        this.coords = coords;
         this.tilePrefab = tilePrefab;
-        tileSize = tilePrefab.GetComponent<Renderer>().bounds.size;
+        this.tileSize = tilePrefab.GetComponent<Renderer>().bounds.size;
     }
 
-    public virtual GameObject CreateRoom()
+    public virtual GameObject Instantiate()
     {
         GameObject roomContainer = new GameObject("Room");
         Color debugColor = Random.ColorHSV();
 
-        for (int x = left; x <= right; x++)
+        for (int x = coords.left; x <= coords.right; x++)
         {
-            for (int y = bottom; y <= top; y++)
+            for (int y = coords.bottom; y <= coords.top; y++)
             {
 
                 GameObject tile = GameObject.Instantiate(tilePrefab);
@@ -49,7 +73,8 @@ public class Room
                 //Zu testzwecken:
                 tile.GetComponent<SpriteRenderer>().material.color = debugColor;
 
-                tile.transform.position = new Vector3(x * tileSize.x, y * tileSize.y, 0);
+                tile.transform.position = new Vector3(x * tileSize.x, 0, y * tileSize.y);
+                tile.transform.rotation = Quaternion.Euler(90, 0, 0);
                 tile.transform.SetParent(roomContainer.transform, true);
             }
         }
