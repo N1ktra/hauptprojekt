@@ -11,7 +11,7 @@ public class BSP_Manager : MonoBehaviour
     void Start()
     {
         BinaryRoom room = new BinaryRoom(new Room.Coords(100, 100), TilePrefab);
-        Split(8, room);
+        Split(5, room);
         room.Trim();
         room.AddCorridors();
         room.Instantiate();

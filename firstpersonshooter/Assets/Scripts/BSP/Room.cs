@@ -69,12 +69,12 @@ public class Room
             {
 
                 GameObject tile = GameObject.Instantiate(tilePrefab);
-                
-                //Zu testzwecken:
-                tile.GetComponent<SpriteRenderer>().material.color = debugColor;
 
-                tile.transform.position = new Vector3(x * tileSize.x, 0, y * tileSize.y);
-                tile.transform.rotation = Quaternion.Euler(90, 0, 0);
+                //Zu testzwecken:
+                tile.GetComponent<Renderer>().material.color = debugColor;
+
+                tile.transform.position = new Vector3(x * tileSize.x, 0, y * tileSize.z);
+                //tile.transform.rotation = Quaternion.Euler(90, 0, 0);
                 tile.transform.SetParent(roomContainer.transform, true);
             }
         }
