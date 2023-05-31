@@ -2,27 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BinaryRoom : Room
 {
-    [Header("Width / Height")]
-    private static int minWidth = 8;
-    private static int maxWidth = 20;
-    private static int minHeight = 8;
-    private static int maxHeight = 20;
-    private static int trimTiles = 1;
-
-    [Header("Corridors")]
-    private static int corridorMargin = 1;
-    private static int minCorridorThickness = 2;
-    public List<Corridor> corridors { get; private set; } = new List<Corridor>();
-
-    [Header("Splitting")]
-    private bool horizontalSplit;
-    private bool verticalSplit;
+    public enum DIRECTION { LEFT, RIGHT, TOP, BOTTOM };
+    //Datastructure
     public BinaryRoom leftRoom { get; private set; }
     public BinaryRoom rightRoom { get; private set; }
+    private HashSet<(BinaryRoom, DIRECTION)> neighborList = new HashSet<(BinaryRoom, DIRECTION)>();
+    private HashSet<BinaryRoom> _allRooms = new HashSet<BinaryRoom>();
+    public HashSet<BinaryRoom> allRooms 
+    { 
+        get 
+        {
+            if (_allRooms.Count == 0)
+                _allRooms = getAllRooms();
+            return _allRooms;
+        } 
+    }
+
+    //Width / Height
+    private int minWidth = 10;
+    private int maxWidth = 25;
+    private int minHeight = 10;
+    private int maxHeight = 25;
+    private int trimTiles = 1;
+
+    //Corridors
+    private int corridorMargin = 1;
+    private int maxCorridorThickness = 5;
+    public List<Corridor> corridors { get; private set; } = new List<Corridor>();
+
+    //Splitting
+    private bool horizontalSplit;
+    private bool verticalSplit;
+    
 
     public BinaryRoom(Coords coords, GameObject tilePrefab) : base(coords, tilePrefab)
     {
@@ -39,7 +55,20 @@ public class BinaryRoom : Room
     public bool IsLeaf()
     {
         return leftRoom == null && rightRoom == null;
-        //return (horizontalSplit == false) && (verticalSplit == false);
+    }
+
+    private HashSet<BinaryRoom> getAllRooms()
+    {
+        HashSet<BinaryRoom> allRooms = new HashSet<BinaryRoom>();
+        if (IsLeaf())
+            allRooms.Add(this);
+
+        if (leftRoom != null)
+            allRooms.AddRange(leftRoom.getAllRooms());
+        if (rightRoom != null)
+            allRooms.AddRange(rightRoom.getAllRooms());
+
+        return allRooms;
     }
 
     #region Splitting
@@ -47,12 +76,12 @@ public class BinaryRoom : Room
     {
         // Attempt random split
         float rand = Random.value;
-        if (rand < 0.5f && coords.GetWidth() >= 2 * minWidth)
+        if (rand < 0.5f && coords.GetWidth() >= 2 * minWidth + 4 * trimTiles)
         {
             VerticalSplit();
             return true;
         }
-        else if (coords.GetHeight() >= 2 * minHeight)
+        else if (coords.GetHeight() >= 2 * minHeight + 4 * trimTiles)
         {
             HorizontalSplit();
             return true;
@@ -76,7 +105,7 @@ public class BinaryRoom : Room
 
     private void VerticalSplit()
     {
-        int splitLocation = Random.Range(coords.left + minWidth - 1, coords.right - minWidth + 1);
+        int splitLocation = Random.Range(coords.left + minWidth + 2 * trimTiles - 1, coords.right - minWidth - 2 * trimTiles + 1);
         leftRoom = new BinaryRoom(coords.withRight(splitLocation), tilePrefab);
         rightRoom = new BinaryRoom(coords.withLeft(splitLocation + 1), tilePrefab);
         verticalSplit = true;
@@ -84,7 +113,7 @@ public class BinaryRoom : Room
 
     private void HorizontalSplit()
     {
-        int splitLocation = Random.Range(coords.bottom + minHeight - 1, coords.top - minHeight + 1);
+        int splitLocation = Random.Range(coords.bottom + minHeight + 2 * trimTiles - 1, coords.top - minHeight - 2 * trimTiles + 1);
         leftRoom = new BinaryRoom(coords.withTop(splitLocation), tilePrefab);
         rightRoom = new BinaryRoom(coords.withBottom(splitLocation + 1), tilePrefab);
         horizontalSplit = true;
@@ -225,8 +254,6 @@ public class BinaryRoom : Room
         }
         return connections;
     }
-    public List<(BinaryRoom, DIRECTION)> neighborList = new List<(BinaryRoom, DIRECTION)>();
-    public enum DIRECTION {LEFT, RIGHT, TOP, BOTTOM};
     public void addNeighborRoom(BinaryRoom room, DIRECTION direction)
     {
         neighborList.Add((room, direction));
@@ -255,8 +282,7 @@ public class BinaryRoom : Room
                     leftPoint => leftPoint.Item1,
                     rightPoint => rightPoint.Item1,
                     (leftPoint, rightPoint) => (leftPoint.Item2, rightPoint.Item2)
-                    );
-                Debug.Log(neighborRooms);
+                    ).Distinct();
                 foreach(var roomPair in neighborRooms)
                 {
                     roomPair.Item1.addNeighborRoom(roomPair.Item2, DIRECTION.RIGHT);
@@ -272,8 +298,7 @@ public class BinaryRoom : Room
                     leftPoint => leftPoint.Item1,
                     rightPoint => rightPoint.Item1,
                     (leftPoint, rightPoint) => (leftPoint.Item2, rightPoint.Item2)
-                    );
-                Debug.Log(neighborRooms);
+                    ).Distinct();
                 foreach (var roomPair in neighborRooms)
                 {
                     roomPair.Item1.addNeighborRoom(roomPair.Item2, DIRECTION.TOP);
@@ -284,143 +309,100 @@ public class BinaryRoom : Room
     }
 
     /// <summary>
-    /// Fügt Korridore hinzu (Davor muss jedoch einmal createNeighborList() aufgerufen worden sein)
+    /// Fügt Korridore hinzu (Neighbor Liste muss vorher erstellt worden sein)
     /// </summary>
     public void AddCorridors()
     {
-        if (IsLeaf())
-        {
-            foreach(var neighbor in neighborList)
-            {
-                Room room = neighbor.Item1;
-                DIRECTION dir = neighbor.Item2;
-                Coords corridorCoords = new Coords();
-                switch (dir)
-                {
-                    case DIRECTION.LEFT:
-                        corridorCoords = new Coords(
-                            room.coords.right + 1,
-                            coords.left - 1,
-                            Mathf.Min(coords.top, room.coords.top) - trimTiles - corridorMargin,
-                            Mathf.Max(coords.bottom, room.coords.bottom) + trimTiles + corridorMargin
-                            );
-                        break;
-                    case DIRECTION.RIGHT:
-                        corridorCoords = new Coords(
-                            coords.right + 1,
-                            room.coords.left - 1,
-                            Mathf.Min(coords.top, room.coords.top) - trimTiles - corridorMargin,
-                            Mathf.Max(coords.bottom, room.coords.bottom) + trimTiles + corridorMargin
-                            );
-                        break;
-                    case DIRECTION.TOP:
-                        corridorCoords = new Coords(
-                            Mathf.Max(coords.left, room.coords.left) + trimTiles + corridorMargin,
-                            Mathf.Min(coords.right, room.coords.right) - trimTiles - corridorMargin,
-                            room.coords.bottom - 1,
-                            coords.top + 1
-                            );
-                        break;
-                    case DIRECTION.BOTTOM:
-                        corridorCoords = new Coords(
-                            Mathf.Max(coords.left, room.coords.left) + trimTiles + corridorMargin,
-                            Mathf.Min(coords.right, room.coords.right) - trimTiles - corridorMargin,
-                            coords.bottom - 1,
-                            room.coords.top + 1
-                            );
-                        break;
-                }
-                corridors.Add(new Corridor(corridorCoords, tilePrefab));
-            }
-        }
+        HashSet<BinaryRoom> visitedRooms = new HashSet<BinaryRoom>();
+        //choose random starting Room
+        BinaryRoom currentRoom = allRooms.ElementAt(Random.Range(0, allRooms.Count));
+        visitedRooms.Add(currentRoom);
 
-        if (leftRoom != null)
+        int iterations = 0;
+        while(visitedRooms.Count < allRooms.Count)
         {
-            leftRoom.AddCorridors();
-        }
-        if (rightRoom != null)
-        {
-            rightRoom.AddCorridors();
+            if(iterations >= 1000)
+            {
+                Debug.LogWarning("Maximum number of iterations reached!");
+                return;
+            }
+            //choose random neighbor
+            //if all neighbors have already been visited
+            if(visitedRooms.Intersect(currentRoom.neighborList.Select(_ => _.Item1)).Count() == currentRoom.neighborList.Count)
+            {
+                //go to a previously visited room
+                var possibleRooms = allRooms.Where(_ => _.neighborList.Select(_ => _.Item1).Contains(currentRoom));
+                currentRoom = possibleRooms.ElementAt(Random.Range(0, possibleRooms.Count()));
+            }
+            else
+            {
+                var neighbor = currentRoom.neighborList.ElementAt(Random.Range(0, currentRoom.neighborList.Count));
+                BinaryRoom room = neighbor.Item1;
+                DIRECTION dir = neighbor.Item2;
+                if (!visitedRooms.Contains(room))
+                {
+                    currentRoom.AddCorridorToNeighbor(room, dir);
+                    visitedRooms.Add(room);
+                    currentRoom = room;
+                }
+            }
+            iterations++;
         }
 
     }
-
-    /// <summary>
-    /// returns the intersection between the connections of the two areas we want to connect
-    /// </summary>
-    /// <param name="points"></param>
-    /// <returns>the min/max points of the group in a Vector2</returns>
-    //private List<(int min, int max)> GetIntersectionGroups(List<int> points)
-    //{
-    //    List<(int min, int max)> groups = new List<(int, int)>();
-
-    //    bool firstTime = true;
-    //    (int min, int max) currentGroup = (0, 0);
-    //    for (int i = 0; i < points.Count; i++)
-    //    {
-    //        int num = points[i];
-
-    //        if (firstTime || points[i - 1] != points[i] - 1)
-    //        {
-    //            if (!firstTime)
-    //            {
-    //                groups.Add(currentGroup);
-    //            }
-
-    //            firstTime = false;
-    //            currentGroup = (num, num);
-    //        }
-    //        else
-    //        {
-    //            currentGroup.max += 1;
-    //        }
-    //    }
-
-    //    if (!firstTime)
-    //        groups.Add(currentGroup);
-
-    //    return groups.Where(g => g.max - g.min >= minCorridorThickness).ToList();
-    //}
-
-    //public void AddCorridors()
-    //{
-        //if (IsLeaf())
-        //    return;
-
-        //if (leftRoom != null)
-        //{
-        //    leftRoom.AddCorridors();
-        //}
-        //if (rightRoom != null)
-        //{
-        //    rightRoom.AddCorridors();
-        //}
-
-        //if (leftRoom != null && rightRoom != null)
-        //{
-        //    if (verticalSplit)
-        //    {
-        //        var positions = leftRoom.GetRightConnections().Intersect(rightRoom.GetLeftConnections()).ToList();
-        //        var groups = GetIntersectionGroups(positions);
-        //        if (groups.Count > 0)
-        //        {
-        //            var pair = groups[Random.Range(0, groups.Count)];
-        //            Coords corridorCoords = new Coords(leftRoom.coords.right + 1, rightRoom.coords.left - 1, pair.max, pair.min);
-        //            corridor = new Corridor(corridorCoords, tilePrefab);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        var positions = leftRoom.GetTopConnections().Intersect(rightRoom.GetBottomConnections()).ToList();
-        //        var groups = GetIntersectionGroups(positions);
-        //        if (groups.Count > 0)
-        //        {
-        //            var pair = groups[Random.Range(0, groups.Count)];
-        //            Coords corridorCoords = new Coords(pair.min, pair.max, rightRoom.coords.bottom - 1, leftRoom.coords.top + 1);
-        //            corridor = new Corridor(corridorCoords, tilePrefab);
-        //        }
-        //    }
-        //}
-    //}
+    public void AddCorridorToNeighbor(BinaryRoom room, DIRECTION dir)
+    {
+        Coords corridorCoords = new Coords();
+        switch (dir)
+        {
+            case DIRECTION.LEFT:
+                corridorCoords = new Coords(
+                    room.coords.right + 1,
+                    coords.left - 1,
+                    Mathf.Min(coords.top, room.coords.top) - trimTiles - corridorMargin,
+                    Mathf.Max(coords.bottom, room.coords.bottom) + trimTiles + corridorMargin
+                    );
+                break;
+            case DIRECTION.RIGHT:
+                corridorCoords = new Coords(
+                    coords.right + 1,
+                    room.coords.left - 1,
+                    Mathf.Min(coords.top, room.coords.top) - trimTiles - corridorMargin,
+                    Mathf.Max(coords.bottom, room.coords.bottom) + trimTiles + corridorMargin
+                    );
+                break;
+            case DIRECTION.TOP:
+                corridorCoords = new Coords(
+                    Mathf.Max(coords.left, room.coords.left) + trimTiles + corridorMargin,
+                    Mathf.Min(coords.right, room.coords.right) - trimTiles - corridorMargin,
+                    room.coords.bottom - 1,
+                    coords.top + 1
+                    );
+                break;
+            case DIRECTION.BOTTOM:
+                corridorCoords = new Coords(
+                    Mathf.Max(coords.left, room.coords.left) + trimTiles + corridorMargin,
+                    Mathf.Min(coords.right, room.coords.right) - trimTiles - corridorMargin,
+                    coords.bottom - 1,
+                    room.coords.top + 1
+                    );
+                break;
+        }
+        while (corridorCoords.GetWidth() - 2 > maxCorridorThickness || corridorCoords.GetHeight() - 2> maxCorridorThickness)
+        {
+            if (corridorCoords.GetWidth() - 2 > maxCorridorThickness)
+            {
+                corridorCoords.left++;
+                corridorCoords.right--;
+            }
+            if (corridorCoords.GetHeight() - 2 > maxCorridorThickness)
+            {
+                corridorCoords.bottom++;
+                corridorCoords.top--;
+            }
+        }
+        corridors.Add(new Corridor(corridorCoords, tilePrefab));
+    }
     #endregion
+
 }

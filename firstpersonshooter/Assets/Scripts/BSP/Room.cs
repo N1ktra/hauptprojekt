@@ -18,7 +18,7 @@ public class Room
             this.top = top; 
             this.bottom = bottom;
         }
-        public Coords(int width, int height) : this(0, width, height, 0) { }
+        public Coords(int width, int height) : this(0, width - 1, height - 1, 0) { }
 
         public int GetWidth()
         {
@@ -67,15 +67,11 @@ public class Room
         {
             for (int y = coords.bottom; y <= coords.top; y++)
             {
-
                 GameObject tile = GameObject.Instantiate(tilePrefab);
-
+                tile.transform.position = new Vector3(x * tileSize.x, 0, y * tileSize.z);
+                tile.transform.SetParent(roomContainer.transform, true);
                 //Zu testzwecken:
                 tile.GetComponent<Renderer>().material.color = debugColor;
-
-                tile.transform.position = new Vector3(x * tileSize.x, 0, y * tileSize.z);
-                //tile.transform.rotation = Quaternion.Euler(90, 0, 0);
-                tile.transform.SetParent(roomContainer.transform, true);
             }
         }
 

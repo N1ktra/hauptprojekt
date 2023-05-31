@@ -10,12 +10,18 @@ public class BSP_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BinaryRoom room = new BinaryRoom(new Room.Coords(100, 100), TilePrefab);
-        Split(5, room);
-        room.Trim();
-        room.createNeighborList();
-        room.AddCorridors();
-        room.Instantiate();
+        BinaryRoom dungeon = CreateDungeon();
+    }
+
+    public BinaryRoom CreateDungeon()
+    {
+        BinaryRoom dungeon = new BinaryRoom(new Room.Coords(100, 100), TilePrefab);
+        Split(5, dungeon);
+        dungeon.Trim();
+        dungeon.createNeighborList();
+        dungeon.AddCorridors();
+        dungeon.Instantiate();
+        return dungeon;
     }
 
     private void Split(int i, BinaryRoom room)
