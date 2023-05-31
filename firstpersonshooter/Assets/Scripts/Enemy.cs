@@ -4,6 +4,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 using static System.Net.Mime.MediaTypeNames;
 
 public class Enemy : MonoBehaviour
@@ -68,7 +69,8 @@ public class Enemy : MonoBehaviour
         if (path.Count >= 1) {
             Node next = path.First();
             path.RemoveAt(0);
-            transform.position += vectorFromTo(transform.position, addY(next.worldPosition));
+            transform.DOMove(addY(next.worldPosition), 1f);
+            //transform.position += vectorFromTo(transform.position, addY(next.worldPosition));
             //this.GetComponent<Rigidbody>().transform.position += vectorFromTo(transform.position, addY(next.worldPosition)) *  Time.fixedDeltaTime;
             Debug.Log("bewegt");
         }
