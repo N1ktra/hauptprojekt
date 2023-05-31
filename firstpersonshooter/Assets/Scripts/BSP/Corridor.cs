@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Corridor : Room
 {
-    public Room leftRoom;
-    public Room rightRoom;
+    public Corridor(Coords coords, Vector3 tileSize) : base(coords, tileSize) { }
 
-    //public Corridor(Room leftRoom, Room rightRoom, GameObject tilePrefab) : 
-    //{
-    //    this.leftRoom = leftRoom;
-    //    this.rightRoom = rightRoom;
-    //}
-
-    public Corridor(Coords coords, GameObject tilePrefab) : base(coords, tilePrefab) { }
+    private bool instantiated = false;
+    public override GameObject Instantiate(GameObject floorPrefab, GameObject wallPrefab)
+    {
+        if (instantiated)
+        {
+            //Debug.Log("corridor has already been instantiated");
+            return null;
+        }
+        GameObject corridorContainer = new GameObject("Corridor");
+        instantiateFloor(floorPrefab).transform.SetParent(corridorContainer.transform, true);
+        instantiated = true;
+        return corridorContainer;
+    }
 }

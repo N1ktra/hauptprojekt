@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room
+public abstract class Room
 {
     public struct Coords
     {
@@ -44,38 +44,49 @@ public class Room
         {
             return new Coords(left, right, top, bottom);
         }
+        /// <summary>
+        /// returns the middle positions as world position
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 toWorldPosition(Vector3 tileSize)
+        {
+            return new Vector3((left + right) / 2 * tileSize.x, 0, (top + bottom) / 2 * tileSize.z);
+        }
     }
-
-    public GameObject tilePrefab;
-    public Vector3 tileSize;
-
     public Coords coords;
 
-    public Room(Coords coords, GameObject tilePrefab)
+    public Vector3 tileSize;
+
+    public Room(Coords coords, Vector3 tileSize)
     {
         this.coords = coords;
-        this.tilePrefab = tilePrefab;
-        this.tileSize = tilePrefab.GetComponent<Renderer>().bounds.size;
+        this.tileSize = tileSize;
     }
 
-    public virtual GameObject Instantiate()
+    public abstract GameObject Instantiate(GameObject floorPrefab, GameObject wallPrefab);
+
+    public GameObject instantiateFloor(GameObject floorPrefab)
     {
-        GameObject roomContainer = new GameObject("Room");
+        GameObject floorContainer = new GameObject("Floor");
         Color debugColor = Random.ColorHSV();
 
         for (int x = coords.left; x <= coords.right; x++)
         {
             for (int y = coords.bottom; y <= coords.top; y++)
             {
-                GameObject tile = GameObject.Instantiate(tilePrefab);
+                GameObject tile = GameObject.Instantiate(floorPrefab);
                 tile.transform.position = new Vector3(x * tileSize.x, 0, y * tileSize.z);
-                tile.transform.SetParent(roomContainer.transform, true);
+                tile.transform.SetParent(floorContainer.transform, true);
                 //Zu testzwecken:
                 tile.GetComponent<Renderer>().material.color = debugColor;
             }
         }
+        return floorContainer;
+    }
 
-        return roomContainer;
+    public void addObject(GameObject obj, Vector3 position)
+    {
+        GameObject.Instantiate(obj, position, Quaternion.identity);
     }
 
 }

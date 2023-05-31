@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class BSP_Manager : MonoBehaviour
 {
-    public GameObject TilePrefab;
+    public GameObject floorPrefab;
+    public GameObject wallPrefab;
+    public GameObject playerPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -15,12 +17,13 @@ public class BSP_Manager : MonoBehaviour
 
     public BinaryRoom CreateDungeon()
     {
-        BinaryRoom dungeon = new BinaryRoom(new Room.Coords(100, 100), TilePrefab);
-        Split(5, dungeon);
+        BinaryRoom dungeon = new BinaryRoom(new Room.Coords(100, 100), floorPrefab.GetComponent<Renderer>().bounds.size);
+        Split(3, dungeon);
         dungeon.Trim();
         dungeon.createNeighborList();
-        dungeon.AddCorridors();
-        dungeon.Instantiate();
+        (BinaryRoom startRoom, BinaryRoom endRoom) = dungeon.AddCorridors();
+        dungeon.Instantiate(floorPrefab, wallPrefab);
+        dungeon.addObject(playerPrefab, startRoom.coords.toWorldPosition(startRoom.tileSize) + Vector3.up * 3);
         return dungeon;
     }
 

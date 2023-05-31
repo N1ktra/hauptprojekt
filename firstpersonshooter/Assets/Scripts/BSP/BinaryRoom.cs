@@ -40,7 +40,7 @@ public class BinaryRoom : Room
     private bool verticalSplit;
     
 
-    public BinaryRoom(Coords coords, GameObject tilePrefab) : base(coords, tilePrefab)
+    public BinaryRoom(Coords coords, Vector3 tileSize) : base(coords, tileSize)
     {
         horizontalSplit = false;
         verticalSplit = false;
@@ -106,37 +106,139 @@ public class BinaryRoom : Room
     private void VerticalSplit()
     {
         int splitLocation = Random.Range(coords.left + minWidth + 2 * trimTiles - 1, coords.right - minWidth - 2 * trimTiles + 1);
-        leftRoom = new BinaryRoom(coords.withRight(splitLocation), tilePrefab);
-        rightRoom = new BinaryRoom(coords.withLeft(splitLocation + 1), tilePrefab);
+        leftRoom = new BinaryRoom(coords.withRight(splitLocation), tileSize);
+        rightRoom = new BinaryRoom(coords.withLeft(splitLocation + 1), tileSize);
         verticalSplit = true;
     }
 
     private void HorizontalSplit()
     {
         int splitLocation = Random.Range(coords.bottom + minHeight + 2 * trimTiles - 1, coords.top - minHeight - 2 * trimTiles + 1);
-        leftRoom = new BinaryRoom(coords.withTop(splitLocation), tilePrefab);
-        rightRoom = new BinaryRoom(coords.withBottom(splitLocation + 1), tilePrefab);
+        leftRoom = new BinaryRoom(coords.withTop(splitLocation), tileSize);
+        rightRoom = new BinaryRoom(coords.withBottom(splitLocation + 1), tileSize);
         horizontalSplit = true;
     }
     #endregion
 
     #region show room
-    public override GameObject Instantiate()
+    public override GameObject Instantiate(GameObject floorPrefab, GameObject wallPrefab)
     {
-        if (IsLeaf())
+        if(IsLeaf())
         {
-            foreach(Corridor corridor in corridors)
+            GameObject roomContainer = new GameObject("Room");
+            foreach (Corridor corridor in corridors)
             {
-                corridor.Instantiate();
+                corridor.Instantiate(floorPrefab, wallPrefab)?.transform.SetParent(roomContainer.transform, true);
             }
-            return base.Instantiate();
+            instantiateFloor(floorPrefab).transform.SetParent(roomContainer.transform, true);
+            instantiateWalls(wallPrefab).transform.SetParent(roomContainer.transform, true);
+            return roomContainer;
         }
         else
         {
-            leftRoom.Instantiate();
-            rightRoom.Instantiate();
+            leftRoom.Instantiate(floorPrefab, wallPrefab);
+            rightRoom.Instantiate(floorPrefab, wallPrefab);
             return null;
         }
+    }
+
+
+    private GameObject instantiateWalls(GameObject wallPrefab)
+    {
+        int wallHeight = 2;
+        GameObject WallContainer = new GameObject("Wall");
+        Vector3 wallTileSize = new Vector3(4, 3, 1);
+        //bootom Wall
+        for (int x = coords.left; x <= coords.right; x++)
+        {
+            bool isCorridor = false;
+            foreach(Corridor corridor in corridors)
+            {
+                if (corridor.coords.top == coords.bottom - 1  && (corridor.coords.left <= x && x <= corridor.coords.right))
+                {
+                    isCorridor = true;
+                    break;
+                }
+            }
+            if (!isCorridor)
+            {
+                for (int y = 0; y < wallHeight; y++)
+                {
+                    GameObject tile = GameObject.Instantiate(wallPrefab);
+                    tile.transform.position = new Vector3(x * tileSize.x, y * wallTileSize.y, tileSize.z * coords.bottom);
+                    tile.transform.SetParent(WallContainer.transform, true);
+                }
+            }
+        }
+        //top Wall
+        for (int x = coords.left; x <= coords.right; x++)
+        {
+            bool isCorridor = false;
+            foreach (Corridor corridor in corridors)
+            {
+                if (corridor.coords.bottom == coords.top + 1 && (corridor.coords.left <= x && x <= corridor.coords.right))
+                {
+                    isCorridor = true;
+                    break;
+                }
+            }
+            if (!isCorridor)
+            {
+                for (int y = 0; y < wallHeight; y++)
+                {
+                    GameObject tile = GameObject.Instantiate(wallPrefab);
+                    tile.transform.position = new Vector3(x * tileSize.x, y * wallTileSize.y, tileSize.z * (coords.top + 1));
+                    tile.transform.SetParent(WallContainer.transform, true);
+                }
+            }
+        }
+        //left Wall
+        for (int z = coords.bottom; z <= coords.top; z++)
+        {
+            bool isCorridor = false;
+            foreach (Corridor corridor in corridors)
+            {
+                if (corridor.coords.right == coords.left - 1 && (corridor.coords.bottom <= z && z <= corridor.coords.top))
+                {
+                    isCorridor = true;
+                    break;
+                }
+            }
+            if (!isCorridor)
+            {
+                for (int y = 0; y < wallHeight; y++)
+                {
+                    GameObject tile = GameObject.Instantiate(wallPrefab);
+                    tile.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    tile.transform.position = new Vector3(tileSize.x * coords.left, y * wallTileSize.y, tileSize.z * z);
+                    tile.transform.SetParent(WallContainer.transform, true);
+                }
+            }
+        }
+        //right Wall
+        for (int z = coords.bottom; z <= coords.top; z++)
+        {
+            bool isCorridor = false;
+            foreach (Corridor corridor in corridors)
+            {
+                if (corridor.coords.left == coords.right + 1 && (corridor.coords.bottom <= z && z <= corridor.coords.top))
+                {
+                    isCorridor = true;
+                    break;
+                }
+            }
+            if (!isCorridor)
+            {
+                for (int y = 0; y < wallHeight; y++)
+                {
+                    GameObject tile = GameObject.Instantiate(wallPrefab);
+                    tile.transform.rotation = Quaternion.Euler(0, -90, 0);
+                    tile.transform.position = new Vector3(tileSize.x * coords.right, y * wallTileSize.y, tileSize.z * z);
+                    tile.transform.SetParent(WallContainer.transform, true);
+                }
+            }
+        }
+        return WallContainer;
     }
 
     public void Trim()
@@ -311,11 +413,12 @@ public class BinaryRoom : Room
     /// <summary>
     /// Fügt Korridore hinzu (Neighbor Liste muss vorher erstellt worden sein)
     /// </summary>
-    public void AddCorridors()
+    public (BinaryRoom startRoom, BinaryRoom endRoom) AddCorridors()
     {
         HashSet<BinaryRoom> visitedRooms = new HashSet<BinaryRoom>();
         //choose random starting Room
-        BinaryRoom currentRoom = allRooms.ElementAt(Random.Range(0, allRooms.Count));
+        BinaryRoom startRoom = allRooms.ElementAt(Random.Range(0, allRooms.Count));
+        BinaryRoom currentRoom = startRoom;
         visitedRooms.Add(currentRoom);
 
         int iterations = 0;
@@ -324,7 +427,7 @@ public class BinaryRoom : Room
             if(iterations >= 1000)
             {
                 Debug.LogWarning("Maximum number of iterations reached!");
-                return;
+                return (null, null);
             }
             //choose random neighbor
             //if all neighbors have already been visited
@@ -336,7 +439,8 @@ public class BinaryRoom : Room
             }
             else
             {
-                var neighbor = currentRoom.neighborList.ElementAt(Random.Range(0, currentRoom.neighborList.Count));
+                var possibleNeighbors = currentRoom.neighborList.Where(_ => !visitedRooms.Contains(_.Item1));
+                var neighbor = possibleNeighbors.ElementAt(Random.Range(0, possibleNeighbors.Count()));
                 BinaryRoom room = neighbor.Item1;
                 DIRECTION dir = neighbor.Item2;
                 if (!visitedRooms.Contains(room))
@@ -348,6 +452,7 @@ public class BinaryRoom : Room
             }
             iterations++;
         }
+        return (startRoom, currentRoom);
 
     }
     public void AddCorridorToNeighbor(BinaryRoom room, DIRECTION dir)
@@ -388,6 +493,7 @@ public class BinaryRoom : Room
                     );
                 break;
         }
+        //limit corridor size
         while (corridorCoords.GetWidth() - 2 > maxCorridorThickness || corridorCoords.GetHeight() - 2> maxCorridorThickness)
         {
             if (corridorCoords.GetWidth() - 2 > maxCorridorThickness)
@@ -401,7 +507,9 @@ public class BinaryRoom : Room
                 corridorCoords.top--;
             }
         }
-        corridors.Add(new Corridor(corridorCoords, tilePrefab));
+        Corridor corridor = new Corridor(corridorCoords, tileSize); //TODO: Schauen ob der Korridor doppelt exisitiert
+        room.corridors.Add(corridor);
+        corridors.Add(corridor);
     }
     #endregion
 
