@@ -22,17 +22,6 @@ public class BinaryRoom : Room
             return _allRooms;
         } 
     }
-
-    //Width / Height
-    private int minWidth = 10;
-    private int maxWidth = 25;
-    private int minHeight = 10;
-    private int maxHeight = 25;
-    private int trimTiles = 1;
-
-    //Corridors
-    private int corridorMargin = 1;
-    private int maxCorridorThickness = 5;
     public List<Corridor> corridors { get; private set; } = new List<Corridor>();
 
     //Splitting
@@ -40,7 +29,7 @@ public class BinaryRoom : Room
     private bool verticalSplit;
     
 
-    public BinaryRoom(Coords coords, Vector3 tileSize) : base(coords, tileSize)
+    public BinaryRoom(RoomCoords coords, RoomDesign design) : base(coords, design)
     {
         horizontalSplit = false;
         verticalSplit = false;
@@ -48,7 +37,7 @@ public class BinaryRoom : Room
         leftRoom = null;
         rightRoom = null;
 
-        if (coords.GetHeight() < minHeight || coords.GetWidth() < minWidth)
+        if (coords.GetHeight() < design.minHeight || coords.GetWidth() < design.minWidth)
             Debug.LogError("Room is too small");
     }
 
@@ -76,25 +65,25 @@ public class BinaryRoom : Room
     {
         // Attempt random split
         float rand = Random.value;
-        if (rand < 0.5f && coords.GetWidth() >= 2 * minWidth + 4 * trimTiles)
+        if (rand < 0.5f && coords.GetWidth() >= 2 * (design.minWidth + design.trimTiles.left + design.trimTiles.right))
         {
             VerticalSplit();
             return true;
         }
-        else if (coords.GetHeight() >= 2 * minHeight + 4 * trimTiles)
+        else if (coords.GetHeight() >= 2 * (design.minHeight + design.trimTiles.top + design.trimTiles.bottom))
         {
             HorizontalSplit();
             return true;
         }
 
         // Force split if theres too much space.
-        if (coords.GetWidth() > maxWidth)
+        if (coords.GetWidth() > design.maxWidth)
         {
             VerticalSplit();
             return true;
         }
 
-        if (coords.GetHeight() > maxHeight)
+        if (coords.GetHeight() > design.maxHeight)
         {
             HorizontalSplit();
             return true;
@@ -105,45 +94,47 @@ public class BinaryRoom : Room
 
     private void VerticalSplit()
     {
-        int splitLocation = Random.Range(coords.left + minWidth + 2 * trimTiles - 1, coords.right - minWidth - 2 * trimTiles + 1);
-        leftRoom = new BinaryRoom(coords.withRight(splitLocation), tileSize);
-        rightRoom = new BinaryRoom(coords.withLeft(splitLocation + 1), tileSize);
+        int splitLocation = Random.Range(coords.left + design.minWidth + design.trimTiles.left + design.trimTiles.right - 1, 
+                                        coords.right - design.minWidth - design.trimTiles.left - design.trimTiles.right + 1);
+        leftRoom = new BinaryRoom(coords.Copy().setRight(splitLocation), design);
+        rightRoom = new BinaryRoom(coords.Copy().setLeft(splitLocation + 1), design);
         verticalSplit = true;
     }
 
     private void HorizontalSplit()
     {
-        int splitLocation = Random.Range(coords.bottom + minHeight + 2 * trimTiles - 1, coords.top - minHeight - 2 * trimTiles + 1);
-        leftRoom = new BinaryRoom(coords.withTop(splitLocation), tileSize);
-        rightRoom = new BinaryRoom(coords.withBottom(splitLocation + 1), tileSize);
+        int splitLocation = Random.Range(coords.bottom + design.minHeight + design.trimTiles.top + design.trimTiles.bottom - 1, 
+                                        coords.top - design.minHeight - design.trimTiles.top + design.trimTiles.bottom + 1);
+        leftRoom = new BinaryRoom(coords.Copy().setTop(splitLocation), design);
+        rightRoom = new BinaryRoom(coords.Copy().setBootom(splitLocation + 1), design);
         horizontalSplit = true;
     }
     #endregion
 
     #region show room
-    public override GameObject Instantiate(GameObject floorPrefab, GameObject wallPrefab)
+    public override GameObject Instantiate()
     {
         if(IsLeaf())
         {
             GameObject roomContainer = new GameObject("Room");
             foreach (Corridor corridor in corridors)
             {
-                corridor.Instantiate(floorPrefab, wallPrefab)?.transform.SetParent(roomContainer.transform, true);
+                corridor.Instantiate()?.transform.SetParent(roomContainer.transform, true);
             }
-            instantiateFloor(floorPrefab).transform.SetParent(roomContainer.transform, true);
-            instantiateWalls(wallPrefab).transform.SetParent(roomContainer.transform, true);
+            instantiateFloor().transform.SetParent(roomContainer.transform, true);
+            instantiateWalls().transform.SetParent(roomContainer.transform, true);
             return roomContainer;
         }
         else
         {
-            leftRoom.Instantiate(floorPrefab, wallPrefab);
-            rightRoom.Instantiate(floorPrefab, wallPrefab);
+            leftRoom.Instantiate();
+            rightRoom.Instantiate();
             return null;
         }
     }
 
 
-    private GameObject instantiateWalls(GameObject wallPrefab)
+    private GameObject instantiateWalls()
     {
         int wallHeight = 2;
         GameObject WallContainer = new GameObject("Wall");
@@ -164,8 +155,8 @@ public class BinaryRoom : Room
             {
                 for (int y = 0; y < wallHeight; y++)
                 {
-                    GameObject tile = GameObject.Instantiate(wallPrefab);
-                    tile.transform.position = new Vector3(x * tileSize.x, y * wallTileSize.y, tileSize.z * coords.bottom);
+                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
+                    tile.transform.position = new Vector3(x * design.tileSize.x, y * wallTileSize.y, design.tileSize.z * coords.bottom);
                     tile.transform.SetParent(WallContainer.transform, true);
                 }
             }
@@ -186,8 +177,8 @@ public class BinaryRoom : Room
             {
                 for (int y = 0; y < wallHeight; y++)
                 {
-                    GameObject tile = GameObject.Instantiate(wallPrefab);
-                    tile.transform.position = new Vector3(x * tileSize.x, y * wallTileSize.y, tileSize.z * (coords.top + 1));
+                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
+                    tile.transform.position = new Vector3(x * design.tileSize.x, y * wallTileSize.y, design.tileSize.z * (coords.top + 1));
                     tile.transform.SetParent(WallContainer.transform, true);
                 }
             }
@@ -208,9 +199,9 @@ public class BinaryRoom : Room
             {
                 for (int y = 0; y < wallHeight; y++)
                 {
-                    GameObject tile = GameObject.Instantiate(wallPrefab);
+                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
                     tile.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    tile.transform.position = new Vector3(tileSize.x * coords.left, y * wallTileSize.y, tileSize.z * z);
+                    tile.transform.position = new Vector3(design.tileSize.x * coords.left, y * wallTileSize.y, design.tileSize.z * z);
                     tile.transform.SetParent(WallContainer.transform, true);
                 }
             }
@@ -231,9 +222,9 @@ public class BinaryRoom : Room
             {
                 for (int y = 0; y < wallHeight; y++)
                 {
-                    GameObject tile = GameObject.Instantiate(wallPrefab);
+                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
                     tile.transform.rotation = Quaternion.Euler(0, -90, 0);
-                    tile.transform.position = new Vector3(tileSize.x * coords.right, y * wallTileSize.y, tileSize.z * z);
+                    tile.transform.position = new Vector3(design.tileSize.x * coords.right, y * wallTileSize.y, design.tileSize.z * z);
                     tile.transform.SetParent(WallContainer.transform, true);
                 }
             }
@@ -243,10 +234,10 @@ public class BinaryRoom : Room
 
     public void Trim()
     {
-        coords.left += trimTiles;
-        coords.right -= trimTiles;
-        coords.top -= trimTiles;
-        coords.bottom += trimTiles;
+        coords.left += design.trimTiles.left;
+        coords.right -= design.trimTiles.right;
+        coords.top -= design.trimTiles.top;
+        coords.bottom += design.trimTiles.bottom;
 
         if (leftRoom != null)
         {
@@ -277,7 +268,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int y = coords.bottom + corridorMargin + trimTiles; y <= coords.top - corridorMargin - trimTiles; y++)
+            for (int y = coords.bottom + design.corridorMargin + design.trimTiles.bottom; y <= coords.top - design.corridorMargin - design.trimTiles.top; y++)
             {
                 connections.Add((y, this));
             }
@@ -301,7 +292,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int y = coords.bottom + corridorMargin + trimTiles; y <= coords.top - corridorMargin - trimTiles; y++)
+            for (int y = coords.bottom + design.corridorMargin + design.trimTiles.bottom; y <= coords.top - design.corridorMargin - design.trimTiles.top; y++)
             {
                 connections.Add((y, this));
             }
@@ -325,7 +316,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int x = coords.left + corridorMargin + trimTiles; x <= coords.right - corridorMargin - trimTiles; x++)
+            for (int x = coords.left + design.corridorMargin + design.trimTiles.left; x <= coords.right - design.corridorMargin - design.trimTiles.right; x++)
             {
                 connections.Add((x, this));
             }
@@ -349,7 +340,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int x = coords.left + corridorMargin + trimTiles; x <= coords.right - corridorMargin - trimTiles; x++)
+            for (int x = coords.left + design.corridorMargin + design.trimTiles.left; x <= coords.right - design.corridorMargin - design.trimTiles.right; x++)
             {
                 connections.Add((x, this));
             }
@@ -457,57 +448,57 @@ public class BinaryRoom : Room
     }
     public void AddCorridorToNeighbor(BinaryRoom room, DIRECTION dir)
     {
-        Coords corridorCoords = new Coords();
+        RoomCoords corridorCoords = new RoomCoords();
         switch (dir)
         {
             case DIRECTION.LEFT:
-                corridorCoords = new Coords(
+                corridorCoords = new RoomCoords(
                     room.coords.right + 1,
                     coords.left - 1,
-                    Mathf.Min(coords.top, room.coords.top) - trimTiles - corridorMargin,
-                    Mathf.Max(coords.bottom, room.coords.bottom) + trimTiles + corridorMargin
+                    Mathf.Min(coords.top, room.coords.top) - design.trimTiles.top - design.corridorMargin,
+                    Mathf.Max(coords.bottom, room.coords.bottom) + design.trimTiles.bottom + design.corridorMargin
                     );
                 break;
             case DIRECTION.RIGHT:
-                corridorCoords = new Coords(
+                corridorCoords = new RoomCoords(
                     coords.right + 1,
                     room.coords.left - 1,
-                    Mathf.Min(coords.top, room.coords.top) - trimTiles - corridorMargin,
-                    Mathf.Max(coords.bottom, room.coords.bottom) + trimTiles + corridorMargin
+                    Mathf.Min(coords.top, room.coords.top) - design.trimTiles.top - design.corridorMargin,
+                    Mathf.Max(coords.bottom, room.coords.bottom) + design.trimTiles .bottom + design.corridorMargin
                     );
                 break;
             case DIRECTION.TOP:
-                corridorCoords = new Coords(
-                    Mathf.Max(coords.left, room.coords.left) + trimTiles + corridorMargin,
-                    Mathf.Min(coords.right, room.coords.right) - trimTiles - corridorMargin,
+                corridorCoords = new RoomCoords(
+                    Mathf.Max(coords.left, room.coords.left) + design.trimTiles.left + design.corridorMargin,
+                    Mathf.Min(coords.right, room.coords.right) - design.trimTiles.right - design.corridorMargin,
                     room.coords.bottom - 1,
                     coords.top + 1
                     );
                 break;
             case DIRECTION.BOTTOM:
-                corridorCoords = new Coords(
-                    Mathf.Max(coords.left, room.coords.left) + trimTiles + corridorMargin,
-                    Mathf.Min(coords.right, room.coords.right) - trimTiles - corridorMargin,
+                corridorCoords = new RoomCoords(
+                    Mathf.Max(coords.left, room.coords.left) + design.trimTiles.left + design.corridorMargin,
+                    Mathf.Min(coords.right, room.coords.right) - design.trimTiles.right - design.corridorMargin,
                     coords.bottom - 1,
                     room.coords.top + 1
                     );
                 break;
         }
         //limit corridor size
-        while (corridorCoords.GetWidth() - 2 > maxCorridorThickness || corridorCoords.GetHeight() - 2> maxCorridorThickness)
+        while (corridorCoords.GetWidth() - 2 > design.maxCorridorThickness || corridorCoords.GetHeight() - 2> design.maxCorridorThickness)
         {
-            if (corridorCoords.GetWidth() - 2 > maxCorridorThickness)
+            if (corridorCoords.GetWidth() - 2 > design.maxCorridorThickness)
             {
                 corridorCoords.left++;
                 corridorCoords.right--;
             }
-            if (corridorCoords.GetHeight() - 2 > maxCorridorThickness)
+            if (corridorCoords.GetHeight() - 2 > design.maxCorridorThickness)
             {
                 corridorCoords.bottom++;
                 corridorCoords.top--;
             }
         }
-        Corridor corridor = new Corridor(corridorCoords, tileSize); //TODO: Schauen ob der Korridor doppelt exisitiert
+        Corridor corridor = new Corridor(corridorCoords, design);
         room.corridors.Add(corridor);
         corridors.Add(corridor);
     }

@@ -249,6 +249,17 @@ MonoBehaviour:
   floorPrefab: {fileID: 387534166694238509, guid: 639288204a42be04c8a9650cb9f6ec10, type: 3}
   wallPrefab: {fileID: 6442867168350000814, guid: 2bfd20ce17d214644979143391023208, type: 3}
   playerPrefab: {fileID: 3919332630057655850, guid: 67343f3e54251fc44bce8858a17cc79b, type: 3}
+  width: 50
+  height: 50
+  amountOfSplits: 4
+  minWidth: 10
+  maxWidth: 25
+  minHeight: 10
+  maxHeight: 25
+  trimTiles: {x: 1, y: 1, z: 1, w: 1}
+  maxTrimTiles: 5
+  corridorMargin: 1
+  maxCorridorThickness: 2
 --- !u!4 &1027587734
 Transform:
   m_ObjectHideFlags: 0

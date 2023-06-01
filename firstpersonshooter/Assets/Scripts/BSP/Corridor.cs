@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Corridor : Room
 {
-    public Corridor(Coords coords, Vector3 tileSize) : base(coords, tileSize) { }
+    public Corridor(RoomCoords coords, RoomDesign design) : base(coords, design) { }
 
     private bool instantiated = false;
-    public override GameObject Instantiate(GameObject floorPrefab, GameObject wallPrefab)
+    public override GameObject Instantiate()
     {
         if (instantiated)
         {
@@ -15,7 +15,7 @@ public class Corridor : Room
             return null;
         }
         GameObject corridorContainer = new GameObject("Corridor");
-        instantiateFloor(floorPrefab).transform.SetParent(corridorContainer.transform, true);
+        instantiateFloor().transform.SetParent(corridorContainer.transform, true);
         instantiated = true;
         return corridorContainer;
     }
