@@ -14,14 +14,18 @@ public class BSP_Manager : MonoBehaviour
     [Header("Dungeon")]
     public int width = 100;
     public int height = 100;
-    public int amountOfSplits;
+    public int amountOfSplits = 3;
 
-    [Header("Rooms")]
+    [Header("Room Size")]
     public int minWidth = 10;
     public int maxWidth = 25;
     public int minHeight = 10;
     public int maxHeight = 25;
+
+    [Header("Room Trimming")]
+    public bool trimTilesIsRandom = true;
     public Vector4 trimTiles = Vector4.one;
+    public int minTrimTiles = 0;
     public int maxTrimTiles = 5;
 
     [Header("Corridoros")]
@@ -39,13 +43,14 @@ public class BSP_Manager : MonoBehaviour
         RoomDesign design = new RoomDesign(
             floorPrefab.GetComponent<Renderer>().bounds.size, 
             floorPrefab, wallPrefab, 
-            minWidth, maxWidth, minHeight, maxHeight, 
-            ((int)trimTiles.w, (int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z), 
-            maxTrimTiles, 
+            minWidth, maxWidth, minHeight, maxHeight,
+            trimTilesIsRandom,
+            ((int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z, (int)trimTiles.w), 
+            minTrimTiles, maxTrimTiles, 
             corridorMargin, maxCorridorThickness
         );
         BinaryRoom dungeon = new BinaryRoom(new RoomCoords(width, height), design);
-        Split(amountOfSplits, dungeon);
+        SplitDungeon(amountOfSplits, dungeon);
         dungeon.Trim();
         dungeon.createNeighborList();
         (BinaryRoom startRoom, BinaryRoom endRoom) = dungeon.AddCorridors();
@@ -54,15 +59,15 @@ public class BSP_Manager : MonoBehaviour
         return dungeon;
     }
 
-    private void Split(int i, BinaryRoom room)
+    private void SplitDungeon(int i, BinaryRoom room)
     {
         if (i <= 0) return;
 
         room.Split();
         if (room.leftRoom != null)
-            Split(i - 1, room.leftRoom);
+            SplitDungeon(i - 1, room.leftRoom);
 
         if (room.rightRoom != null)
-            Split(i - 1, room.rightRoom);
+            SplitDungeon(i - 1, room.rightRoom);
     }
 }

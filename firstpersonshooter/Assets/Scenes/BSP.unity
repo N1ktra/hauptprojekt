@@ -252,11 +252,13 @@ MonoBehaviour:
   width: 50
   height: 50
   amountOfSplits: 4
-  minWidth: 10
-  maxWidth: 25
-  minHeight: 10
-  maxHeight: 25
+  minWidth: 5
+  maxWidth: 15
+  minHeight: 5
+  maxHeight: 15
+  trimTilesIsRandom: 1
   trimTiles: {x: 1, y: 1, z: 1, w: 1}
+  minTrimTiles: 0
   maxTrimTiles: 5
   corridorMargin: 1
   maxCorridorThickness: 2

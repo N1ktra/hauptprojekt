@@ -65,12 +65,12 @@ public class BinaryRoom : Room
     {
         // Attempt random split
         float rand = Random.value;
-        if (rand < 0.5f && coords.GetWidth() >= 2 * (design.minWidth + design.trimTiles.left + design.trimTiles.right))
+        if (rand < 0.5f && coords.GetWidth() >= 2 * design.minWidth)
         {
             VerticalSplit();
             return true;
         }
-        else if (coords.GetHeight() >= 2 * (design.minHeight + design.trimTiles.top + design.trimTiles.bottom))
+        else if (coords.GetHeight() >= 2 * design.minHeight )
         {
             HorizontalSplit();
             return true;
@@ -92,19 +92,17 @@ public class BinaryRoom : Room
         return false;
     }
 
-    private void VerticalSplit()
+    public void VerticalSplit()
     {
-        int splitLocation = Random.Range(coords.left + design.minWidth + design.trimTiles.left + design.trimTiles.right - 1, 
-                                        coords.right - design.minWidth - design.trimTiles.left - design.trimTiles.right + 1);
+        int splitLocation = Random.Range(coords.left + design.minWidth - 1, coords.right - design.minWidth + 1);
         leftRoom = new BinaryRoom(coords.Copy().setRight(splitLocation), design);
         rightRoom = new BinaryRoom(coords.Copy().setLeft(splitLocation + 1), design);
         verticalSplit = true;
     }
 
-    private void HorizontalSplit()
+    public void HorizontalSplit()
     {
-        int splitLocation = Random.Range(coords.bottom + design.minHeight + design.trimTiles.top + design.trimTiles.bottom - 1, 
-                                        coords.top - design.minHeight - design.trimTiles.top + design.trimTiles.bottom + 1);
+        int splitLocation = Random.Range(coords.bottom + design.minHeight - 1, coords.top - design.minHeight + 1);
         leftRoom = new BinaryRoom(coords.Copy().setTop(splitLocation), design);
         rightRoom = new BinaryRoom(coords.Copy().setBootom(splitLocation + 1), design);
         horizontalSplit = true;
@@ -112,6 +110,40 @@ public class BinaryRoom : Room
     #endregion
 
     #region show room
+    public void Trim()
+    {
+        if (IsLeaf())
+        {
+            if(design.trimTilesIsRandom)
+                design.setRandomTrimTiles();
+            coords.left += Mathf.Min(design.trimTiles.left, coords.GetWidth() - design.minWidth);
+            coords.right -= Mathf.Min(design.trimTiles.right, coords.GetWidth() - design.minWidth);
+            coords.top -= Mathf.Min(design.trimTiles.top, coords.GetHeight() - design.minHeight);
+            coords.bottom += Mathf.Min(design.trimTiles.bottom, coords.GetHeight() - design.minHeight);
+
+            //check if room is still too large
+            if(coords.GetWidth() > design.maxWidth)
+            {
+                int difference = coords.GetWidth() - design.maxWidth;
+                coords.left += Mathf.CeilToInt(difference / 2f);
+                coords.right -= Mathf.FloorToInt(difference / 2f);
+            }
+            if (coords.GetHeight() > design.maxHeight)
+            {
+                int difference = coords.GetHeight() - design.maxHeight;
+                coords.bottom += Mathf.CeilToInt(difference / 2f);
+                coords.top -= Mathf.FloorToInt(difference / 2f);
+            }
+        }
+        if (leftRoom != null)
+        {
+            leftRoom.Trim();
+        }
+        if (rightRoom != null)
+        {
+            rightRoom.Trim();
+        }
+    }
     public override GameObject Instantiate()
     {
         if(IsLeaf())
@@ -231,23 +263,6 @@ public class BinaryRoom : Room
         }
         return WallContainer;
     }
-
-    public void Trim()
-    {
-        coords.left += design.trimTiles.left;
-        coords.right -= design.trimTiles.right;
-        coords.top -= design.trimTiles.top;
-        coords.bottom += design.trimTiles.bottom;
-
-        if (leftRoom != null)
-        {
-            leftRoom.Trim();
-        }
-        if (rightRoom != null)
-        {
-            rightRoom.Trim();
-        }
-    }
     #endregion
 
     #region Corridors
@@ -268,7 +283,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int y = coords.bottom + design.corridorMargin + design.trimTiles.bottom; y <= coords.top - design.corridorMargin - design.trimTiles.top; y++)
+            for (int y = coords.bottom + design.corridorMargin; y <= coords.top - design.corridorMargin; y++)
             {
                 connections.Add((y, this));
             }
@@ -292,7 +307,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int y = coords.bottom + design.corridorMargin + design.trimTiles.bottom; y <= coords.top - design.corridorMargin - design.trimTiles.top; y++)
+            for (int y = coords.bottom + design.corridorMargin; y <= coords.top - design.corridorMargin; y++)
             {
                 connections.Add((y, this));
             }
@@ -316,7 +331,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int x = coords.left + design.corridorMargin + design.trimTiles.left; x <= coords.right - design.corridorMargin - design.trimTiles.right; x++)
+            for (int x = coords.left + design.corridorMargin; x <= coords.right - design.corridorMargin; x++)
             {
                 connections.Add((x, this));
             }
@@ -340,7 +355,7 @@ public class BinaryRoom : Room
         }
         else
         {
-            for (int x = coords.left + design.corridorMargin + design.trimTiles.left; x <= coords.right - design.corridorMargin - design.trimTiles.right; x++)
+            for (int x = coords.left + design.corridorMargin; x <= coords.right - design.corridorMargin; x++)
             {
                 connections.Add((x, this));
             }
@@ -455,47 +470,52 @@ public class BinaryRoom : Room
                 corridorCoords = new RoomCoords(
                     room.coords.right + 1,
                     coords.left - 1,
-                    Mathf.Min(coords.top, room.coords.top) - design.trimTiles.top - design.corridorMargin,
-                    Mathf.Max(coords.bottom, room.coords.bottom) + design.trimTiles.bottom + design.corridorMargin
+                    Mathf.Min(coords.top, room.coords.top) - design.corridorMargin,
+                    Mathf.Max(coords.bottom, room.coords.bottom) + design.corridorMargin
                     );
                 break;
             case DIRECTION.RIGHT:
                 corridorCoords = new RoomCoords(
                     coords.right + 1,
                     room.coords.left - 1,
-                    Mathf.Min(coords.top, room.coords.top) - design.trimTiles.top - design.corridorMargin,
-                    Mathf.Max(coords.bottom, room.coords.bottom) + design.trimTiles .bottom + design.corridorMargin
+                    Mathf.Min(coords.top, room.coords.top) - design.corridorMargin,
+                    Mathf.Max(coords.bottom, room.coords.bottom) + design.corridorMargin
                     );
                 break;
             case DIRECTION.TOP:
                 corridorCoords = new RoomCoords(
-                    Mathf.Max(coords.left, room.coords.left) + design.trimTiles.left + design.corridorMargin,
-                    Mathf.Min(coords.right, room.coords.right) - design.trimTiles.right - design.corridorMargin,
+                    Mathf.Max(coords.left, room.coords.left) + design.corridorMargin,
+                    Mathf.Min(coords.right, room.coords.right) - design.corridorMargin,
                     room.coords.bottom - 1,
                     coords.top + 1
                     );
                 break;
             case DIRECTION.BOTTOM:
                 corridorCoords = new RoomCoords(
-                    Mathf.Max(coords.left, room.coords.left) + design.trimTiles.left + design.corridorMargin,
-                    Mathf.Min(coords.right, room.coords.right) - design.trimTiles.right - design.corridorMargin,
+                    Mathf.Max(coords.left, room.coords.left) + design.corridorMargin,
+                    Mathf.Min(coords.right, room.coords.right) - design.corridorMargin,
                     coords.bottom - 1,
                     room.coords.top + 1
                     );
                 break;
         }
         //limit corridor size
-        while (corridorCoords.GetWidth() - 2 > design.maxCorridorThickness || corridorCoords.GetHeight() - 2> design.maxCorridorThickness)
+        if (dir == DIRECTION.TOP || dir == DIRECTION.BOTTOM)
         {
-            if (corridorCoords.GetWidth() - 2 > design.maxCorridorThickness)
+            int difference = corridorCoords.GetWidth() - design.maxCorridorThickness;
+            if (difference > 0) 
             {
-                corridorCoords.left++;
-                corridorCoords.right--;
+                corridorCoords.left += Mathf.CeilToInt(difference / 2f);
+                corridorCoords.right -= Mathf.FloorToInt(difference / 2f);
             }
-            if (corridorCoords.GetHeight() - 2 > design.maxCorridorThickness)
+        }
+        else if(dir == DIRECTION.LEFT || dir == DIRECTION.RIGHT)
+        {
+            int difference = corridorCoords.GetHeight() - design.maxCorridorThickness;
+            if (difference > 0)
             {
-                corridorCoords.bottom++;
-                corridorCoords.top--;
+                corridorCoords.bottom += Mathf.CeilToInt(difference / 2f);
+                corridorCoords.top -= Mathf.FloorToInt(difference / 2f);
             }
         }
         Corridor corridor = new Corridor(corridorCoords, design);

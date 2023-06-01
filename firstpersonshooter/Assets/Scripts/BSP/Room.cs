@@ -72,14 +72,19 @@ public struct RoomDesign
     public int maxWidth;
     public int minHeight;
     public int maxHeight;
+    public bool trimTilesIsRandom;
     public (int left, int right, int top, int bottom) trimTiles;
+    public int minTrimTiles;
     public int maxTrimTiles;
 
     //Corridors
     public int corridorMargin;
     public int maxCorridorThickness;
 
-    public RoomDesign(Vector3 tileSize, GameObject floorPrefab, GameObject wallPrefab, int minWidth, int maxWidth, int minHeight, int maxHeight, (int left, int right, int top, int bottom) trimTiles, int maxTrimTiles, int corridorMargin, int maxCorridorThickness)
+    public RoomDesign(Vector3 tileSize, GameObject floorPrefab, GameObject wallPrefab, 
+        int minWidth, int maxWidth, int minHeight, int maxHeight, 
+        bool trimTilesIsRandom, (int left, int right, int top, int bottom) trimTiles, int minTrimTiles, int maxTrimTiles, 
+        int corridorMargin, int maxCorridorThickness)
     {
         this.tileSize = tileSize;
         this.floorPrefab = floorPrefab;
@@ -88,7 +93,9 @@ public struct RoomDesign
         this.maxWidth = maxWidth;
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
+        this.trimTilesIsRandom = trimTilesIsRandom;
         this.trimTiles = trimTiles;
+        this.minTrimTiles = minTrimTiles;
         this.maxTrimTiles = maxTrimTiles;
         this.corridorMargin = corridorMargin;
         this.maxCorridorThickness = maxCorridorThickness;
@@ -101,6 +108,15 @@ public struct RoomDesign
     public RoomDesign setTrimTiles((int left, int right, int top, int bottom) trimTiles)
     {
         this.trimTiles = trimTiles;
+        return this;
+    }
+
+    public RoomDesign setRandomTrimTiles()
+    {
+        this.trimTiles.left = UnityEngine.Random.Range(minTrimTiles, maxTrimTiles);
+        this.trimTiles.right = UnityEngine.Random.Range(minTrimTiles, maxTrimTiles);
+        this.trimTiles.top = UnityEngine.Random.Range(minTrimTiles, maxTrimTiles);
+        this.trimTiles.bottom = UnityEngine.Random.Range(minTrimTiles, maxTrimTiles);
         return this;
     }
 }
