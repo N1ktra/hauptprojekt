@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class BinaryRoom : Room
 {
-    public enum DIRECTION { LEFT, RIGHT, TOP, BOTTOM };
     //Datastructure
     public BinaryRoom leftRoom { get; private set; }
     public BinaryRoom rightRoom { get; private set; }
@@ -60,6 +59,90 @@ public class BinaryRoom : Room
         return allRooms;
     }
 
+    #region show room
+    public void Trim()
+    {
+        if (IsLeaf())
+        {
+            if (design.trimTilesIsRandom)
+                design.setRandomTrimTiles();
+            coords.left += Mathf.Min(design.trimTiles.left, coords.GetWidth() - design.minWidth);
+            coords.right -= Mathf.Min(design.trimTiles.right, coords.GetWidth() - design.minWidth);
+            coords.top -= Mathf.Min(design.trimTiles.top, coords.GetHeight() - design.minHeight);
+            coords.bottom += Mathf.Min(design.trimTiles.bottom, coords.GetHeight() - design.minHeight);
+
+            //check if room is still too large
+            if (coords.GetWidth() > design.maxWidth)
+            {
+                int difference = coords.GetWidth() - design.maxWidth;
+                coords.left += Mathf.CeilToInt(difference / 2f);
+                coords.right -= Mathf.FloorToInt(difference / 2f);
+            }
+            if (coords.GetHeight() > design.maxHeight)
+            {
+                int difference = coords.GetHeight() - design.maxHeight;
+                coords.bottom += Mathf.CeilToInt(difference / 2f);
+                coords.top -= Mathf.FloorToInt(difference / 2f);
+            }
+        }
+        if (leftRoom != null)
+        {
+            leftRoom.Trim();
+        }
+        if (rightRoom != null)
+        {
+            rightRoom.Trim();
+        }
+    }
+    public override GameObject Instantiate()
+    {
+        if (IsLeaf())
+        {
+            GameObject roomContainer = new GameObject("Room");
+            foreach (Corridor corridor in corridors)
+            {
+                corridor.Instantiate()?.transform.SetParent(roomContainer.transform, true);
+            }
+            instantiateFloor().transform.SetParent(roomContainer.transform, true);
+            instantiateWalls().transform.SetParent(roomContainer.transform, true);
+            return roomContainer;
+        }
+        else
+        {
+            leftRoom.Instantiate();
+            rightRoom.Instantiate();
+            return null;
+        }
+    }
+
+
+    private GameObject instantiateWalls()
+    {
+        GameObject WallContainer = new GameObject("Wall");
+        for (int x = coords.left; x <= coords.right; x++)
+        {
+            for (int y = 0; y < design.wallHeight; y++)
+            {
+                if(corridors.Where(c => c.coords.top == coords.bottom - 1 && c.coords.ContainsX(x)).ToList().Count == 0)
+                    addObject(design.wallPrefab, WallContainer, new Vector3(x, y, coords.bottom));
+                if(corridors.Where(c => c.coords.bottom == coords.top + 1 && c.coords.ContainsX(x)).ToList().Count == 0)
+                    addObject(design.wallPrefab, WallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
+            }
+        }
+        for (int z = coords.bottom; z <= coords.top; z++)
+        {
+            for (int y = 0; y < design.wallHeight; y++)
+            {
+                if (corridors.Where(c => c.coords.right == coords.left - 1 && c.coords.ContainsY(z)).ToList().Count == 0)
+                    addObject(design.wallPrefab, WallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
+                if (corridors.Where(c => c.coords.left == coords.right + 1 && c.coords.ContainsY(z)).ToList().Count == 0)
+                    addObject(design.wallPrefab, WallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
+            }
+        }
+        return WallContainer;
+    }
+    #endregion
+
     #region Splitting
     public bool Split()
     {
@@ -106,162 +189,6 @@ public class BinaryRoom : Room
         leftRoom = new BinaryRoom(coords.Copy().setTop(splitLocation), design);
         rightRoom = new BinaryRoom(coords.Copy().setBootom(splitLocation + 1), design);
         horizontalSplit = true;
-    }
-    #endregion
-
-    #region show room
-    public void Trim()
-    {
-        if (IsLeaf())
-        {
-            if(design.trimTilesIsRandom)
-                design.setRandomTrimTiles();
-            coords.left += Mathf.Min(design.trimTiles.left, coords.GetWidth() - design.minWidth);
-            coords.right -= Mathf.Min(design.trimTiles.right, coords.GetWidth() - design.minWidth);
-            coords.top -= Mathf.Min(design.trimTiles.top, coords.GetHeight() - design.minHeight);
-            coords.bottom += Mathf.Min(design.trimTiles.bottom, coords.GetHeight() - design.minHeight);
-
-            //check if room is still too large
-            if(coords.GetWidth() > design.maxWidth)
-            {
-                int difference = coords.GetWidth() - design.maxWidth;
-                coords.left += Mathf.CeilToInt(difference / 2f);
-                coords.right -= Mathf.FloorToInt(difference / 2f);
-            }
-            if (coords.GetHeight() > design.maxHeight)
-            {
-                int difference = coords.GetHeight() - design.maxHeight;
-                coords.bottom += Mathf.CeilToInt(difference / 2f);
-                coords.top -= Mathf.FloorToInt(difference / 2f);
-            }
-        }
-        if (leftRoom != null)
-        {
-            leftRoom.Trim();
-        }
-        if (rightRoom != null)
-        {
-            rightRoom.Trim();
-        }
-    }
-    public override GameObject Instantiate()
-    {
-        if(IsLeaf())
-        {
-            GameObject roomContainer = new GameObject("Room");
-            foreach (Corridor corridor in corridors)
-            {
-                corridor.Instantiate()?.transform.SetParent(roomContainer.transform, true);
-            }
-            instantiateFloor().transform.SetParent(roomContainer.transform, true);
-            instantiateWalls().transform.SetParent(roomContainer.transform, true);
-            return roomContainer;
-        }
-        else
-        {
-            leftRoom.Instantiate();
-            rightRoom.Instantiate();
-            return null;
-        }
-    }
-
-
-    private GameObject instantiateWalls()
-    {
-        int wallHeight = 2;
-        GameObject WallContainer = new GameObject("Wall");
-        Vector3 wallTileSize = new Vector3(4, 3, 1);
-        //bootom Wall
-        for (int x = coords.left; x <= coords.right; x++)
-        {
-            bool isCorridor = false;
-            foreach(Corridor corridor in corridors)
-            {
-                if (corridor.coords.top == coords.bottom - 1  && (corridor.coords.left <= x && x <= corridor.coords.right))
-                {
-                    isCorridor = true;
-                    break;
-                }
-            }
-            if (!isCorridor)
-            {
-                for (int y = 0; y < wallHeight; y++)
-                {
-                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
-                    tile.transform.position = new Vector3(x * design.tileSize.x, y * wallTileSize.y, design.tileSize.z * coords.bottom);
-                    tile.transform.SetParent(WallContainer.transform, true);
-                }
-            }
-        }
-        //top Wall
-        for (int x = coords.left; x <= coords.right; x++)
-        {
-            bool isCorridor = false;
-            foreach (Corridor corridor in corridors)
-            {
-                if (corridor.coords.bottom == coords.top + 1 && (corridor.coords.left <= x && x <= corridor.coords.right))
-                {
-                    isCorridor = true;
-                    break;
-                }
-            }
-            if (!isCorridor)
-            {
-                for (int y = 0; y < wallHeight; y++)
-                {
-                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
-                    tile.transform.position = new Vector3(x * design.tileSize.x, y * wallTileSize.y, design.tileSize.z * (coords.top + 1));
-                    tile.transform.SetParent(WallContainer.transform, true);
-                }
-            }
-        }
-        //left Wall
-        for (int z = coords.bottom; z <= coords.top; z++)
-        {
-            bool isCorridor = false;
-            foreach (Corridor corridor in corridors)
-            {
-                if (corridor.coords.right == coords.left - 1 && (corridor.coords.bottom <= z && z <= corridor.coords.top))
-                {
-                    isCorridor = true;
-                    break;
-                }
-            }
-            if (!isCorridor)
-            {
-                for (int y = 0; y < wallHeight; y++)
-                {
-                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
-                    tile.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    tile.transform.position = new Vector3(design.tileSize.x * coords.left, y * wallTileSize.y, design.tileSize.z * z);
-                    tile.transform.SetParent(WallContainer.transform, true);
-                }
-            }
-        }
-        //right Wall
-        for (int z = coords.bottom; z <= coords.top; z++)
-        {
-            bool isCorridor = false;
-            foreach (Corridor corridor in corridors)
-            {
-                if (corridor.coords.left == coords.right + 1 && (corridor.coords.bottom <= z && z <= corridor.coords.top))
-                {
-                    isCorridor = true;
-                    break;
-                }
-            }
-            if (!isCorridor)
-            {
-                for (int y = 0; y < wallHeight; y++)
-                {
-                    GameObject tile = GameObject.Instantiate(design.wallPrefab);
-                    tile.transform.rotation = Quaternion.Euler(0, -90, 0);
-                    tile.transform.position = new Vector3(design.tileSize.x * coords.right, y * wallTileSize.y, design.tileSize.z * z);
-                    tile.transform.SetParent(WallContainer.transform, true);
-                }
-            }
-        }
-        return WallContainer;
     }
     #endregion
 
@@ -518,7 +445,7 @@ public class BinaryRoom : Room
                 corridorCoords.top -= Mathf.FloorToInt(difference / 2f);
             }
         }
-        Corridor corridor = new Corridor(corridorCoords, design);
+        Corridor corridor = new Corridor(corridorCoords, design, dir);
         room.corridors.Add(corridor);
         corridors.Add(corridor);
     }

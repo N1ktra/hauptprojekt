@@ -251,17 +251,18 @@ MonoBehaviour:
   playerPrefab: {fileID: 3919332630057655850, guid: 67343f3e54251fc44bce8858a17cc79b, type: 3}
   width: 50
   height: 50
-  amountOfSplits: 4
+  amountOfSplits: 5
   minWidth: 5
   maxWidth: 15
   minHeight: 5
   maxHeight: 15
+  wallHeight: 2
   trimTilesIsRandom: 1
   trimTiles: {x: 1, y: 1, z: 1, w: 1}
   minTrimTiles: 0
   maxTrimTiles: 5
   corridorMargin: 1
-  maxCorridorThickness: 2
+  maxCorridorThickness: 1
 --- !u!4 &1027587734
 Transform:
   m_ObjectHideFlags: 0

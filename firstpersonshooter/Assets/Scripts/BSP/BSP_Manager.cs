@@ -21,6 +21,7 @@ public class BSP_Manager : MonoBehaviour
     public int maxWidth = 25;
     public int minHeight = 10;
     public int maxHeight = 25;
+    public int wallHeight = 2;
 
     [Header("Room Trimming")]
     public bool trimTilesIsRandom = true;
@@ -41,9 +42,9 @@ public class BSP_Manager : MonoBehaviour
     public BinaryRoom CreateDungeon()
     {
         RoomDesign design = new RoomDesign(
-            floorPrefab.GetComponent<Renderer>().bounds.size, 
+            new Vector3(floorPrefab.GetComponent<Renderer>().bounds.size.x, wallPrefab.GetComponentInChildren<Renderer>().bounds.size.y, floorPrefab.GetComponent<Renderer>().bounds.size.z),
             floorPrefab, wallPrefab, 
-            minWidth, maxWidth, minHeight, maxHeight,
+            minWidth, maxWidth, minHeight, maxHeight, wallHeight,
             trimTilesIsRandom,
             ((int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z, (int)trimTiles.w), 
             minTrimTiles, maxTrimTiles, 
@@ -55,7 +56,7 @@ public class BSP_Manager : MonoBehaviour
         dungeon.createNeighborList();
         (BinaryRoom startRoom, BinaryRoom endRoom) = dungeon.AddCorridors();
         dungeon.Instantiate();
-        dungeon.addObject(playerPrefab, startRoom.coords.toWorldPosition(design.tileSize) + Vector3.up * 3);
+        dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition() + Vector3.up);
         return dungeon;
     }
 

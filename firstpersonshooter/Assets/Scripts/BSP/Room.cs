@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum DIRECTION { LEFT, RIGHT, TOP, BOTTOM };
 public struct RoomCoords
 {
     public int left;
@@ -52,13 +53,19 @@ public struct RoomCoords
         this.bottom = bottom;
         return this;
     }
-    /// <summary>
-    /// returns the middle positions as world position
-    /// </summary>
-    /// <returns></returns>
-    public Vector3 toWorldPosition(Vector3 tileSize)
+
+    public Vector3 getCenterPosition()
     {
-        return new Vector3((left + right) / 2 * tileSize.x, 0, (top + bottom) / 2 * tileSize.z);
+        return new Vector3((left + right) / 2, 0, (top + bottom) / 2);
+    }
+
+    public bool ContainsX(int value)
+    {
+        return left <= value && value <= right;
+    }
+    public bool ContainsY(int value)
+    {
+        return bottom <= value && value <= top;
     }
 }
 public struct RoomDesign
@@ -72,6 +79,7 @@ public struct RoomDesign
     public int maxWidth;
     public int minHeight;
     public int maxHeight;
+    public int wallHeight;
     public bool trimTilesIsRandom;
     public (int left, int right, int top, int bottom) trimTiles;
     public int minTrimTiles;
@@ -82,8 +90,8 @@ public struct RoomDesign
     public int maxCorridorThickness;
 
     public RoomDesign(Vector3 tileSize, GameObject floorPrefab, GameObject wallPrefab, 
-        int minWidth, int maxWidth, int minHeight, int maxHeight, 
-        bool trimTilesIsRandom, (int left, int right, int top, int bottom) trimTiles, int minTrimTiles, int maxTrimTiles, 
+        int minWidth, int maxWidth, int minHeight, int maxHeight, int wallHeight,
+        bool trimTilesIsRandom, (int left, int right, int top, int bottom) trimTiles, int minTrimTiles, int maxTrimTiles,
         int corridorMargin, int maxCorridorThickness)
     {
         this.tileSize = tileSize;
@@ -93,6 +101,7 @@ public struct RoomDesign
         this.maxWidth = maxWidth;
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
+        this.wallHeight = wallHeight;
         this.trimTilesIsRandom = trimTilesIsRandom;
         this.trimTiles = trimTiles;
         this.minTrimTiles = minTrimTiles;
@@ -136,25 +145,29 @@ public abstract class Room
     public GameObject instantiateFloor()
     {
         GameObject floorContainer = new GameObject("Floor");
-        Color debugColor = UnityEngine.Random.ColorHSV();
-
         for (int x = coords.left; x <= coords.right; x++)
         {
             for (int y = coords.bottom; y <= coords.top; y++)
             {
-                GameObject tile = GameObject.Instantiate(design.floorPrefab);
-                tile.transform.position = new Vector3(x * design.tileSize.x, 0, y * design.tileSize.z);
-                tile.transform.SetParent(floorContainer.transform, true);
-                //Zu testzwecken:
-                tile.GetComponent<Renderer>().material.color = debugColor;
+                addObject(design.floorPrefab, floorContainer, new Vector3(x, 0, y));
             }
         }
         return floorContainer;
     }
 
-    public void addObject(GameObject obj, Vector3 position)
+    /// <summary>
+    /// Instantiates an Object at the given Position (in Room coordinates)
+    /// </summary>
+    /// <param name="obj">The Object to instantiate</param>
+    /// <param name="roomCoords">The position given in Room Coordinate Space</param>
+    /// <param name="rotation">The Rotation of the object. Standard is Quaternion.identity</param>
+    public GameObject addObject(GameObject obj, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
     {
-        GameObject.Instantiate(obj, position, Quaternion.identity);
+        Quaternion rot = rotation ?? Quaternion.identity;
+        if(parent == null)
+            return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot);
+        else
+            return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot, parent.transform);
     }
 
 }
