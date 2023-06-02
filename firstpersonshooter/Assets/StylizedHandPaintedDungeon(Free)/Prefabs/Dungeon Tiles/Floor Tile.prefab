@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1867174391217479778}
   - component: {fileID: 2703468929793445628}
   m_Layer: 0
-  m_Name: Collider_Floor
+  m_Name: Floor Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

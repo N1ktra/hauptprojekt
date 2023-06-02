@@ -20,6 +20,7 @@ public class Corridor : Room
         GameObject corridorContainer = new GameObject("Corridor");
         instantiateFloor().transform.SetParent(corridorContainer.transform, true);
         instantiateWalls().transform.SetParent(corridorContainer.transform, true);
+        instantiateCeiling().transform.SetParent(corridorContainer.transform, true);
         isInstantiated = true;
         return corridorContainer;
     }
@@ -37,6 +38,12 @@ public class Corridor : Room
                     addObject(design.wallPrefab, wallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
                 }
             }
+            //Entrance
+            for (int x = coords.left; x <= coords.right; x++)
+            {
+                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(x, 0, coords.bottom));
+                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(x, 0, coords.top), Quaternion.Euler(0, 180, 0));
+            }
         }
         if (direction == DIRECTION.LEFT || direction == DIRECTION.RIGHT)
         {
@@ -47,6 +54,12 @@ public class Corridor : Room
                     addObject(design.wallPrefab, wallContainer, new Vector3(x, y, coords.bottom));
                     addObject(design.wallPrefab, wallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
                 }
+            }
+            //Entrance
+            for (int z = coords.bottom; z <= coords.top; z++)
+            {
+                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(coords.left, 0, z), Quaternion.Euler(0, 90, 0));
+                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(coords.right, 0, z), Quaternion.Euler(0, -90, 0));
             }
         }
         return wallContainer;

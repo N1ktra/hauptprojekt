@@ -7,9 +7,10 @@ using UnityEngine;
 public class BSP_Manager : MonoBehaviour
 {
     [Header("Prefabs")]
+    public GameObject playerPrefab;
     public GameObject floorPrefab;
     public GameObject wallPrefab;
-    public GameObject playerPrefab;
+    public GameObject corridorEntrancePrefab;
 
     [Header("Dungeon")]
     public int width = 100;
@@ -43,7 +44,7 @@ public class BSP_Manager : MonoBehaviour
     {
         RoomDesign design = new RoomDesign(
             new Vector3(floorPrefab.GetComponent<Renderer>().bounds.size.x, wallPrefab.GetComponentInChildren<Renderer>().bounds.size.y, floorPrefab.GetComponent<Renderer>().bounds.size.z),
-            floorPrefab, wallPrefab, 
+            floorPrefab, wallPrefab, corridorEntrancePrefab,
             minWidth, maxWidth, minHeight, maxHeight, wallHeight,
             trimTilesIsRandom,
             ((int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z, (int)trimTiles.w), 
@@ -56,7 +57,14 @@ public class BSP_Manager : MonoBehaviour
         dungeon.createNeighborList();
         (BinaryRoom startRoom, BinaryRoom endRoom) = dungeon.AddCorridors();
         dungeon.Instantiate();
-        dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition() + Vector3.up);
+        try
+        {
+            dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition() + Vector3.up);
+        }
+        catch (Exception)
+        {
+            Debug.Log("start: " + startRoom + ", end: " + endRoom);
+        }
         return dungeon;
     }
 

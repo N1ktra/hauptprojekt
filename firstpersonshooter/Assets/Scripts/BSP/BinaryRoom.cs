@@ -105,6 +105,7 @@ public class BinaryRoom : Room
             }
             instantiateFloor().transform.SetParent(roomContainer.transform, true);
             instantiateWalls().transform.SetParent(roomContainer.transform, true);
+            instantiateCeiling().transform.SetParent(roomContainer.transform, true);
             return roomContainer;
         }
         else
@@ -123,9 +124,9 @@ public class BinaryRoom : Room
         {
             for (int y = 0; y < design.wallHeight; y++)
             {
-                if(corridors.Where(c => c.coords.top == coords.bottom - 1 && c.coords.ContainsX(x)).ToList().Count == 0)
+                if(y > 0 || corridors.Where(c => c.coords.top == coords.bottom - 1 && c.coords.ContainsX(x)).ToList().Count == 0)
                     addObject(design.wallPrefab, WallContainer, new Vector3(x, y, coords.bottom));
-                if(corridors.Where(c => c.coords.bottom == coords.top + 1 && c.coords.ContainsX(x)).ToList().Count == 0)
+                if(y > 0 || corridors.Where(c => c.coords.bottom == coords.top + 1 && c.coords.ContainsX(x)).ToList().Count == 0)
                     addObject(design.wallPrefab, WallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
             }
         }
@@ -133,9 +134,9 @@ public class BinaryRoom : Room
         {
             for (int y = 0; y < design.wallHeight; y++)
             {
-                if (corridors.Where(c => c.coords.right == coords.left - 1 && c.coords.ContainsY(z)).ToList().Count == 0)
+                if (y > 0 || corridors.Where(c => c.coords.right == coords.left - 1 && c.coords.ContainsY(z)).ToList().Count == 0)
                     addObject(design.wallPrefab, WallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
-                if (corridors.Where(c => c.coords.left == coords.right + 1 && c.coords.ContainsY(z)).ToList().Count == 0)
+                if (y > 0 || corridors.Where(c => c.coords.left == coords.right + 1 && c.coords.ContainsY(z)).ToList().Count == 0)
                     addObject(design.wallPrefab, WallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
             }
         }

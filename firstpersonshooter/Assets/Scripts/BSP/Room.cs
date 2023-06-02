@@ -70,9 +70,11 @@ public struct RoomCoords
 }
 public struct RoomDesign
 {
+    //Prefabs
     public Vector3 tileSize;
     public GameObject floorPrefab;
     public GameObject wallPrefab;
+    public GameObject corridorEntrancePrefab;
 
     //Width / Height
     public int minWidth;
@@ -89,7 +91,7 @@ public struct RoomDesign
     public int corridorMargin;
     public int maxCorridorThickness;
 
-    public RoomDesign(Vector3 tileSize, GameObject floorPrefab, GameObject wallPrefab, 
+    public RoomDesign(Vector3 tileSize, GameObject floorPrefab, GameObject wallPrefab, GameObject corridorEntrancePrefab,
         int minWidth, int maxWidth, int minHeight, int maxHeight, int wallHeight,
         bool trimTilesIsRandom, (int left, int right, int top, int bottom) trimTiles, int minTrimTiles, int maxTrimTiles,
         int corridorMargin, int maxCorridorThickness)
@@ -97,6 +99,7 @@ public struct RoomDesign
         this.tileSize = tileSize;
         this.floorPrefab = floorPrefab;
         this.wallPrefab = wallPrefab;
+        this.corridorEntrancePrefab = corridorEntrancePrefab;
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
         this.minHeight = minHeight;
@@ -140,21 +143,6 @@ public abstract class Room
         this.design = design;
     }
 
-    public abstract GameObject Instantiate();
-
-    public GameObject instantiateFloor()
-    {
-        GameObject floorContainer = new GameObject("Floor");
-        for (int x = coords.left; x <= coords.right; x++)
-        {
-            for (int y = coords.bottom; y <= coords.top; y++)
-            {
-                addObject(design.floorPrefab, floorContainer, new Vector3(x, 0, y));
-            }
-        }
-        return floorContainer;
-    }
-
     /// <summary>
     /// Instantiates an Object at the given Position (in Room coordinates)
     /// </summary>
@@ -164,10 +152,38 @@ public abstract class Room
     public GameObject addObject(GameObject obj, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
     {
         Quaternion rot = rotation ?? Quaternion.identity;
-        if(parent == null)
+        if (parent == null)
             return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot);
         else
             return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot, parent.transform);
+    }
+
+    public abstract GameObject Instantiate();
+
+    public GameObject instantiateFloor()
+    {
+        GameObject floorContainer = new GameObject("Floor");
+        for (int x = coords.left; x <= coords.right; x++)
+        {
+            for (int z = coords.bottom; z <= coords.top; z++)
+            {
+                addObject(design.floorPrefab, floorContainer, new Vector3(x, 0, z));
+            }
+        }
+        return floorContainer;
+    }
+
+    public GameObject instantiateCeiling()
+    {
+        GameObject ceilingContainer = new GameObject("Ceiling");
+        for (int x = coords.left; x <= coords.right; x++)
+        {
+            for (int z = coords.bottom; z <= coords.top; z++)
+            {
+                addObject(design.floorPrefab, ceilingContainer, new Vector3(x, design.wallHeight, z), Quaternion.Euler(180, 0, 0));
+            }
+        }
+        return ceilingContainer;
     }
 
 }
