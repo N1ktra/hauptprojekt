@@ -122,22 +122,28 @@ public class BinaryRoom : Room
         GameObject WallContainer = new GameObject("Wall");
         for (int x = coords.left; x <= coords.right; x++)
         {
+            List<GameObject> wall = new List<GameObject> { design.wallPrefab };
+            if (x % design.torchPadding == 0)
+                wall.Add(design.torchPrefab);
             for (int y = 0; y < design.wallHeight; y++)
             {
                 if(y > 0 || corridors.Where(c => c.coords.top == coords.bottom - 1 && c.coords.ContainsX(x)).ToList().Count == 0)
-                    addObject(design.wallPrefab, WallContainer, new Vector3(x, y, coords.bottom));
+                    addObjects(wall, WallContainer, new Vector3(x, y, coords.bottom));
                 if(y > 0 || corridors.Where(c => c.coords.bottom == coords.top + 1 && c.coords.ContainsX(x)).ToList().Count == 0)
-                    addObject(design.wallPrefab, WallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
+                    addObjects(wall, WallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
             }
         }
         for (int z = coords.bottom; z <= coords.top; z++)
         {
+            List<GameObject> wall = new List<GameObject> { design.wallPrefab };
+            if (z % design.torchPadding == 0)
+                wall.Add(design.torchPrefab);
             for (int y = 0; y < design.wallHeight; y++)
             {
                 if (y > 0 || corridors.Where(c => c.coords.right == coords.left - 1 && c.coords.ContainsY(z)).ToList().Count == 0)
-                    addObject(design.wallPrefab, WallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
+                    addObjects(wall, WallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
                 if (y > 0 || corridors.Where(c => c.coords.left == coords.right + 1 && c.coords.ContainsY(z)).ToList().Count == 0)
-                    addObject(design.wallPrefab, WallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
+                    addObjects(wall, WallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
             }
         }
         return WallContainer;
@@ -360,7 +366,7 @@ public class BinaryRoom : Room
         {
             if(iterations >= 1000)
             {
-                Debug.LogWarning("Maximum number of iterations reached!");
+                Debug.LogWarning("Rooms couldn't be connected");
                 return (null, null);
             }
             //choose random neighbor
@@ -430,7 +436,7 @@ public class BinaryRoom : Room
         //limit corridor size
         if (dir == DIRECTION.TOP || dir == DIRECTION.BOTTOM)
         {
-            int difference = corridorCoords.GetWidth() - design.maxCorridorThickness;
+            int difference = Random.Range(corridorCoords.GetWidth() - design.maxCorridorThickness, corridorCoords.GetWidth());
             if (difference > 0) 
             {
                 corridorCoords.left += Mathf.CeilToInt(difference / 2f);
@@ -439,7 +445,7 @@ public class BinaryRoom : Room
         }
         else if(dir == DIRECTION.LEFT || dir == DIRECTION.RIGHT)
         {
-            int difference = corridorCoords.GetHeight() - design.maxCorridorThickness;
+            int difference = Random.Range(corridorCoords.GetHeight() - design.maxCorridorThickness, corridorCoords.GetHeight());
             if (difference > 0)
             {
                 corridorCoords.bottom += Mathf.CeilToInt(difference / 2f);

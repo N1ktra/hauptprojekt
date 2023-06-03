@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &852712166
 Light:
   m_ObjectHideFlags: 0
@@ -250,9 +250,11 @@ MonoBehaviour:
   floorPrefab: {fileID: 387534166694238509, guid: 50d5abeea6818ef41bf146a16a93c225, type: 3}
   wallPrefab: {fileID: 3632984627053819020, guid: c2e90c54f770b95489b413b9732269f6, type: 3}
   corridorEntrancePrefab: {fileID: 7957162295286877182, guid: 2d6b9e072900f2843979abe205622d01, type: 3}
+  torchPrefab: {fileID: 1627759049453929299, guid: c1995981dd5baef459d0564229f65728, type: 3}
   width: 100
   height: 100
   amountOfSplits: 6
+  torchPadding: 3
   minWidth: 10
   maxWidth: 30
   minHeight: 10
@@ -263,7 +265,7 @@ MonoBehaviour:
   minTrimTiles: 0
   maxTrimTiles: 5
   corridorMargin: 1
-  maxCorridorThickness: 2
+  maxCorridorThickness: 5
 --- !u!4 &1027587734
 Transform:
   m_ObjectHideFlags: 0

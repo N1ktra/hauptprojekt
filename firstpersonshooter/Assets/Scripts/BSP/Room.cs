@@ -75,6 +75,8 @@ public struct RoomDesign
     public GameObject floorPrefab;
     public GameObject wallPrefab;
     public GameObject corridorEntrancePrefab;
+    public GameObject torchPrefab;
+    public int torchPadding;
 
     //Width / Height
     public int minWidth;
@@ -91,7 +93,9 @@ public struct RoomDesign
     public int corridorMargin;
     public int maxCorridorThickness;
 
-    public RoomDesign(Vector3 tileSize, GameObject floorPrefab, GameObject wallPrefab, GameObject corridorEntrancePrefab,
+    public RoomDesign(Vector3 tileSize,
+        GameObject floorPrefab, GameObject wallPrefab, GameObject corridorEntrancePrefab, GameObject torchPrefab,
+        int torchPadding,
         int minWidth, int maxWidth, int minHeight, int maxHeight, int wallHeight,
         bool trimTilesIsRandom, (int left, int right, int top, int bottom) trimTiles, int minTrimTiles, int maxTrimTiles,
         int corridorMargin, int maxCorridorThickness)
@@ -100,6 +104,8 @@ public struct RoomDesign
         this.floorPrefab = floorPrefab;
         this.wallPrefab = wallPrefab;
         this.corridorEntrancePrefab = corridorEntrancePrefab;
+        this.torchPrefab = torchPrefab;
+        this.torchPadding = torchPadding;
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
         this.minHeight = minHeight;
@@ -156,6 +162,15 @@ public abstract class Room
             return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot);
         else
             return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot, parent.transform);
+    }
+    public List<GameObject> addObjects(List<GameObject> objs, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
+    {
+        List<GameObject> list = new List<GameObject>();
+        foreach (GameObject obj in objs)
+        {
+            list.Add(addObject(obj, parent, roomCoords, rotation));
+        }
+        return list;
     }
 
     public abstract GameObject Instantiate();

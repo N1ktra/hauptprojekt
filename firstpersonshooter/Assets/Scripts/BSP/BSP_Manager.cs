@@ -11,11 +11,15 @@ public class BSP_Manager : MonoBehaviour
     public GameObject floorPrefab;
     public GameObject wallPrefab;
     public GameObject corridorEntrancePrefab;
+    public GameObject torchPrefab;
 
-    [Header("Dungeon")]
+    [Header("Dungeon Size")]
     public int width = 100;
     public int height = 100;
     public int amountOfSplits = 3;
+
+    [Header("Dungeon Design")]
+    public int torchPadding = 3;
 
     [Header("Room Size")]
     public int minWidth = 10;
@@ -44,7 +48,8 @@ public class BSP_Manager : MonoBehaviour
     {
         RoomDesign design = new RoomDesign(
             new Vector3(floorPrefab.GetComponent<Renderer>().bounds.size.x, wallPrefab.GetComponentInChildren<Renderer>().bounds.size.y, floorPrefab.GetComponent<Renderer>().bounds.size.z),
-            floorPrefab, wallPrefab, corridorEntrancePrefab,
+            floorPrefab, wallPrefab, corridorEntrancePrefab, torchPrefab,
+            torchPadding,
             minWidth, maxWidth, minHeight, maxHeight, wallHeight,
             trimTilesIsRandom,
             ((int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z, (int)trimTiles.w), 
@@ -56,15 +61,10 @@ public class BSP_Manager : MonoBehaviour
         dungeon.Trim();
         dungeon.createNeighborList();
         (BinaryRoom startRoom, BinaryRoom endRoom) = dungeon.AddCorridors();
+        if (startRoom == null || endRoom == null)
+            return null;
         dungeon.Instantiate();
-        try
-        {
-            dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition() + Vector3.up);
-        }
-        catch (Exception)
-        {
-            Debug.Log("start: " + startRoom + ", end: " + endRoom);
-        }
+        dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition() + Vector3.up);
         return dungeon;
     }
 
