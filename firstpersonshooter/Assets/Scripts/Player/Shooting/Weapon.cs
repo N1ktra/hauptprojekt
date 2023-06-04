@@ -44,7 +44,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void DealDamage(object sender, AttackEventArgs e)
     {
-        Enemy enemy = e.hitObject.GetComponent<Enemy>();
+        StandardEnemy enemy = e.hitObject.GetComponent<StandardEnemy>();
         if (enemy != null)
         {
             enemy.takeDamage(damage);

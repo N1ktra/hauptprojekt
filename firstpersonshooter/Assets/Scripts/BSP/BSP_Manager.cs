@@ -70,6 +70,7 @@ public class BSP_Manager : MonoBehaviour
             corridorMargin, maxCorridorThickness
         );
         BinaryRoom dungeon = new BinaryRoom(new RoomCoords(width, height), design);
+        GameObject dungeonContainer = new GameObject("Dungeon");
         SplitDungeon(amountOfSplits, dungeon);
         dungeon.Trim();
         dungeon.createNeighborList();
@@ -77,6 +78,14 @@ public class BSP_Manager : MonoBehaviour
         if (startRoom == null || endRoom == null)
             return null;
         dungeon.Instantiate();
+        foreach(BinaryRoom room in dungeon.allRooms)
+        {
+            room.RoomContainer.transform.SetParent(dungeonContainer.transform, true);
+            foreach(Corridor corridor in room.corridors)
+            {
+                corridor.RoomContainer.transform.SetParent(dungeonContainer.transform, true);
+            }
+        }
         player = dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition());
         return dungeon;
     }
