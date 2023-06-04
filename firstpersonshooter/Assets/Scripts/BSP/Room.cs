@@ -59,13 +59,17 @@ public struct RoomCoords
         return new Vector3((left + right) / 2, 0, (top + bottom) / 2);
     }
 
-    public bool ContainsX(int value)
+    public bool ContainsX(float value, float padding = 0)
     {
-        return left <= value && value <= right;
+        return left - padding <= value && value <= right + padding;
     }
-    public bool ContainsY(int value)
+    public bool ContainsY(float value, float padding = 0)
     {
-        return bottom <= value && value <= top;
+        return bottom - padding <= value && value <= top + padding;
+    }
+    public bool Contains(Vector2 coords, float padding = 0)
+    {
+        return ContainsX(coords.x, padding) && ContainsY(coords.y, padding);
     }
 }
 public struct RoomDesign
@@ -140,6 +144,8 @@ public struct RoomDesign
 }
 public abstract class Room
 {
+    public bool isActive = false;
+    public GameObject RoomContainer;
     public RoomCoords coords;
     public RoomDesign design;
 
@@ -148,6 +154,9 @@ public abstract class Room
         this.coords = coords;
         this.design = design;
     }
+
+    public abstract void SetActive(bool active);
+    public abstract GameObject Instantiate();
 
     /// <summary>
     /// Instantiates an Object at the given Position (in Room coordinates)
@@ -159,9 +168,9 @@ public abstract class Room
     {
         Quaternion rot = rotation ?? Quaternion.identity;
         if (parent == null)
-            return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot);
+            return GameObject.Instantiate(obj, getPositionInWorldCoords(roomCoords), rot);
         else
-            return GameObject.Instantiate(obj, Vector3.Scale(roomCoords, design.tileSize), rot, parent.transform);
+            return GameObject.Instantiate(obj, getPositionInWorldCoords(roomCoords), rot, parent.transform);
     }
     public List<GameObject> addObjects(List<GameObject> objs, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
     {
@@ -172,8 +181,14 @@ public abstract class Room
         }
         return list;
     }
-
-    public abstract GameObject Instantiate();
+    public Vector3 getPositionInWorldCoords(Vector3 roomCoords)
+    {
+        return Vector3.Scale(roomCoords, design.tileSize);
+    }
+    public Vector3 getPositionInRoomCoords(Vector3 worldCoords)
+    {
+        return Vector3.Scale(worldCoords, new Vector3(1f / design.tileSize.x, 1f / design.tileSize.y, 1f / design.tileSize.z));
+    }
 
     public GameObject instantiateFloor()
     {

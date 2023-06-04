@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class BSP_Manager : MonoBehaviour
 {
+    public bool DisableDistantRooms = true;
+    private GameObject player;
+    private BinaryRoom dungeon;
+    private Room currentRoom;
+
     [Header("Prefabs")]
     public GameObject playerPrefab;
     public GameObject floorPrefab;
@@ -41,7 +46,13 @@ public class BSP_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BinaryRoom dungeon = CreateDungeon();
+        dungeon = CreateDungeon();
+    }
+
+    private void Update()
+    {
+        if (DisableDistantRooms)
+            disableDistantRooms();
     }
 
     public BinaryRoom CreateDungeon()
@@ -64,7 +75,7 @@ public class BSP_Manager : MonoBehaviour
         if (startRoom == null || endRoom == null)
             return null;
         dungeon.Instantiate();
-        dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition() + Vector3.up);
+        player = dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition());
         return dungeon;
     }
 
@@ -78,5 +89,28 @@ public class BSP_Manager : MonoBehaviour
 
         if (room.rightRoom != null)
             SplitDungeon(i - 1, room.rightRoom);
+    }
+
+    public void disableDistantRooms()
+    {
+        Vector3 playerPos = dungeon.getPositionInRoomCoords(player.transform.position);
+        Room newCurrentRoom = null;
+        foreach(BinaryRoom room in dungeon.allRooms)
+        {
+            if (room.coords.Contains(new Vector2(playerPos.x, playerPos.z), 1))
+            {
+                newCurrentRoom = room;
+            }
+            else if (room != currentRoom && !room.isConnectedTo(currentRoom))
+            {
+                room.SetActive(false);
+            }
+        }
+        if (newCurrentRoom != null && newCurrentRoom != currentRoom)
+        {
+            Debug.Log("room changed");
+            currentRoom = newCurrentRoom;
+            newCurrentRoom.SetActive(true);
+        }
     }
 }

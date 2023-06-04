@@ -4,12 +4,48 @@ using UnityEngine;
 
 public class Corridor : Room
 {
-    public Corridor(RoomCoords coords, RoomDesign design, DIRECTION direction) : base(coords, design) 
+    public Corridor(RoomCoords coords, RoomDesign design, DIRECTION direction, (BinaryRoom startRoom, BinaryRoom endRoom) rooms) : base(coords, design) 
     {
         this.direction = direction;
+        this.rooms = rooms;
     }
     public DIRECTION direction;
+    public (BinaryRoom startRoom, BinaryRoom endRoom) rooms;
     private bool isInstantiated = false;
+
+    /// <summary>
+    /// setzt start & end room und jeweils deren Corridors
+    /// </summary>
+    /// <param name="active"></param>
+    public override void SetActive(bool active)
+    {
+        isActive = active;
+        if(active)
+        {
+            rooms.startRoom.RoomContainer.SetActive(active);
+            rooms.startRoom.isActive = active;
+            foreach(Corridor corridor in rooms.startRoom.corridors)
+            {
+                corridor.RoomContainer.SetActive(active);
+            }
+            rooms.endRoom.RoomContainer.SetActive(active);
+            rooms.endRoom.isActive = active;
+            foreach (Corridor corridor in rooms.endRoom.corridors)
+            {
+                corridor.RoomContainer.SetActive(active);
+            }
+            RoomContainer.SetActive(active);
+        }
+        else
+        {
+            RoomContainer.SetActive(rooms.startRoom.isActive || rooms.endRoom.isActive);
+        }
+    }
+    public bool Connects(Room room)
+    {
+        return rooms.startRoom == room || rooms.endRoom == room;
+    }
+
     public override GameObject Instantiate()
     {
         if (isInstantiated)
@@ -17,12 +53,12 @@ public class Corridor : Room
             //Debug.Log("corridor has already been instantiated");
             return null;
         }
-        GameObject corridorContainer = new GameObject("Corridor");
-        instantiateFloor().transform.SetParent(corridorContainer.transform, true);
-        instantiateWalls().transform.SetParent(corridorContainer.transform, true);
-        instantiateCeiling().transform.SetParent(corridorContainer.transform, true);
+        RoomContainer = new GameObject("Corridor");
+        instantiateFloor().transform.SetParent(RoomContainer.transform, true);
+        instantiateWalls().transform.SetParent(RoomContainer.transform, true);
+        instantiateCeiling().transform.SetParent(RoomContainer.transform, true);
         isInstantiated = true;
-        return corridorContainer;
+        return RoomContainer;
     }
 
     public GameObject instantiateWalls()

@@ -49,7 +49,9 @@ public class BinaryRoom : Room
     {
         HashSet<BinaryRoom> allRooms = new HashSet<BinaryRoom>();
         if (IsLeaf())
+        {
             allRooms.Add(this);
+        }
 
         if (leftRoom != null)
             allRooms.AddRange(leftRoom.getAllRooms());
@@ -59,7 +61,26 @@ public class BinaryRoom : Room
         return allRooms;
     }
 
+    public bool isConnectedTo(Room room)
+    {
+        foreach(Corridor corridor in corridors)
+        {
+            if(corridor.Connects(room)) return true;
+        }
+        return false;
+    }
+
     #region show room
+    public override void SetActive(bool active)
+    {
+        isActive = active;
+        RoomContainer.SetActive(false);
+        foreach (Corridor corridor in corridors)
+        {
+            corridor.SetActive(active);
+        }
+    }
+
     public void Trim()
     {
         if (IsLeaf())
@@ -98,15 +119,16 @@ public class BinaryRoom : Room
     {
         if (IsLeaf())
         {
-            GameObject roomContainer = new GameObject("Room");
+            RoomContainer = new GameObject("Room");
+            RoomContainer.transform.position = getPositionInWorldCoords(coords.getCenterPosition());
             foreach (Corridor corridor in corridors)
             {
-                corridor.Instantiate()?.transform.SetParent(roomContainer.transform, true);
+                corridor.Instantiate();//?.transform.SetParent(RoomContainer.transform, true);
             }
-            instantiateFloor().transform.SetParent(roomContainer.transform, true);
-            instantiateWalls().transform.SetParent(roomContainer.transform, true);
-            instantiateCeiling().transform.SetParent(roomContainer.transform, true);
-            return roomContainer;
+            instantiateFloor().transform.SetParent(RoomContainer.transform, true);
+            instantiateWalls().transform.SetParent(RoomContainer.transform, true);
+            instantiateCeiling().transform.SetParent(RoomContainer.transform, true);
+            return RoomContainer;
         }
         else
         {
@@ -395,41 +417,41 @@ public class BinaryRoom : Room
         return (startRoom, currentRoom);
 
     }
-    public void AddCorridorToNeighbor(BinaryRoom room, DIRECTION dir)
+    public void AddCorridorToNeighbor(BinaryRoom neighbor, DIRECTION dir)
     {
         RoomCoords corridorCoords = new RoomCoords();
         switch (dir)
         {
             case DIRECTION.LEFT:
                 corridorCoords = new RoomCoords(
-                    room.coords.right + 1,
+                    neighbor.coords.right + 1,
                     coords.left - 1,
-                    Mathf.Min(coords.top, room.coords.top) - design.corridorMargin,
-                    Mathf.Max(coords.bottom, room.coords.bottom) + design.corridorMargin
+                    Mathf.Min(coords.top, neighbor.coords.top) - design.corridorMargin,
+                    Mathf.Max(coords.bottom, neighbor.coords.bottom) + design.corridorMargin
                     );
                 break;
             case DIRECTION.RIGHT:
                 corridorCoords = new RoomCoords(
                     coords.right + 1,
-                    room.coords.left - 1,
-                    Mathf.Min(coords.top, room.coords.top) - design.corridorMargin,
-                    Mathf.Max(coords.bottom, room.coords.bottom) + design.corridorMargin
+                    neighbor.coords.left - 1,
+                    Mathf.Min(coords.top, neighbor.coords.top) - design.corridorMargin,
+                    Mathf.Max(coords.bottom, neighbor.coords.bottom) + design.corridorMargin
                     );
                 break;
             case DIRECTION.TOP:
                 corridorCoords = new RoomCoords(
-                    Mathf.Max(coords.left, room.coords.left) + design.corridorMargin,
-                    Mathf.Min(coords.right, room.coords.right) - design.corridorMargin,
-                    room.coords.bottom - 1,
+                    Mathf.Max(coords.left, neighbor.coords.left) + design.corridorMargin,
+                    Mathf.Min(coords.right, neighbor.coords.right) - design.corridorMargin,
+                    neighbor.coords.bottom - 1,
                     coords.top + 1
                     );
                 break;
             case DIRECTION.BOTTOM:
                 corridorCoords = new RoomCoords(
-                    Mathf.Max(coords.left, room.coords.left) + design.corridorMargin,
-                    Mathf.Min(coords.right, room.coords.right) - design.corridorMargin,
+                    Mathf.Max(coords.left, neighbor.coords.left) + design.corridorMargin,
+                    Mathf.Min(coords.right, neighbor.coords.right) - design.corridorMargin,
                     coords.bottom - 1,
-                    room.coords.top + 1
+                    neighbor.coords.top + 1
                     );
                 break;
         }
@@ -452,8 +474,8 @@ public class BinaryRoom : Room
                 corridorCoords.top -= Mathf.FloorToInt(difference / 2f);
             }
         }
-        Corridor corridor = new Corridor(corridorCoords, design, dir);
-        room.corridors.Add(corridor);
+        Corridor corridor = new Corridor(corridorCoords, design, dir, (this, neighbor));
+        neighbor.corridors.Add(corridor);
         corridors.Add(corridor);
     }
     #endregion

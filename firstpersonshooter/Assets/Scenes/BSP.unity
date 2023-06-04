@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83dd2191e8e9c14994df1b2752cdad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableDistantRooms: 1
   playerPrefab: {fileID: 3919332630057655850, guid: 67343f3e54251fc44bce8858a17cc79b, type: 3}
   floorPrefab: {fileID: 387534166694238509, guid: 50d5abeea6818ef41bf146a16a93c225, type: 3}
   wallPrefab: {fileID: 3632984627053819020, guid: c2e90c54f770b95489b413b9732269f6, type: 3}
