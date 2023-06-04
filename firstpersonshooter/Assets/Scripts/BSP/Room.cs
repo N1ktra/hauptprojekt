@@ -80,7 +80,11 @@ public struct RoomDesign
     public GameObject wallPrefab;
     public GameObject corridorEntrancePrefab;
     public GameObject torchPrefab;
+    public GameObject pillarPrefab;
+
+    //Dungeon Layout
     public int torchPadding;
+    public int pillarPadding;
 
     //Width / Height
     public int minWidth;
@@ -98,8 +102,8 @@ public struct RoomDesign
     public int maxCorridorThickness;
 
     public RoomDesign(Vector3 tileSize,
-        GameObject floorPrefab, GameObject wallPrefab, GameObject corridorEntrancePrefab, GameObject torchPrefab,
-        int torchPadding,
+        GameObject floorPrefab, GameObject wallPrefab, GameObject corridorEntrancePrefab, GameObject torchPrefab, GameObject pillarPrefab,
+        int torchPadding, int pillarPadding,
         int minWidth, int maxWidth, int minHeight, int maxHeight, int wallHeight,
         bool trimTilesIsRandom, (int left, int right, int top, int bottom) trimTiles, int minTrimTiles, int maxTrimTiles,
         int corridorMargin, int maxCorridorThickness)
@@ -109,7 +113,9 @@ public struct RoomDesign
         this.wallPrefab = wallPrefab;
         this.corridorEntrancePrefab = corridorEntrancePrefab;
         this.torchPrefab = torchPrefab;
+        this.pillarPrefab = pillarPrefab;
         this.torchPadding = torchPadding;
+        this.pillarPadding = pillarPadding;
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
         this.minHeight = minHeight;

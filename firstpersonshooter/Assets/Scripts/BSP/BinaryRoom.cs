@@ -128,6 +128,7 @@ public class BinaryRoom : Room
             instantiateFloor().transform.SetParent(RoomContainer.transform, true);
             instantiateWalls().transform.SetParent(RoomContainer.transform, true);
             instantiateCeiling().transform.SetParent(RoomContainer.transform, true);
+            instantiatePillars().transform.SetParent(RoomContainer.transform, true);
             return RoomContainer;
         }
         else
@@ -169,6 +170,20 @@ public class BinaryRoom : Room
             }
         }
         return WallContainer;
+    }
+
+    private GameObject instantiatePillars()
+    {
+        GameObject pillarContainer = new GameObject("Floor");
+        for (int x = coords.left + 2; x <= coords.right - 2; x += design.pillarPadding)
+        {
+            for (int z = coords.bottom + 2; z <= coords.top - 2; z += design.pillarPadding)
+            {
+                if(Random.value > .5f)
+                    addObject(design.pillarPrefab, pillarContainer, new Vector3(x, 0, z), Quaternion.Euler(0, Random.Range(0, 360), 0));
+            }
+        }
+        return pillarContainer;
     }
     #endregion
 
