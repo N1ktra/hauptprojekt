@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
-    private Camera cam;
+    protected Camera cam;
+    protected GameObject player;
 
     [Header("Stats")]
     [SerializeField] private float maxHealth;
@@ -13,6 +14,11 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("Visuals")]
     [SerializeField] private Slider healthBar;
+
+    public virtual void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     public virtual void Start()
     {

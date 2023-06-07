@@ -23,7 +23,7 @@ public class StandardEnemy : Enemy
         while (true)
         {
 
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(1);
             move();
         }
     }
@@ -31,10 +31,10 @@ public class StandardEnemy : Enemy
     public override void Update()
     {
         base.Update();
-        if (path.Count==0) // || getDistanceBetween2Vectors(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) > 30
+        if (path.Count==0) // || getDistanceBetween2Vectors(player.transform.position, transform.position) > 30
         {
             Debug.Log("test");
-            path = pathfinding.AStar(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
+            path = pathfinding.AStar(transform.position, player.transform.position);
         }
     }
 

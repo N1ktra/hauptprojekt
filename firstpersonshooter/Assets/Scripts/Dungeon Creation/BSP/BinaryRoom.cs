@@ -151,9 +151,9 @@ public class BinaryRoom : Room
             for (int y = 0; y < design.wallHeight; y++)
             {
                 if(y > 0 || corridors.Where(c => c.coords.top == coords.bottom - 1 && c.coords.ContainsX(x)).ToList().Count == 0)
-                    addObjects(wall, WallContainer, new Vector3(x, y, coords.bottom));
+                    spawnObjects(wall, WallContainer, new Vector3(x, y, coords.bottom));
                 if(y > 0 || corridors.Where(c => c.coords.bottom == coords.top + 1 && c.coords.ContainsX(x)).ToList().Count == 0)
-                    addObjects(wall, WallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
+                    spawnObjects(wall, WallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
             }
         }
         for (int z = coords.bottom; z <= coords.top; z++)
@@ -164,9 +164,9 @@ public class BinaryRoom : Room
             for (int y = 0; y < design.wallHeight; y++)
             {
                 if (y > 0 || corridors.Where(c => c.coords.right == coords.left - 1 && c.coords.ContainsY(z)).ToList().Count == 0)
-                    addObjects(wall, WallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
+                    spawnObjects(wall, WallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
                 if (y > 0 || corridors.Where(c => c.coords.left == coords.right + 1 && c.coords.ContainsY(z)).ToList().Count == 0)
-                    addObjects(wall, WallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
+                    spawnObjects(wall, WallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
             }
         }
         return WallContainer;
@@ -180,7 +180,7 @@ public class BinaryRoom : Room
             for (int z = coords.bottom + 2; z <= coords.top - 2; z += design.pillarPadding)
             {
                 if(Random.value + coords.GetWidth() / 200f + coords.GetHeight() / 200f > .5f)
-                    addObject(design.pillarPrefab, pillarContainer, new Vector3(x, 0, z), Quaternion.Euler(0, Random.Range(0, 360), 0));
+                    spawnObject(design.pillarPrefab, pillarContainer, new Vector3(x, 0, z), Quaternion.Euler(0, Random.Range(0, 360), 0));
             }
         }
         return pillarContainer;

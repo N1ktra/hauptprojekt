@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum DIRECTION { LEFT, RIGHT, TOP, BOTTOM };
 public struct RoomCoords
@@ -70,6 +71,10 @@ public struct RoomCoords
     public bool Contains(Vector2 coords, float padding = 0)
     {
         return ContainsX(coords.x, padding) && ContainsY(coords.y, padding);
+    }
+    public Vector3 getRandomPosition()
+    {
+        return new Vector3(Random.Range(left, right + 1), 0, Random.Range(bottom, top + 1));
     }
 }
 public struct RoomDesign
@@ -170,7 +175,7 @@ public abstract class Room
     /// <param name="obj">The Object to instantiate</param>
     /// <param name="roomCoords">The position given in Room Coordinate Space</param>
     /// <param name="rotation">The Rotation of the object. Standard is Quaternion.identity</param>
-    public GameObject addObject(GameObject obj, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
+    public GameObject spawnObject(GameObject obj, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
     {
         Quaternion rot = rotation ?? Quaternion.identity;
         if (parent == null)
@@ -178,12 +183,12 @@ public abstract class Room
         else
             return GameObject.Instantiate(obj, getPositionInWorldCoords(roomCoords), rot, parent.transform);
     }
-    public List<GameObject> addObjects(List<GameObject> objs, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
+    public List<GameObject> spawnObjects(List<GameObject> objs, GameObject parent, Vector3 roomCoords, Quaternion? rotation = null)
     {
         List<GameObject> list = new List<GameObject>();
         foreach (GameObject obj in objs)
         {
-            list.Add(addObject(obj, parent, roomCoords, rotation));
+            list.Add(spawnObject(obj, parent, roomCoords, rotation));
         }
         return list;
     }
@@ -203,7 +208,7 @@ public abstract class Room
         {
             for (int z = coords.bottom; z <= coords.top; z++)
             {
-                addObject(design.floorPrefab, floorContainer, new Vector3(x, 0, z));
+                spawnObject(design.floorPrefab, floorContainer, new Vector3(x, 0, z));
             }
         }
         return floorContainer;
@@ -216,7 +221,7 @@ public abstract class Room
         {
             for (int z = coords.bottom; z <= coords.top; z++)
             {
-                addObject(design.floorPrefab, ceilingContainer, new Vector3(x, design.wallHeight, z), Quaternion.Euler(180, 0, 0));
+                spawnObject(design.floorPrefab, ceilingContainer, new Vector3(x, design.wallHeight, z), Quaternion.Euler(180, 0, 0));
             }
         }
         return ceilingContainer;

@@ -70,15 +70,15 @@ public class Corridor : Room
             {
                 for (int y = 0; y < design.wallHeight; y++)
                 {
-                    addObject(design.wallPrefab, wallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
-                    addObject(design.wallPrefab, wallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
+                    spawnObject(design.wallPrefab, wallContainer, new Vector3(coords.left, y, z), Quaternion.Euler(0, 90, 0));
+                    spawnObject(design.wallPrefab, wallContainer, new Vector3(coords.right, y, z), Quaternion.Euler(0, -90, 0));
                 }
             }
             //Entrance
             for (int x = coords.left; x <= coords.right; x++)
             {
-                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(x, 0, coords.bottom));
-                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(x, 0, coords.top), Quaternion.Euler(0, 180, 0));
+                spawnObject(design.corridorEntrancePrefab, wallContainer, new Vector3(x, 0, coords.bottom));
+                spawnObject(design.corridorEntrancePrefab, wallContainer, new Vector3(x, 0, coords.top), Quaternion.Euler(0, 180, 0));
             }
         }
         if (direction == DIRECTION.LEFT || direction == DIRECTION.RIGHT)
@@ -87,15 +87,15 @@ public class Corridor : Room
             {
                 for (int y = 0; y < design.wallHeight; y++)
                 {
-                    addObject(design.wallPrefab, wallContainer, new Vector3(x, y, coords.bottom));
-                    addObject(design.wallPrefab, wallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
+                    spawnObject(design.wallPrefab, wallContainer, new Vector3(x, y, coords.bottom));
+                    spawnObject(design.wallPrefab, wallContainer, new Vector3(x, y, coords.top), Quaternion.Euler(0, 180, 0));
                 }
             }
             //Entrance
             for (int z = coords.bottom; z <= coords.top; z++)
             {
-                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(coords.left, 0, z), Quaternion.Euler(0, 90, 0));
-                addObject(design.corridorEntrancePrefab, wallContainer, new Vector3(coords.right, 0, z), Quaternion.Euler(0, -90, 0));
+                spawnObject(design.corridorEntrancePrefab, wallContainer, new Vector3(coords.left, 0, z), Quaternion.Euler(0, 90, 0));
+                spawnObject(design.corridorEntrancePrefab, wallContainer, new Vector3(coords.right, 0, z), Quaternion.Euler(0, -90, 0));
             }
         }
         return wallContainer;

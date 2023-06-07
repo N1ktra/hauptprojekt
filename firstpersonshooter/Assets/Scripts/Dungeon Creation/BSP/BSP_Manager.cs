@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class BSP_Manager : MonoBehaviour
 {
+    public BinaryRoom dungeon { get; private set; }
+    public event Action<BinaryRoom> OnDungeonCreated;
+
     public bool DisableDistantRooms = true;
     private GameObject player;
-    private BinaryRoom dungeon;
     private Room currentRoom;
 
     [Header("Prefabs")]
@@ -49,11 +51,12 @@ public class BSP_Manager : MonoBehaviour
     void Start()
     {
         dungeon = CreateDungeon();
+        OnDungeonCreated?.Invoke(dungeon);
     }
 
     private void Update()
     {
-        if (DisableDistantRooms)
+        if (DisableDistantRooms && dungeon != null)
             disableDistantRooms();
     }
 
@@ -86,7 +89,7 @@ public class BSP_Manager : MonoBehaviour
                 corridor.RoomContainer.transform.SetParent(dungeonContainer.transform, true);
             }
         }
-        player = dungeon.addObject(playerPrefab, null, startRoom.coords.getCenterPosition());
+        player = dungeon.spawnObject(playerPrefab, null, startRoom.coords.getCenterPosition());
         return dungeon;
     }
 
