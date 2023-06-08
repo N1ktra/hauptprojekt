@@ -67,10 +67,18 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="weapon"></param>
     public void addWeapon(Weapon weapon)
     {
-        weapon.gameObject.SetActive(false);
-        weapons.Add(weapon);
-        weapon.transform.parent = transform;
-        weapon.transform.localPosition = Vector3.zero;
+        Weapon newWeapon = Instantiate(weapon, Vector3.zero, Quaternion.identity, weaponHolder.transform);
+        newWeapon.gameObject.SetActive(false);
+        foreach(Weapon w in weapons)
+        {
+            if (w.name == newWeapon.name)
+            {
+                Destroy(newWeapon);
+                return;
+            }
+        }
+        weapons.Add(newWeapon);
+        switchWeapon(weapons.Count - 1);
     }
 
     /// <summary>
@@ -111,7 +119,7 @@ public class WeaponHandler : MonoBehaviour
     /// Setzt die aktuell ausgerüstete Waffe
     /// </summary>
     /// <param name="index">Der Index, an dem die Waffe in der Liste steht</param>
-    public void switchWeapon(int index, Action callback)
+    public void switchWeapon(int index, Action callback = null)
     {
         if (weapons.Count < index + 1 || getCurrentWeaponIndex() == index) return;
 

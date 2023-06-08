@@ -20,13 +20,9 @@ public abstract class Weapon : MonoBehaviour
     public Texture Symbol;
     [HideInInspector] public float nextTimeToAttack = 0f;
 
-    protected void Reset()
-    {
-        cameraMovement = GetComponentInParent<CameraMovement>();
-    }
-
     protected virtual void Start()
     {
+        cameraMovement = GetComponentInParent<CameraMovement>();
         OnHit += DealDamage;
         OnHit += PlayImpactEffect;
     }

@@ -33,7 +33,6 @@ public class Projectile : MonoBehaviour
         if (Physics.Raycast(new Ray(transform.position, lastPos - transform.position), out hit, Vector3.Distance(transform.position, lastPos)))
         {
             OnCollision?.Invoke(this, new AttackEventArgs(hit.transform.gameObject, hit.point, hit.normal));
-            Debug.Log(hit.transform.gameObject.name);
             Destroy(gameObject);
         }
         lastPos = transform.position;

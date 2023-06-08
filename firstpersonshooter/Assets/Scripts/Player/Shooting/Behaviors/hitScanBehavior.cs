@@ -17,7 +17,7 @@ public class hitScanBehavior : ShootBehavior
             CreateTrail(gun, hit.point);
         }
         else
-            CreateTrail(gun, cam.transform.position + cam.transform.forward * 10f);
+            CreateTrail(gun, gun.BulletSpawnPoint.transform.position + gun.BulletSpawnPoint.transform.forward * 10f);
     }
 
     public void CreateTrail(Gun gun, Vector3 hitPoint)
