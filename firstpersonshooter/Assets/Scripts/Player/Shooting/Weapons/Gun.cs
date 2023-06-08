@@ -54,8 +54,9 @@ public class Gun : Weapon
         if (--currentAmmo <= 0) Reload();
     }
 
-    protected void Reload()
+    public void Reload()
     {
+        if (isReloading || currentAmmo == maxAmmo) return;
         Debug.Log("Reloading...");
         isReloading = true;
         transform.DOLocalRotate(new Vector3(45, 0, 0), reloadTime / 2).SetEase(Ease.InOutElastic)

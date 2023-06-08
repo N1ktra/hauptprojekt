@@ -39,6 +39,12 @@ public class WeaponHandler : MonoBehaviour
     {
         if (currentWeapon == null) return;
 
+        if(Input.GetKeyDown(KeyCode.R) && currentWeapon is Gun)
+        {
+            Gun gun = (Gun)currentWeapon;
+            gun.Reload();
+        }
+
         for (int i = 0; i < keyCodes.Length; i++)
         {
             if (Input.GetKeyDown(keyCodes[i]))
