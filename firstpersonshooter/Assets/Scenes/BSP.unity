@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83dd2191e8e9c14994df1b2752cdad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   DisableDistantRooms: 1
   playerPrefab: {fileID: 3919332630057655850, guid: 67343f3e54251fc44bce8858a17cc79b, type: 3}
   floorPrefab: {fileID: 387534166694238509, guid: 50d5abeea6818ef41bf146a16a93c225, type: 3}
@@ -163,6 +164,7 @@ MonoBehaviour:
   width: 100
   height: 100
   amountOfSplits: 6
+  tileSize: {x: 1, y: 1, z: 1}
   torchPadding: 3
   pillarPadding: 4
   minWidth: 10
@@ -203,4 +205,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0ffa1993325d44087f85280befe83f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEnemy: {fileID: 551563084920042192, guid: eb6ee6d6a484fc547ab4db7cd79d6c49, type: 3}
+  standardEnemy: {fileID: 8691123046779950367, guid: 9a374d46b3b6f9f4ab6be7adc3db5c60, type: 3}

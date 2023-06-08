@@ -34,6 +34,10 @@ public abstract class Enemy : MonoBehaviour
         healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
     }
 
+    private void UpdateHealthBar()
+    {
+        healthBar.value = currentHealth;
+    }
     /// <summary>
     /// Fügt dem Gegner Schaden zu
     /// </summary>
@@ -48,9 +52,5 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    public void UpdateHealthBar()
-    {
-        healthBar.value = currentHealth;
-    }
 
 }
