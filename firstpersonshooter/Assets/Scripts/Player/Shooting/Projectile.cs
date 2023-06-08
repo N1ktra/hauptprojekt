@@ -21,6 +21,24 @@ public class Projectile : MonoBehaviour
 
     }
 
+    private Vector3 lastPos = Vector3.zero;
+    private void Update()
+    {
+        if (lastPos == Vector3.zero)
+        {
+            lastPos = transform.position;
+            return;
+        }
+        RaycastHit hit;
+        if (Physics.Raycast(new Ray(transform.position, lastPos - transform.position), out hit, Vector3.Distance(transform.position, lastPos)))
+        {
+            OnCollision?.Invoke(this, new AttackEventArgs(hit.transform.gameObject, hit.point, hit.normal));
+            Debug.Log(hit.transform.gameObject.name);
+            Destroy(gameObject);
+        }
+        lastPos = transform.position;
+    }
+
     /// <summary>
     /// Instanziiert ein neues Projektil
     /// </summary>

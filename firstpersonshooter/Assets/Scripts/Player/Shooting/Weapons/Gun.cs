@@ -10,21 +10,21 @@ public class Gun : Weapon
     public ShootBehavior shootBehavior;
 
     [Header("Ammo")]
-    public int maxAmmo;
+    public int maxAmmo = 30;
     public int currentAmmo;
-    [SerializeField] private float reloadTime;
+    [SerializeField] private float reloadTime = 1.5f;
     private bool isReloading;
 
     [Header("Recoil")]
-    [SerializeField] private float recoilForce;
-    [SerializeField] private float recoverySpeed;
-    [SerializeField] private float maxRecoilAngle;
-    [SerializeField] private float recoilAmount;
+    [SerializeField] private float recoilForce = 0.1f;
+    [SerializeField] private float recoverySpeed = 5;
+    [SerializeField] private float maxRecoilAngle = 30;
+    [SerializeField] private float recoilAmount = 1;
 
     [Header("Projectiles")]
     public Transform BulletSpawnPoint;
     public Projectile projectile;
-    public float projectileSpeed;
+    public float projectileSpeed = 30;
 
     [Header("VFX")]
     public ParticleSystem muzzleFlash;
@@ -33,8 +33,9 @@ public class Gun : Weapon
     protected override void Start()
     {
         base.Start();
-        muzzleFlash = Instantiate(muzzleFlash, BulletSpawnPoint.position, Quaternion.identity, transform);
         currentAmmo = maxAmmo;
+        if(muzzleFlash != null )
+            muzzleFlash = Instantiate(muzzleFlash, BulletSpawnPoint.position, Quaternion.identity, transform);
     }
 
     protected void Update()
