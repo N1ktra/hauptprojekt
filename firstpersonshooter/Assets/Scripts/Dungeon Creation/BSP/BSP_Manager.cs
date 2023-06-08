@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class BSP_Manager : MonoBehaviour
 {
+    public GameObject player;
     public BinaryRoom dungeon { get; private set; }
     public event Action<BinaryRoom> OnDungeonCreated;
 
     public bool DisableDistantRooms = true;
-    private GameObject player;
-    private Room currentRoom;
+    public Room currentRoom;
 
     [Header("Prefabs")]
     public GameObject playerPrefab;
@@ -25,6 +25,7 @@ public class BSP_Manager : MonoBehaviour
     public int width = 100;
     public int height = 100;
     public int amountOfSplits = 3;
+    public Vector3 tileSize = Vector3.one;
 
     [Header("Dungeon Layout")]
     public int torchPadding = 3;
@@ -62,8 +63,9 @@ public class BSP_Manager : MonoBehaviour
 
     public BinaryRoom CreateDungeon()
     {
+        tileSize = new Vector3(floorPrefab.GetComponent<Renderer>().bounds.size.x, wallPrefab.GetComponentInChildren<Renderer>().bounds.size.y, floorPrefab.GetComponent<Renderer>().bounds.size.z);
         RoomDesign design = new RoomDesign(
-            new Vector3(floorPrefab.GetComponent<Renderer>().bounds.size.x, wallPrefab.GetComponentInChildren<Renderer>().bounds.size.y, floorPrefab.GetComponent<Renderer>().bounds.size.z),
+            tileSize,
             floorPrefab, wallPrefab, corridorEntrancePrefab, torchPrefab, pillarPrefab,
             torchPadding, pillarPadding,
             minWidth, maxWidth, minHeight, maxHeight, wallHeight,

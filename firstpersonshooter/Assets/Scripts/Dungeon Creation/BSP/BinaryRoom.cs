@@ -174,7 +174,7 @@ public class BinaryRoom : Room
 
     private GameObject instantiatePillars()
     {
-        GameObject pillarContainer = new GameObject("Floor");
+        GameObject pillarContainer = new GameObject("Pillars");
         for (int x = coords.left + 2; x <= coords.right - 2; x += design.pillarPadding)
         {
             for (int z = coords.bottom + 2; z <= coords.top - 2; z += design.pillarPadding)

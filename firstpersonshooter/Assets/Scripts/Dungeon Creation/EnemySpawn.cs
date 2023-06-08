@@ -10,17 +10,20 @@ public class EnemySpawn : MonoBehaviour
     public GameObject standardEnemy;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         bsp = GetComponent<BSP_Manager>();
-        bsp.OnDungeonCreated += SpawnEnemies;
+        //bsp.OnDungeonCreated += SpawnEnemies;
     }
 
     public void SpawnEnemies(BinaryRoom dungeon)
     {
-        foreach(Room room in dungeon.allRooms)
+        foreach (Room room in dungeon.allRooms)
         {
-            room.spawnObject(standardEnemy, room.RoomContainer, room.coords.getRandomPosition());
+            GridManager grid = room.RoomContainer.AddComponent<GridManager>();
+            grid.Init(new Vector2(room.coords.GetWidth() * room.design.tileSize.x, room.coords.GetHeight() * room.design.tileSize.z), 1, LayerMask.GetMask("unwalkable"), bsp.player.transform);
+            GameObject enemy = room.spawnObject(standardEnemy, room.RoomContainer, room.coords.getRandomPosition());
+            enemy.GetComponent<Pathfinding>().grid = grid;
         }
     }
 

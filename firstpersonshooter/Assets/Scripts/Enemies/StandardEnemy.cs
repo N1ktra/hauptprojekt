@@ -33,7 +33,6 @@ public class StandardEnemy : Enemy
         base.Update();
         if (path.Count==0) // || getDistanceBetween2Vectors(player.transform.position, transform.position) > 30
         {
-            Debug.Log("test");
             path = pathfinding.AStar(transform.position, player.transform.position);
         }
     }

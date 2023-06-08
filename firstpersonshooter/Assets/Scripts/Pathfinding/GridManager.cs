@@ -26,6 +26,20 @@ public class GridManager : MonoBehaviour
     }
 
 
+    public void Init(Vector2 gridSize, float nodeRadius, LayerMask unwalkableMaske, Transform player)
+    {
+        this.gridSize = gridSize;
+        this.nodeRadius = nodeRadius;
+        this.unwalkableMask = unwalkableMaske;
+        this.player = player;
+
+        nodeLength = 2 * nodeRadius;
+        gridAmountX = Mathf.RoundToInt(gridSize.x / nodeLength);
+        gridAmountY = Mathf.RoundToInt(gridSize.y / nodeLength);
+        CreateGrid();
+    }
+
+
     private void CreateGrid()
     {
         grid = new Node[gridAmountX, gridAmountY];
