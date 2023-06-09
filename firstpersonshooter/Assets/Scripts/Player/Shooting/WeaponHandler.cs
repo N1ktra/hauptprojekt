@@ -71,19 +71,23 @@ public class WeaponHandler : MonoBehaviour
     {
         Weapon newWeapon = Instantiate(weapon, Vector3.zero, Quaternion.identity, weaponHolder.transform);
         newWeapon.gameObject.SetActive(false);
-        foreach(Weapon w in weapons)
-        {
-            if (w.name == newWeapon.name)
-            {
-                if(newWeapon is Gun && w is Gun)
-                    (w as Gun).maxAmmo += (newWeapon as Gun).maxAmmo;
-                Destroy(newWeapon);
-                return;
-            }
-        }
         weapons.Add(newWeapon);
         newWeapon.OnHit += uiManager.showHitmarker;
         switchWeapon(weapons.Count - 1);
+    }
+
+    public bool WeaponIsAlreadyEquipped(Weapon weapon, out Weapon equippedWeapon)
+    {
+        foreach (Weapon w in weapons)
+        {
+            if (w.name == weapon.name || w.name == weapon.name + "(Clone)")
+            {
+                equippedWeapon = w;
+                return true;
+            }
+        }
+        equippedWeapon = null;
+        return false;
     }
 
     /// <summary>

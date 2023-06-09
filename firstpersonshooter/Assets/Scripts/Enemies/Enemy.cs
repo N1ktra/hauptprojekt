@@ -76,7 +76,7 @@ public abstract class Enemy : MonoBehaviour
             float value = Random.value;
             if (value <= dropChances[i])
             {
-                Drop drop = GameObject.Instantiate(items[Random.Range(0, items.Count)], transform.position, Quaternion.identity);
+                Drop drop = GameObject.Instantiate(items[i], transform.position, Quaternion.identity);
                 Debug.Log(gameObject.name + " dropped: " + drop.name);
                 return;
             }

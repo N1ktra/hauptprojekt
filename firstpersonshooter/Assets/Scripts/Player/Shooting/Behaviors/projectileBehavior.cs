@@ -13,7 +13,7 @@ public class projectileBehavior : ShootBehavior
             Debug.LogWarning("Please attach a projectile to the following gun: " + gun.name);
             return;
         }
-        GameObject cam = Camera.main.gameObject;
+        Camera cam = Camera.main;
         GameObject projectile = gun.projectile.Instantiate(gun.BulletSpawnPoint.position, Quaternion.identity);
         Rigidbody rb_projectile = projectile.GetComponent<Rigidbody>();
         Vector3 direction = gun.transform.forward;

@@ -9,7 +9,7 @@ public class hitScanBehavior : ShootBehavior
 {
     public override void Shoot(Gun gun)
     {
-        GameObject cam = Camera.main.gameObject;
+        Camera cam = Camera.main;
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
         {

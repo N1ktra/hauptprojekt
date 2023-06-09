@@ -39,7 +39,7 @@ public class Melee : Weapon
         Sequence swingSequence = DOTween.Sequence();
         swingSequence.Append(transform.DOLocalMove(new Vector3(.5f, .5f, 0), duration * 1 / 2));
         swingSequence.Join(transform.DOLocalRotate(new Vector3(-90, 0, 0), duration * 1 / 2));
-        swingSequence.Append(transform.DOLocalMove(new Vector3(0, 0, 2), duration * 1 / 2));
+        swingSequence.Append(transform.DOLocalMove(new Vector3(-.5f, 0, 2), duration * 1 / 2));
         swingSequence.Join(transform.DOLocalRotate(new Vector3(45, -30, 0), duration * 1 / 2));
         swingSequence.OnComplete(() => { swinging = false; });
     }
@@ -51,7 +51,6 @@ public class Melee : Weapon
             var collisionPoint = other.ClosestPointOnBounds(transform.position);
             var collisionNormal = transform.position - collisionPoint;
             RaiseOnHitEvent(this, new AttackEventArgs(other.gameObject, collisionPoint, collisionNormal));
-            Debug.Log(other.gameObject.name);
         }
     }
 
