@@ -40,11 +40,9 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void DealDamage(object sender, AttackEventArgs e)
     {
-        Enemy enemy = e.hitObject.GetComponent<Enemy>();
-        if (enemy != null)
-        {
+        Enemy enemy;
+        if(e.EnemyHit(out enemy))
             enemy.takeDamage(damage);
-        }
     }
 
     protected void PlayImpactEffect(object sender, AttackEventArgs e)

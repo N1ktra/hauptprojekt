@@ -15,5 +15,12 @@ public class AttackEventArgs : EventArgs
         this.hitPosition = hitPosition;
         this.hitDirection = hitDirection;
     }
+
+    public bool EnemyHit(out Enemy enemy)
+    {
+        Enemy _enemy = hitObject.GetComponent<Enemy>();
+        enemy = _enemy;
+        return enemy != null;
+    }
 }
 public delegate void AttackEventHandler(object sender, AttackEventArgs e);

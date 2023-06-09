@@ -1429,6 +1429,8 @@ MonoBehaviour:
   weaponHandler: {fileID: 4000394549151911995}
   playerStats: {fileID: 4000394549151911994}
   hitmarker: {fileID: 3918704912884712993}
+  StandardHitColor: {r: 0.5566038, g: 0.53822535, b: 0.53822535, a: 1}
+  OnEnemyHitColor: {r: 0.9529412, g: 0.18039216, b: 0.08627451, a: 1}
   weaponSymbol: {fileID: 3918704913415991913}
   AmmoText: {fileID: 3918704912919785218}
   HealthText: {fileID: 3918704914020987884}

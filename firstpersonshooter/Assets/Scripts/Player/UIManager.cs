@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("References")]
     public WeaponHandler weaponHandler;
     public PlayerStats playerStats;
 
+    [Header("Hitmarker")]
     public RawImage hitmarker;
+    public Color StandardHitColor;
+    public Color OnEnemyHitColor;
+
+    [Header("Interface")]
     public RawImage weaponSymbol;
     public TextMeshProUGUI AmmoText;
     public TextMeshProUGUI HealthText;
@@ -38,7 +45,14 @@ public class UIManager : MonoBehaviour
     {
         if (hitmarker == null) return;
         if (!hitmarker.gameObject.activeSelf)
+        {
+            Enemy enemy;
+            if (e.EnemyHit(out enemy))
+                hitmarker.color = OnEnemyHitColor;
+            else
+                hitmarker.color = StandardHitColor;
             StartCoroutine(showGameObject(hitmarker.gameObject, .1f));
+        }
     }
     private IEnumerator showGameObject(GameObject obj, float duration)
     {

@@ -75,11 +75,14 @@ public class WeaponHandler : MonoBehaviour
         {
             if (w.name == newWeapon.name)
             {
+                if(newWeapon is Gun && w is Gun)
+                    (w as Gun).maxAmmo += (newWeapon as Gun).maxAmmo;
                 Destroy(newWeapon);
                 return;
             }
         }
         weapons.Add(newWeapon);
+        newWeapon.OnHit += uiManager.showHitmarker;
         switchWeapon(weapons.Count - 1);
     }
 

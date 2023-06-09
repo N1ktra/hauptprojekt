@@ -10,7 +10,8 @@ public class Gun : Weapon
     public ShootBehavior shootBehavior;
 
     [Header("Ammo")]
-    public int maxAmmo = 30;
+    public int maxAmmo = 100;
+    public int magSize = 30;
     public int currentAmmo;
     [SerializeField] private float reloadTime = 1.5f;
     private bool isReloading;
@@ -33,7 +34,7 @@ public class Gun : Weapon
     protected override void Start()
     {
         base.Start();
-        currentAmmo = maxAmmo;
+        currentAmmo = magSize;
         if(muzzleFlash != null )
             muzzleFlash = Instantiate(muzzleFlash, BulletSpawnPoint.position, Quaternion.identity, transform);
     }
@@ -45,7 +46,7 @@ public class Gun : Weapon
 
     public override void Attack(bool isFirstShot)
     {
-        if (Time.time < nextTimeToAttack || isReloading) return;
+        if (Time.time < nextTimeToAttack || isReloading || currentAmmo <= 0) return;
         if (isFirstShot) cameraMovement.resetRotation();
 
         shootBehavior.Shoot(this);
@@ -57,7 +58,7 @@ public class Gun : Weapon
 
     public void Reload()
     {
-        if (isReloading || currentAmmo == maxAmmo) return;
+        if (isReloading || maxAmmo <= 0 || currentAmmo == magSize) return;
         Debug.Log("Reloading...");
         isReloading = true;
         transform.DOLocalRotate(new Vector3(45, 0, 0), reloadTime / 2).SetEase(Ease.InOutElastic)
@@ -66,7 +67,18 @@ public class Gun : Weapon
             transform.DOLocalRotate(new Vector3(0, 0, 0), reloadTime / 2).SetEase(Ease.InOutElastic).OnComplete(() =>
             {
                 isReloading = false;
-                currentAmmo = maxAmmo;
+                int bulletsMissing = magSize - currentAmmo;
+
+                if (maxAmmo < bulletsMissing)
+                {
+                    currentAmmo += maxAmmo;
+                    maxAmmo = 0;
+                }
+                else
+                {
+                    currentAmmo = magSize;
+                    maxAmmo -= bulletsMissing;
+                }
                 cameraMovement.resetRotation();
             });
         });

@@ -699,10 +699,11 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 50
   impactEffect: {fileID: 0}
-  Symbol: {fileID: 0}
+  Symbol: {fileID: 2800000, guid: 2fcbc557ff7bd054fbbd5482cfead134, type: 3}
   nextTimeToAttack: 0
   shootBehavior: {fileID: 11400000, guid: 7f93ee1d6c495fb47b5810f3fed53c0e, type: 2}
-  maxAmmo: 5
+  maxAmmo: 30
+  magSize: 5
   currentAmmo: 0
   reloadTime: 2
   recoilForce: 1
