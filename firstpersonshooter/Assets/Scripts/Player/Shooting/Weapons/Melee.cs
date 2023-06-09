@@ -30,18 +30,18 @@ public class Melee : Weapon
     private bool swinging = false;
     private void swing()
     {
-        Camera cam = Camera.main;
-        Vector3 hitPos = cam.transform.position + cam.transform.forward * 3;
+        //Camera cam = Camera.main;
+        //Vector3 hitPos = cam.transform.position + cam.transform.forward * 2;
 
         float duration = 1/attackSpeed;
+
         swinging = true;
         Sequence swingSequence = DOTween.Sequence();
-        swingSequence.Append(transform.DOLocalMove(new Vector3(.5f, .5f, 0), duration * 3 / 4));
-        swingSequence.Join(transform.DOLocalRotate(new Vector3(-90, 0, 0), duration * 3 / 4));
-        swingSequence.Append(transform.DOMove(hitPos, duration * 1 / 4));
-        swingSequence.Join(transform.DOLocalRotate(Vector3.zero, duration * 1 / 4));
+        swingSequence.Append(transform.DOLocalMove(new Vector3(.5f, .5f, 0), duration * 1 / 2));
+        swingSequence.Join(transform.DOLocalRotate(new Vector3(-90, 0, 0), duration * 1 / 2));
+        swingSequence.Append(transform.DOLocalMove(new Vector3(0, 0, 2), duration * 1 / 2));
+        swingSequence.Join(transform.DOLocalRotate(new Vector3(45, -30, 0), duration * 1 / 2));
         swingSequence.OnComplete(() => { swinging = false; });
-        swingSequence.SetEase(Ease.InCubic);
     }
 
     private void OnTriggerEnter(Collider other)

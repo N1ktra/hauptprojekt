@@ -49,7 +49,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &9088876437580326902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,14 +96,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9173924836780352669}
-  m_LocalRotation: {x: 0.30367243, y: -0.6518373, z: -0.41497773, w: 0.55739105}
-  m_LocalPosition: {x: -0.145, y: 0.069, z: -0.211}
+  m_LocalRotation: {x: 0.23823896, y: -0.68359596, z: -0.34436882, w: 0.5977868}
+  m_LocalPosition: {x: -0.15213434, y: 0.0030770302, z: -0.16515926}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9088876437580326857}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -11.681, y: -92.002, z: -61.242}
+  m_LocalEulerAnglesHint: {x: -10.719, y: -92.807, z: -48.636}
 --- !u!33 &4878628961628877186
 MeshFilter:
   m_ObjectHideFlags: 0
