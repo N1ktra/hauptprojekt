@@ -18,7 +18,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private Slider healthBar;
 
     [Header("Drops")]
-    public float dropChance = 0.25f;
+    public List<float> dropChances = new List<float>();
     public List<Drop> items = new List<Drop>();
 
     public virtual void Awake()
@@ -66,11 +66,20 @@ public abstract class Enemy : MonoBehaviour
 
     public void dropItem()
     {
-        float value = Random.value;
-        if (value <= dropChance)
+        if(dropChances.Count != items.Count)
         {
-            Drop drop = GameObject.Instantiate(items.ElementAt(Random.Range(0, items.Count)), transform.position, Quaternion.identity);
-            Debug.Log(gameObject.name + " dropped: " + drop.name);
+            Debug.LogWarning("Number of items doesnt match number of dropChances.");
+            return;
+        }
+        for(int i = 0; i < items.Count; i++)
+        {
+            float value = Random.value;
+            if (value <= dropChances[i])
+            {
+                Drop drop = GameObject.Instantiate(items[Random.Range(0, items.Count)], transform.position, Quaternion.identity);
+                Debug.Log(gameObject.name + " dropped: " + drop.name);
+                return;
+            }
         }
     }
 
