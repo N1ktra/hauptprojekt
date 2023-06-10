@@ -14,7 +14,7 @@ public class GridManager : MonoBehaviour
 
     public List<Node> path;
     public bool showGizmos;
-    public Transform player;
+    private Transform player;
 
     // Start is called before the first frame update
     private void Start()
@@ -119,6 +119,7 @@ public class GridManager : MonoBehaviour
 
             if (grid != null)
             {
+                this.player = GameObject.FindGameObjectWithTag("Player").transform;
                 Node testNode = getNodeFromWorldPosition(player.position);
                 foreach (Node a in grid)
                 {
