@@ -26,12 +26,12 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public void Init(Vector2 gridSize, float nodeRadius, LayerMask unwalkableMaske, Transform player)
+    public void Init(Vector2 gridSize, float nodeRadius, LayerMask unwalkableMaske)
     {
         this.gridSize = gridSize;
         this.nodeRadius = nodeRadius;
         this.unwalkableMask = unwalkableMaske;
-        this.player = player;
+        this.player = GameObject.FindGameObjectWithTag("Player").transform;
 
         nodeLength = 2 * nodeRadius;
         gridAmountX = Mathf.RoundToInt(gridSize.x / nodeLength);
@@ -70,15 +70,17 @@ public class GridManager : MonoBehaviour
     public Node getNodeFromWorldPosition(Vector3 worldPos)
     {
         //verschiebe World Nullpunkt auf Grid Nullpunkt
-        Vector3 newWorldPos = new Vector3(worldPos.x + gridSize.x / 2, worldPos.y, worldPos.z + gridSize.y / 2);
+        //aktualisierung
+        Vector3 newWorldPos = worldPos;
+        //Vector3 newWorldPos = new Vector3(worldPos.x + gridSize.x / 2, worldPos.y, worldPos.z + gridSize.y / 2);
 
         float prozentualerWegX = newWorldPos.x / gridSize.x;
         //Debug.Log("proz X: " + prozentualerWegX.ToString());
-        int gridX = Mathf.RoundToInt(prozentualerWegX * (gridAmountX - 1));
+        int gridX = Mathf.RoundToInt(prozentualerWegX * (gridAmountX )) ;    //vorher gridAmountX - 1
 
         float prozentualerWegY = newWorldPos.z / gridSize.y;
         //Debug.Log("proz Y: " + prozentualerWegY.ToString());
-        int gridY = Mathf.RoundToInt(prozentualerWegY * (gridAmountY - 1));
+        int gridY = Mathf.RoundToInt(prozentualerWegY * (gridAmountY)) ;
 
         //Debug.Log("Position im Gird: x: " + gridX + " y: " + gridY);
         Node x = grid[gridX, gridY];
