@@ -12,7 +12,7 @@ public class GridManager : MonoBehaviour
     public LayerMask unwalkableMask;
     private int gridAmountX, gridAmountY; //amount of nodes in X-Dimension / y-dimension
 
-    public List<Node> path;
+    public List<List<Node>> paths;
     public bool showGizmos;
     private Transform player;
 
@@ -23,6 +23,7 @@ public class GridManager : MonoBehaviour
         gridAmountX = Mathf.RoundToInt(gridSize.x / nodeLength);
         gridAmountY = Mathf.RoundToInt(gridSize.y / nodeLength);
         CreateGrid();
+        paths = new List<List<Node>>();
     }
 
 
@@ -125,9 +126,9 @@ public class GridManager : MonoBehaviour
                 {
                     if (a.walkable) { Gizmos.color = Color.cyan; }
                     else { Gizmos.color = Color.black; }
-                    if (path != null)
+                    if (paths != null)
                     {
-                        if (path.Contains(a))
+                        if (checkPaths(a))
                         {
                             Gizmos.color = Color.yellow;
                         }
@@ -139,6 +140,16 @@ public class GridManager : MonoBehaviour
         }
 
     }
+
+    private bool checkPaths(Node a)
+    {
+        foreach (List<Node> p in paths)
+        {
+            if (p.Contains(a)) { return true; }
+        }
+        return false;
+    }
+
 
 
 }

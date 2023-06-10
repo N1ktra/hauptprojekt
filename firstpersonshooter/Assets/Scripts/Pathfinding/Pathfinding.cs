@@ -7,14 +7,14 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour
 {
 
-    public GridManager grid;
+    private GridManager grid;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //grid = GetComponent<GridManager>();
+        grid = GameObject.Find("Grid").GetComponent<GridManager>();
     }
 
 
@@ -86,7 +86,7 @@ public class Pathfinding : MonoBehaviour
         }
         path.Reverse();
         //Debug.Log("finished");
-        grid.path = path;
+        grid.paths.Add(path);
         foreach (Node a in path)
         {
             Debug.Log("Path from startNode: " + startNode.worldPosition + " NEW Node: x: " + a.gridPosX + " , y: " + a.gridPosY + " , WorldPosition: " + a.worldPosition);

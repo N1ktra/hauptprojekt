@@ -13,7 +13,8 @@ public class StandardEnemy : Enemy
     public override void Start()
     {
         base.Start();
-        pathfinding = GetComponent<Pathfinding>();
+        pathfinding = GameObject.Find("PathfindingObject").GetComponent<Pathfinding>();
+        //pathfinding = GetComponent<Pathfinding>();
         path = new List<Node>();
         StartCoroutine(Repeater());
     }
@@ -22,7 +23,7 @@ public class StandardEnemy : Enemy
     {
         while (true)
         {
-
+            Debug.Log("REPEATER");
             yield return new WaitForSeconds(1);
             move();
         }
@@ -34,6 +35,7 @@ public class StandardEnemy : Enemy
         if (path.Count==0) // || getDistanceBetween2Vectors(player.transform.position, transform.position) > 30
         {
             path = pathfinding.AStar(transform.position, player.transform.position);
+            Debug.Log("WEG BERECHNET");
         }
     }
 
@@ -48,6 +50,7 @@ public class StandardEnemy : Enemy
     //moves one node and deletes it from path List
     private void move()
     {
+        Debug.Log("MOVE");
         if (path.Count >= 1) {
             Node next = path.First();
             path.RemoveAt(0);

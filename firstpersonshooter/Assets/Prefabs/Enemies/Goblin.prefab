@@ -904,6 +904,7 @@ GameObject:
   - component: {fileID: 5335626629541761412}
   - component: {fileID: 2422381504501763746}
   - component: {fileID: 7472141409379282037}
+  - component: {fileID: 9011153132236671199}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -972,7 +973,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8691123046779950367}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec382ef944809b94b85816408a5b4303, type: 3}
   m_Name: 
@@ -1000,7 +1001,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2b09498e796d846aff1d762830d809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 0}
+--- !u!114 &9011153132236671199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8691123046779950367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6a3d4ae0662764b82dea865f7bda42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBar: {fileID: 1672979677084864817}
+  dropChances: []
+  items: []
 --- !u!1 &8691123046779950369
 GameObject:
   m_ObjectHideFlags: 0
