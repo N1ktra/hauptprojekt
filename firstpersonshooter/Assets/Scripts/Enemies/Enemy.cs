@@ -9,6 +9,8 @@ public abstract class Enemy : MonoBehaviour
 {
     protected Camera cam;
     protected GameObject player;
+    protected Pathfinding pathfinding;
+    protected BSP_Manager bsp_manager;
 
     [Header("Stats")]
     [SerializeField] private float maxHealth;
@@ -21,24 +23,24 @@ public abstract class Enemy : MonoBehaviour
     public List<float> dropChances = new List<float>();
     public List<Drop> items = new List<Drop>();
 
-
-    private Pathfinding pathfinding;
-    public List<Node> path;
+    [Header("A*")]
+    public List<Node> path = new List<Node>();
+    
 
     public virtual void Awake()
     {
+        cam = Camera.main;
         player = GameObject.FindGameObjectWithTag("Player");
+        pathfinding = GameObject.Find("PathfindingObject").GetComponent<Pathfinding>();
+        bsp_manager = GameObject.Find("Dungeon Manager").GetComponent<BSP_Manager>();
     }
 
     public virtual void Start()
     {
-        cam = Camera.main;
         healthBar.minValue = 0;
         healthBar.maxValue = maxHealth;
         currentHealth = maxHealth;
         UpdateHealthBar();
-        pathfinding = GameObject.Find("PathfindingObject").GetComponent<Pathfinding>();
-        path = new List<Node>();
     }
 
     public virtual void Update()

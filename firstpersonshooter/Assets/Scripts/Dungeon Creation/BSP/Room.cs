@@ -68,9 +68,9 @@ public struct RoomCoords
     {
         return bottom - padding <= value && value <= top + padding;
     }
-    public bool Contains(Vector2 coords, float padding = 0)
+    public bool Contains(Vector3 roomCoords, float padding = 1)
     {
-        return ContainsX(coords.x, padding) && ContainsY(coords.y, padding);
+        return ContainsX(roomCoords.x, padding) && ContainsY(roomCoords.z, padding);
     }
     public Vector3 getRandomPosition()
     {

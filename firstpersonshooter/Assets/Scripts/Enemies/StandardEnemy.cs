@@ -20,7 +20,8 @@ public class StandardEnemy : Enemy
         {
             Debug.Log("REPEATER");
             yield return new WaitForSeconds(1);
-            move();
+            if(bsp_manager.PlayerIsInRoom(bsp_manager.getRoomOf(gameObject)))
+                move();
         }
     }
 

@@ -107,13 +107,13 @@ public class BSP_Manager : MonoBehaviour
             SplitDungeon(i - 1, room.rightRoom);
     }
 
-    public void disableDistantRooms()
+    private void disableDistantRooms()
     {
         Vector3 playerPos = dungeon.getPositionInRoomCoords(player.transform.position);
         Room newCurrentRoom = null;
         foreach(BinaryRoom room in dungeon.allRooms)
         {
-            if (room.coords.Contains(new Vector2(playerPos.x, playerPos.z), 1))
+            if (room.coords.Contains(playerPos, 1))
             {
                 newCurrentRoom = room;
             }
@@ -128,5 +128,26 @@ public class BSP_Manager : MonoBehaviour
             currentRoom = newCurrentRoom;
             newCurrentRoom.SetActive(true);
         }
+    }
+
+    public bool PlayerIsInRoom(Room room)
+    {
+        Vector3 playerPos = dungeon.getPositionInRoomCoords(player.transform.position);
+        return room.coords.Contains(playerPos, 1);
+    }
+    public Room getRoomOf(GameObject obj)
+    {
+        Vector3 objPosition = dungeon.getPositionInRoomCoords(obj.transform.position);
+        foreach (BinaryRoom room in dungeon.allRooms)
+        {
+            if (room.coords.Contains(objPosition))
+                return room;
+            foreach(Corridor corridor in room.corridors)
+            {
+                if(corridor.coords.Contains(objPosition, 1))
+                    return corridor;
+            }
+        }
+        return null;
     }
 }
