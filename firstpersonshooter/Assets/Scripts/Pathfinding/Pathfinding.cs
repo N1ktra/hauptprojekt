@@ -51,6 +51,15 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (!neighbour.walkable || closedList.Contains(neighbour))
                     {
+                        //not walkable node ist Player Position
+                        //if(neighbour == grid.getPlayerNode())
+                        //{
+                        //    neighbour.parent = currentNode;
+                        //    List<Node> path = getCalculatedPath(startNode, neighbour);
+                        //    return path;
+                        //}
+
+
                         //go to next neighbour
                     }
                     else
@@ -71,7 +80,7 @@ public class Pathfinding : MonoBehaviour
             }
         }
         Debug.Log("Fehler in AStar");
-        return null;
+        return null; //leere Liste 
 
     }
 

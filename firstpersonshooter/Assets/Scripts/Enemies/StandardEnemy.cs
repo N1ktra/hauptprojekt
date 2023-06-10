@@ -6,16 +6,11 @@ using DG.Tweening;
 
 public class StandardEnemy : Enemy
 {
-    private Pathfinding pathfinding;
-    public List<Node> path;
 
 
-    public override void Start()
+
+    public void OnEnable()
     {
-        base.Start();
-        pathfinding = GameObject.Find("PathfindingObject").GetComponent<Pathfinding>();
-        //pathfinding = GetComponent<Pathfinding>();
-        path = new List<Node>();
         StartCoroutine(Repeater());
     }
 
@@ -29,15 +24,6 @@ public class StandardEnemy : Enemy
         }
     }
 
-    public override void Update()
-    {
-        base.Update();
-        if (path.Count==0) // || getDistanceBetween2Vectors(player.transform.position, transform.position) > 30
-        {
-            path = pathfinding.AStar(transform.position, player.transform.position);
-            Debug.Log("WEG BERECHNET");
-        }
-    }
 
     public List<Node> getPath()
     {

@@ -16,15 +16,20 @@ public class GridManager : MonoBehaviour
     public bool showGizmos;
     private Transform player;
 
+    public BSP_Manager bsp_manager;
+
     // Start is called before the first frame update
     private void Start()
     {
         nodeLength = 2 * nodeRadius;
         gridAmountX = Mathf.RoundToInt(gridSize.x / nodeLength);
         gridAmountY = Mathf.RoundToInt(gridSize.y / nodeLength);
-        CreateGrid();
+        //CreateGrid();
         paths = new List<List<Node>>();
+        bsp_manager.OnDungeonCreated += CreateGrid;
     }
+
+
 
 
     public void Init(Vector2 gridSize, float nodeRadius, LayerMask unwalkableMaske)
@@ -37,12 +42,13 @@ public class GridManager : MonoBehaviour
         nodeLength = 2 * nodeRadius;
         gridAmountX = Mathf.RoundToInt(gridSize.x / nodeLength);
         gridAmountY = Mathf.RoundToInt(gridSize.y / nodeLength);
-        CreateGrid();
+        //CreateGrid();
     }
 
 
-    private void CreateGrid()
+    private void CreateGrid(BinaryRoom dungeon)
     {
+        this.player = GameObject.FindGameObjectWithTag("Player").transform;
         grid = new Node[gridAmountX, gridAmountY];
         Vector3 worldBottomLeft = transform.position            //center of grid
             - new Vector3(1, 0, 0) * gridSize.x / 2             //go to left end
@@ -63,6 +69,11 @@ public class GridManager : MonoBehaviour
                 grid[x, y] = new Node(walkable, worldPosition, x, y);
             }
         }
+    }
+
+    public Node getPlayerNode()
+    {
+        return getNodeFromWorldPosition(player.position);
     }
 
 

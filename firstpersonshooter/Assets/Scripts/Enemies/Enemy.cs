@@ -21,6 +21,10 @@ public abstract class Enemy : MonoBehaviour
     public List<float> dropChances = new List<float>();
     public List<Drop> items = new List<Drop>();
 
+
+    private Pathfinding pathfinding;
+    public List<Node> path;
+
     public virtual void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -33,11 +37,18 @@ public abstract class Enemy : MonoBehaviour
         healthBar.maxValue = maxHealth;
         currentHealth = maxHealth;
         UpdateHealthBar();
+        pathfinding = GameObject.Find("PathfindingObject").GetComponent<Pathfinding>();
+        path = new List<Node>();
     }
 
     public virtual void Update()
     {
-        healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+        healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position); 
+        if (path.Count == 0) // || getDistanceBetween2Vectors(player.transform.position, transform.position) > 30
+        {
+            path = pathfinding.AStar(transform.position, player.transform.position);
+            Debug.Log("WEG BERECHNET");
+        }
     }
 
     private void UpdateHealthBar()
