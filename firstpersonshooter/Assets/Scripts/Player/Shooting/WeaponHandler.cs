@@ -121,6 +121,8 @@ public class WeaponHandler : MonoBehaviour
     }
     public int getCurrentWeaponIndex()
     {
+        if (currentWeapon == null)
+            return -1;
         return weapons.IndexOf(currentWeapon);
     }
 
@@ -130,7 +132,7 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="index">Der Index, an dem die Waffe in der Liste steht</param>
     public void switchWeapon(int index, Action callback = null)
     {
-        if (weapons.Count < index + 1 || getCurrentWeaponIndex() == index) return;
+        if (currentWeapon == null || weapons.Count < index + 1 || getCurrentWeaponIndex() == index) return;
 
         Weapon oldWeapon = currentWeapon;
         Weapon newWeapon = weapons[index];
