@@ -19,6 +19,7 @@ public class StandardEnemy : Enemy
         while (true)
         {
             Debug.Log("REPEATER");
+            if (path.Count == 0) CalculatePath();
             yield return new WaitForSeconds(1);
             if(bsp_manager.PlayerIsInRoom(bsp_manager.getRoomOf(gameObject)))
                 move();

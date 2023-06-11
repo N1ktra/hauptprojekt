@@ -20,11 +20,11 @@ public class Pathfinding : MonoBehaviour
 
     public List<Node> AStar(Vector3 startVector, Vector3 endVector)
     {
-        Debug.Log("A Star");
+        //Debug.Log("A Star");
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
         Node startNode = grid.getNodeFromWorldPosition(startVector);
-        Debug.Log(startNode.worldPosition);
+        //Debug.Log(startNode.worldPosition);
         Node endNode = grid.getNodeFromWorldPosition(endVector);
         //Debug.Log("test");
         openList.Add(startNode);
@@ -79,7 +79,7 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Fehler in AStar");
+        Debug.LogWarning("Fehler in AStar");
         return null; //leere Liste 
 
     }
@@ -98,7 +98,7 @@ public class Pathfinding : MonoBehaviour
         grid.paths.Add(path);
         foreach (Node a in path)
         {
-            Debug.Log("Path from startNode: " + startNode.worldPosition + " NEW Node: x: " + a.gridPosX + " , y: " + a.gridPosY + " , WorldPosition: " + a.worldPosition);
+            //Debug.Log("Path from startNode: " + startNode.worldPosition + " NEW Node: x: " + a.gridPosX + " , y: " + a.gridPosY + " , WorldPosition: " + a.worldPosition);
         }
         return path;
     }

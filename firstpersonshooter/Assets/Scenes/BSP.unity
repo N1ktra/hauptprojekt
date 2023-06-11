@@ -157,7 +157,7 @@ MonoBehaviour:
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 64
-  showGizmos: 1
+  showGizmos: 0
   bsp_manager: {fileID: 1027587733}
 --- !u!4 &75269660
 Transform:
