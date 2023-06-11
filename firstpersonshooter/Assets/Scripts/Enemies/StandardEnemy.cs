@@ -7,14 +7,7 @@ using DG.Tweening;
 public class StandardEnemy : Enemy
 {
 
-
-
-    public void OnEnable()
-    {
-        StartCoroutine(Repeater());
-    }
-
-    private IEnumerator Repeater()
+    public override IEnumerator Behavior()
     {
         while (true)
         {

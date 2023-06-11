@@ -62,6 +62,13 @@ public abstract class Enemy : MonoBehaviour
         healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
     }
 
+    public void OnEnable()
+    {
+        StartCoroutine(Behavior());
+    }
+
+    public abstract IEnumerator Behavior();
+
     public void ChangeState(EnemyState state)
     {
         if (this.state == state) return;

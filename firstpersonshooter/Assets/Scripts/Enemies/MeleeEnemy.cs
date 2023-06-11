@@ -9,12 +9,7 @@ public class MeleeEnemy : Enemy
     public float attackRange = 2f;
     public float movementSpeed = 1f; //how many nodes per second
 
-    public void OnEnable()
-    {
-        StartCoroutine(startBehavior());
-    }
-
-    private IEnumerator startBehavior()
+    public override IEnumerator Behavior()
     {
         while(true)
         {
