@@ -979,6 +979,7 @@ MonoBehaviour:
   state: 0
   maxHealth: 100
   currentHealth: 0
+  attackDamage: 5
   healthBar: {fileID: 1672979677084864817}
   dropChances:
   - 0.25
@@ -990,6 +991,7 @@ MonoBehaviour:
   - {fileID: 4021974336058491174, guid: 26a135e706c2a994ebf6bfe37c97be69, type: 3}
   attackRange: 3
   movementSpeed: 0.5
+  attackDelay: 0.65
 --- !u!1 &8691123046779950369
 GameObject:
   m_ObjectHideFlags: 0

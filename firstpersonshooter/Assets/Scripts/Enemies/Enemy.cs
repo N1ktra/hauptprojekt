@@ -25,8 +25,9 @@ public abstract class Enemy : MonoBehaviour
     public EnemyState state;
 
     [Header("Stats")]
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float currentHealth;
+    [SerializeField] protected float maxHealth;
+    [SerializeField] protected float currentHealth;
+    [SerializeField] protected float attackDamage;
 
     [Header("Visuals")]
     [SerializeField] private Slider healthBar;
@@ -73,6 +74,7 @@ public abstract class Enemy : MonoBehaviour
     {
         if (this.state == state) return;
         this.state = state;
+        animator.StopPlayback();
         animator.SetInteger("State", (int)state);
     }
 
