@@ -81,7 +81,8 @@ public abstract class Enemy : MonoBehaviour
     public void CalculatePath()
     {
         //Debug.Log("WEG BERECHNET");
-        path = pathfinding.AStar(transform.position, player.transform.position);
+        //Debug.Log("GegnerPosition: " + this.transform.position + " , PlayerPosition: " + player.transform.position);
+        path = pathfinding.AStar(this.transform.position, player.transform.position);
     }
 
     private void UpdateHealthBar()

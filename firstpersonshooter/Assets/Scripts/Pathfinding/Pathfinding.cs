@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,87 @@ public class Pathfinding : MonoBehaviour
     }
 
 
+    public Node searchWalkableNeighbour(Node node)
+    {
+        //check Knoten oberhalb
+        RaycastHit hit;
+        List<Node> neighbours = grid.getNeighbours(node);
+        Debug.Log(neighbours);
+        foreach(Node n in neighbours)
+        {
+            //Knoten oberhalb
+            if (n.gridPosX == node.gridPosX && n.gridPosY == node.gridPosY+1 && !Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 2, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten unterhalb
+            if (n.gridPosX == node.gridPosX && n.gridPosY == node.gridPosY-1 && !Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, 2, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten links
+            if (n.gridPosX == node.gridPosX-1 && n.gridPosY == node.gridPosY && !Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, 2, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten rechts
+            if (n.gridPosX == node.gridPosX + 1 && n.gridPosY == node.gridPosY && !Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, 2, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten oben links
+            if (n.gridPosX == node.gridPosX -1 && n.gridPosY == node.gridPosY+1 && !Physics.Raycast(transform.position, transform.TransformDirection(new Vector3(-1,0,1)), out hit, 2.4f, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten oben rechts
+            if (n.gridPosX == node.gridPosX + 1 && n.gridPosY == node.gridPosY + 1 && !Physics.Raycast(transform.position, transform.TransformDirection(new Vector3(1, 0, 1)), out hit, 2.4f, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten unten rechts
+            if (n.gridPosX == node.gridPosX + 1 && n.gridPosY == node.gridPosY - 1 && !Physics.Raycast(transform.position, transform.TransformDirection(new Vector3(1, 0, -1)), out hit, 2.4f, grid.unwalkableMask))
+            {
+                return n;
+            }
+            //Knoten unten links
+            if (n.gridPosX == node.gridPosX - 1 && n.gridPosY == node.gridPosY - 1 && !Physics.Raycast(transform.position, transform.TransformDirection(new Vector3(-1, 0, -1)), out hit, 2.4f, grid.unwalkableMask))
+            {
+                return n;
+            }
+        }
+        return null;
+    }
+
+
     public List<Node> AStar(Vector3 startVector, Vector3 endVector)
     {
-        //Debug.Log("A Star");
+        try { 
+        Debug.Log("A Star mit GegnerPosition:" + startVector + " , PlayerPosition: " + endVector);
+        Node startNode = grid.getNodeFromWorldPosition(startVector);
+        //Debug.Log("StartKnoten: " + startNode.worldPosition);
+        if (startNode == null)
+        {
+            Debug.LogWarning("FEHLER getNodeFromWorldPosition");
+            return null;
+        }
+        Node endNode = grid.getNodeFromWorldPosition(endVector);
+
+        //check ob Gegner in unwalkable steht
+        //falls ja, dann suche benachbarten walkable Node und berechne von dort AStar
+        if (!startNode.walkable)
+        {
+            Debug.Log("NOT WALKABLE");
+            startNode = searchWalkableNeighbour(startNode);
+            if(startNode == null)
+            {
+                Debug.LogWarning("FEHLER searchWalkableNeighbour");
+                return null;
+            }
+        }
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
-        Node startNode = grid.getNodeFromWorldPosition(startVector);
-        //Debug.Log(startNode.worldPosition);
-        Node endNode = grid.getNodeFromWorldPosition(endVector);
-        //Debug.Log("test");
         openList.Add(startNode);
-        //Debug.Log("test2");
 
         while (openList.Count > 0)
         {
@@ -52,12 +123,12 @@ public class Pathfinding : MonoBehaviour
                     if (!neighbour.walkable || closedList.Contains(neighbour))
                     {
                         //not walkable node ist Player Position
-                        //if(neighbour == grid.getPlayerNode())
-                        //{
-                        //    neighbour.parent = currentNode;
-                        //    List<Node> path = getCalculatedPath(startNode, neighbour);
-                        //    return path;
-                        //}
+                        if(neighbour == grid.getPlayerNode())
+                        {
+                            neighbour.parent = currentNode;
+                            List<Node> path = getCalculatedPath(startNode, neighbour);
+                            return path;
+                        }
 
 
                         //go to next neighbour
@@ -81,7 +152,8 @@ public class Pathfinding : MonoBehaviour
         }
         Debug.LogWarning("Fehler in AStar");
         return null; //leere Liste 
-
+        }
+        catch(NullReferenceException) { Debug.LogWarning("NullReferenceException"); return null; }
     }
 
     private List<Node> getCalculatedPath(Node startNode, Node endNode)

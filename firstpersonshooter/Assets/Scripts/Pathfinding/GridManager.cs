@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,21 +82,24 @@ public class GridManager : MonoBehaviour
     //gets a Vector from the "real world" and returns the node from the grid. The node where the "real world" Vector is in.
     public Node getNodeFromWorldPosition(Vector3 worldPos)
     {
+        //Debug.Log("get Node from World Position mit world Position:  " + worldPos);
         //verschiebe World Nullpunkt auf Grid Nullpunkt
         //aktualisierung
         Vector3 newWorldPos = worldPos;
         //Vector3 newWorldPos = new Vector3(worldPos.x + gridSize.x / 2, worldPos.y, worldPos.z + gridSize.y / 2);
 
+        //Debug.Log("berechne x");
         float prozentualerWegX = newWorldPos.x / gridSize.x;
         //Debug.Log("proz X: " + prozentualerWegX.ToString());
         int gridX = Mathf.RoundToInt(prozentualerWegX * (gridAmountX )) ;    //vorher gridAmountX - 1
 
+        //Debug.Log("berechne y");
         float prozentualerWegY = newWorldPos.z / gridSize.y;
         //Debug.Log("proz Y: " + prozentualerWegY.ToString());
         int gridY = Mathf.RoundToInt(prozentualerWegY * (gridAmountY)) ;
 
-        //Debug.Log("Position im Gird: x: " + gridX + " y: " + gridY);
         Node x = grid[gridX, gridY];
+        //Debug.Log("Knoten gefunden!!  Position im Gird: x: " + gridX + " y: " + gridY + "  WorldPosition: " + x.worldPosition);
         return x;
     }
 
