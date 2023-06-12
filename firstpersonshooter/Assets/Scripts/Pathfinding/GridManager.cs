@@ -64,7 +64,7 @@ public class GridManager : MonoBehaviour
                 Vector3 worldPosition = worldBottomLeft + new Vector3(1, 0, 0) * (x * nodeLength + nodeRadius)
                                                         + new Vector3(0, 0, 1) * (y * nodeLength + nodeRadius);
                 //check if walkable or obstacle
-                bool walkable = !(Physics.CheckSphere(worldPosition, nodeRadius, unwalkableMask));
+                bool walkable = !(Physics.CheckSphere(worldPosition, nodeRadius+0.15f, unwalkableMask));
 
                 //create Node in grid
                 grid[x, y] = new Node(walkable, worldPosition, x, y);
