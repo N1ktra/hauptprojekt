@@ -344,7 +344,7 @@ MonoBehaviour:
   - {fileID: 4021974336058491174, guid: 26a135e706c2a994ebf6bfe37c97be69, type: 3}
   attackRange: 3
   movementSpeed: 0.5
-  attackDelay: 0.65
+  attackDelay: 0.55
 --- !u!1 &5937233618518384261
 GameObject:
   m_ObjectHideFlags: 0
