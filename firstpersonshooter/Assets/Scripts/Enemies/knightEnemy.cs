@@ -17,11 +17,8 @@ public class knightEnemy : Enemy
                 yield return new WaitForSeconds(1f);
                 continue;
             }
-            if(path != null && path.Count < 4)
-            {
-                CalculatePath();
-                Debug.Log("calculatePath");
-            }
+            CalculatePath();
+            Debug.Log("calculatePath");
             if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
             {
                 ChangeState(EnemyState.ATTACKING);
