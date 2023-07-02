@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -19,8 +20,10 @@ public class PlayerStats : MonoBehaviour
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
-            //TODO: Spiel beenden
-            Destroy(gameObject);
+            //end game
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("Menu");
+            //Destroy(gameObject);
         }
     }
 

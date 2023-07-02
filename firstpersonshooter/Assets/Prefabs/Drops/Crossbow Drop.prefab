@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6144381967836428278}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ArrowHolder_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1061121138487279149}
   - component: {fileID: 1302988383429338387}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6166425055515609525}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: string
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4126105561738838920}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SheepFigurine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4355050840729781662}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ReloadingHandle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2953487690820117673}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SheepFigurine1_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7010399250511030607}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SheepFigurine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3440546993175068707}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftHook_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 471686433728811208}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: WolfFigurine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2354331373644111850}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 783614178601713327}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -438,7 +438,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9099131615583969200}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Arrow_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 6591268911681801146}
   - component: {fileID: 7414969955686281545}
   - component: {fileID: 7501442446645968843}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Crossbow Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3388151792071034990}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: string_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -561,7 +561,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2682286170188554246}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: StylizedCrossbowRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,7 +593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4060165812715570775}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FiringHook_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6187263351774311522}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,7 +656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6085340947118588594}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SheepFigurine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2090881945105441496}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ReloadingGear_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -719,7 +719,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2257718544441249352}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ArrowHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -751,7 +751,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1303255846734081161}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sight_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -782,7 +782,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5720763146359399025}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: WolfFigurine_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -813,7 +813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3166702383448670799}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ReloadingGear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 19507061624827449}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SheepFigurine_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -876,7 +876,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1516945436152887580}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ReloadingHandle_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -907,7 +907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8982986735727503245}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -939,7 +939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9086498887058972560}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SheepFigurine2_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -971,7 +971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4851534621351760462}
   - component: {fileID: 4232027036611778217}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: StylizedCrossbowUnity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1025,7 +1025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2147831546081263137}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FiringHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,7 +1057,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7289890021729196181}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightHook_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1089,7 +1089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 984736210616517300}
   - component: {fileID: 5353037425748098180}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1182,7 +1182,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9134450035703696920}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}

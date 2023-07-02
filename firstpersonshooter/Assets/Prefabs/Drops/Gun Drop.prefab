@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8901138965331571495}
   - component: {fileID: 6129116669788629079}
   - component: {fileID: 287614899836582825}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Weapon_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 5541923145134362661}
   - component: {fileID: 8445637390658487705}
   - component: {fileID: 3601730053929286276}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Weapon_01_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 320384598443876987}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Weapon_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 1895081516925572650}
   - component: {fileID: 1051851413555809019}
   - component: {fileID: 6538031124874607952}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Gun Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 3297902501061549570}
   - component: {fileID: 5447335300470958168}
   - component: {fileID: 4381998529308516519}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Weapon_01_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 7099064290076245894}
   - component: {fileID: 4610633804109234848}
   - component: {fileID: 440769716378941810}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Weapon_01_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +498,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666944438419123186}
   - component: {fileID: 2941055942878123390}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 248758523554597487}
   - component: {fileID: 676823451813158973}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 3458706259742356180}
   - component: {fileID: 3458706259742356179}
   - component: {fileID: 565298088784245062}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Health Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 8398976681523708186}
   - component: {fileID: 4837133591509831359}
   - component: {fileID: 7260932993493858933}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}

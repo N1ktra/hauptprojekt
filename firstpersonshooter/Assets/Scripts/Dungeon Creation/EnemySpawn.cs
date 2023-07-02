@@ -23,34 +23,22 @@ public class EnemySpawn : MonoBehaviour
     public void SpawnEnemies(BinaryRoom dungeon)
     {
         this.dungeon = dungeon;
-        spawnGoblins();
-        spawnSkeletons();
+        spawnEnemyGroup(Goblin, 5, 1);
+        spawnEnemyGroup(Skeleton, 3, .5f);
+        spawnEnemyGroup(Crusader, 1, .2f);
+
         spawnBoss();
     }
 
-    private void spawnGoblins()
+    private void spawnEnemyGroup(GameObject enemy, int maxPackSize, float spawnChance)
     {
-        int maxPackSize = 5;
         foreach (Room room in dungeon.allRooms)
         {
-            CapsuleCollider collider = Goblin.GetComponent<CapsuleCollider>();
-            Vector3 coords = getRandomPositionInRoom(room, collider.radius);
+            Vector3 coords = getRandomPositionInRoom(room, enemy.GetComponent<CapsuleCollider>().radius);
             for (int i = 0; i <= Random.Range(0, maxPackSize); i++)
             {
-                room.spawnObject(Goblin, room.RoomContainer, applyRandomOffset(coords));
-            }
-        }
-    }
-    private void spawnSkeletons()
-    {
-        int maxPackSize = 3;
-        float spawnChance = .5f;
-        foreach (Room room in dungeon.allRooms)
-        {
-            for (int i = 0; i <= Random.Range(0, maxPackSize); i++)
-            {
-                if(Random.value <= spawnChance)
-                    room.spawnObject(Skeleton, room.RoomContainer, getRandomPositionInRoom(room, Skeleton.GetComponent<CapsuleCollider>().radius));
+                if (Random.value <= spawnChance)
+                    room.spawnObject(enemy, room.RoomContainer, applyRandomOffset(coords));
             }
         }
     }
