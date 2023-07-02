@@ -308,6 +308,7 @@ MonoBehaviour:
   Goblin: {fileID: 8691123046779950367, guid: 9a374d46b3b6f9f4ab6be7adc3db5c60, type: 3}
   Skeleton: {fileID: 5937233618518384259, guid: 7b1276bb048545d42ac25b211a4f2e91, type: 3}
   Crusader: {fileID: 1949430161825482, guid: 9e066cea98814aa448c70270a3c60251, type: 3}
+  Monster: {fileID: 1546282444830610997, guid: 823cfb902edbfec449bd6f60f36995d4, type: 3}
   Golem: {fileID: 2919925554547369436, guid: e9fa688e0d96b954e853b860c47f2a65, type: 3}
 --- !u!1 &1848270154
 GameObject:

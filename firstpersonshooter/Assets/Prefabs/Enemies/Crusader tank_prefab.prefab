@@ -11886,9 +11886,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 20
+  maxHealth: 250
   currentHealth: 0
-  attackDamage: 5
+  attackDamage: 15
   healthBar: {fileID: 8403028784415288154}
   dropChances:
   - 1

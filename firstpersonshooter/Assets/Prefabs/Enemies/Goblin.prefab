@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 100
+  maxHealth: 50
   currentHealth: 0
   attackDamage: 5
   healthBar: {fileID: 1672979677084864817}

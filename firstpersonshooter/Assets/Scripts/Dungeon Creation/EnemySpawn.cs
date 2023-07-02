@@ -27,8 +27,8 @@ public class EnemySpawn : MonoBehaviour
         this.dungeon = dungeon;
         spawnEnemyGroup(Goblin, 5, 1);
         spawnEnemyGroup(Skeleton, 3, .5f);
-        spawnEnemyGroup(Crusader, 2, .2f);
-        spawnEnemyGroup(Monster, 1, 1);
+        spawnEnemyGroup(Crusader, 2, .5f);
+        spawnEnemyGroup(Monster, 1, .25f);
 
         spawnBoss();
     }

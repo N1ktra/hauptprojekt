@@ -49,7 +49,7 @@ MonoBehaviour:
   cameraMovement: {fileID: 0}
   isAutomatic: 0
   attackSpeed: 4
-  damage: 25
+  damage: 35
   impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   Symbol: {fileID: 2800000, guid: f2fd050bc5555e04daf33b29ae5e654c, type: 3}
   nextTimeToAttack: 0
