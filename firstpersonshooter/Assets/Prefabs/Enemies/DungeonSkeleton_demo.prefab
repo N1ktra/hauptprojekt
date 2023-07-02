@@ -351,8 +351,10 @@ MonoBehaviour:
   currentHealth: 0
   attackDamage: 5
   healthBar: {fileID: 3606822995643743063}
-  dropChances: []
-  dropItems: []
+  dropChances:
+  - 0.5
+  dropItems:
+  - {fileID: 4417451959680447894, guid: 0a52b9fec99698a438e02533dcb24b07, type: 3}
   attackRange: 3
   movementSpeed: 0.5
   attackDelay: 0.5
