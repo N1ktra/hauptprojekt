@@ -8,6 +8,7 @@ public class BSP_Manager : MonoBehaviour
 {
     public GameObject player;
     public BinaryRoom dungeon { get; private set; }
+    public BinaryRoom startRoom, endRoom;
     public event Action<BinaryRoom> OnDungeonCreated;
 
     public bool DisableDistantRooms = true;
@@ -79,7 +80,7 @@ public class BSP_Manager : MonoBehaviour
         SplitDungeon(amountOfSplits, dungeon);
         dungeon.Trim();
         dungeon.createNeighborList();
-        (BinaryRoom startRoom, BinaryRoom endRoom) = dungeon.AddCorridors();
+        (startRoom, endRoom) = dungeon.AddCorridors();
         if (startRoom == null || endRoom == null)
             return null;
         dungeon.Instantiate();
