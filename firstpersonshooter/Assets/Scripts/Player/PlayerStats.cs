@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public float maxHealth;
-    public float currentHealth;
+    public float currentHealth { get; private set; }
     public float shield;
     public float stamina;
 
@@ -19,7 +19,13 @@ public class PlayerStats : MonoBehaviour
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
+            //TODO: Spiel beenden
             Destroy(gameObject);
         }
+    }
+
+    public void addHealth(float amount)
+    {
+        currentHealth += Mathf.Min(amount, maxHealth - currentHealth);
     }
 }

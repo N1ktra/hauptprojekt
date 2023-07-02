@@ -75,7 +75,7 @@ public class Pathfinding : MonoBehaviour
     public List<Node> AStar(Vector3 startVector, Vector3 endVector)
     {
         try { 
-        Debug.Log("A Star mit GegnerPosition:" + startVector + " , PlayerPosition: " + endVector);
+        //Debug.Log("A Star mit GegnerPosition:" + startVector + " , PlayerPosition: " + endVector);
         Node startNode = grid.getNodeFromWorldPosition(startVector);
         //Debug.Log("StartKnoten: " + startNode.worldPosition);
         if (startNode == null)

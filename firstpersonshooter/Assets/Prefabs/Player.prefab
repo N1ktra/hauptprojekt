@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8251807363396756772}
   - component: {fileID: 3592618061618309800}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Running Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5384611694118020940}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3918704912308577076}
   - component: {fileID: 3918704912308577077}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: First Person Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 3918704912884712995}
   - component: {fileID: 3918704912884712992}
   - component: {fileID: 3918704912884712993}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Hitmarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 3918704912919785219}
   - component: {fileID: 3918704912919785221}
   - component: {fileID: 3918704912919785218}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: AmmoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 3918704913109463670}
   - component: {fileID: 3918704913109463656}
   - component: {fileID: 3918704913109463657}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 3918704913248011464}
   - component: {fileID: 3918704913248011466}
   - component: {fileID: 3918704913248011467}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: bar (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -607,7 +607,7 @@ GameObject:
   - component: {fileID: 3918704913415991926}
   - component: {fileID: 3918704913415991912}
   - component: {fileID: 3918704913415991913}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Weapon Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3918704913542770987}
   - component: {fileID: 3918704913542770986}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -771,7 +771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3918704913660962027}
   - component: {fileID: 3918704913660962028}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crouch Start Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -900,7 +900,7 @@ GameObject:
   - component: {fileID: 3918704913913036368}
   - component: {fileID: 3918704913913036370}
   - component: {fileID: 3918704913913036371}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -973,7 +973,7 @@ GameObject:
   - component: {fileID: 3918704914020987885}
   - component: {fileID: 3918704914020987887}
   - component: {fileID: 3918704914020987884}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1110,7 +1110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3918704914140607247}
   - component: {fileID: 3918704914140607246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1156,7 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3918704914160663542}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1195,7 +1195,7 @@ GameObject:
   - component: {fileID: 3918704914218606721}
   - component: {fileID: 3918704914218606723}
   - component: {fileID: 3918704914218606720}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1270,7 +1270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3918704914284887956}
   - component: {fileID: 3918704914284887959}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1322,7 +1322,7 @@ GameObject:
   - component: {fileID: 3918704914297756951}
   - component: {fileID: 3918704914297756948}
   - component: {fileID: 3918704914297756936}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1451,7 +1451,7 @@ GameObject:
   - component: {fileID: 4032338099142256228}
   - component: {fileID: 4000394549151911995}
   - component: {fileID: 4000394549151911994}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1586,7 +1586,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
   shield: 0
   stamina: 10
 --- !u!1 &3919835061449645440
@@ -1600,7 +1599,7 @@ GameObject:
   - component: {fileID: 3922025964892732104}
   - component: {fileID: 3897685085747916658}
   - component: {fileID: 3904634860331611104}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1682,7 +1681,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3923475775208387662}
   - component: {fileID: 4032061658276284202}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,7 +1731,7 @@ GameObject:
   - component: {fileID: 3982120834623034000}
   - component: {fileID: 4032219086916330748}
   - component: {fileID: 4032808194788978680}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: First Person Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -1858,7 +1857,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2794124817225620810}
   - component: {fileID: 4929028016101086455}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Jump Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1986,7 +1985,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3810501505826137543}
   - component: {fileID: 1811103069799844805}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Step Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2114,7 +2113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5858304398817812451}
   - component: {fileID: 6815405772774636080}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crouch End Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2242,7 +2241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7239895481743901124}
   - component: {fileID: 8795993715383640711}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Landing Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2370,7 +2369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4095571851888489295}
   - component: {fileID: 1956675239493710188}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crouched Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2499,6 +2498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knife
       objectReference: {fileID: 0}
+    - target: {fileID: 9088876437580326856, guid: 71f6461f0dee59344bbce6cba92e4903, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 9088876437580326857, guid: 71f6461f0dee59344bbce6cba92e4903, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2547,6 +2550,10 @@ PrefabInstance:
       propertyPath: cameraMovement
       value: 
       objectReference: {fileID: 3918704914140607246}
+    - target: {fileID: 9173924836780352669, guid: 71f6461f0dee59344bbce6cba92e4903, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71f6461f0dee59344bbce6cba92e4903, type: 3}
 --- !u!4 &3918704914247941638 stripped

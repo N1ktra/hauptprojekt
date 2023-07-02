@@ -227,5 +227,10 @@ public abstract class Room
         return ceilingContainer;
     }
 
+    public bool checkCollision(Vector3 roomCoords, float radius = 1f)
+    {
+        return Physics.CheckSphere(getPositionInWorldCoords(roomCoords) + Vector3.up, radius);
+    }
+
 }
 

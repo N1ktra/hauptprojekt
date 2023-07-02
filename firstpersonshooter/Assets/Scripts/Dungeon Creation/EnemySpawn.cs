@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
     private BSP_Manager bsp;
-
-    public int maxEnemyPackSize = 3;
+    private BinaryRoom dungeon;
 
     [Header("Enemy Prefabs")]
     public GameObject Goblin;
@@ -22,29 +22,61 @@ public class EnemySpawn : MonoBehaviour
 
     public void SpawnEnemies(BinaryRoom dungeon)
     {
-        Debug.Log(bsp.startRoom + ", " + bsp.endRoom);
+        this.dungeon = dungeon;
+        spawnGoblins();
+        spawnSkeletons();
+        spawnBoss();
+    }
+
+    private void spawnGoblins()
+    {
+        int maxPackSize = 5;
         foreach (Room room in dungeon.allRooms)
         {
-            //GridManager grid = room.RoomContainer.AddComponent<GridManager>();
-            //grid.Init(new Vector2(room.coords.GetWidth() * room.design.tileSize.x, room.coords.GetHeight() * room.design.tileSize.z), 1, LayerMask.GetMask("unwalkable"), bsp.player.transform);
-            for(int i = 0; i <= Random.Range(0, maxEnemyPackSize); i++)
+            CapsuleCollider collider = Goblin.GetComponent<CapsuleCollider>();
+            Vector3 coords = getRandomPositionInRoom(room, collider.radius);
+            for (int i = 0; i <= Random.Range(0, maxPackSize); i++)
             {
-                GameObject enemy = room.spawnObject(Goblin, room.RoomContainer, getRandomPositionInRoom(room));
+                room.spawnObject(Goblin, room.RoomContainer, applyRandomOffset(coords));
             }
         }
     }
+    private void spawnSkeletons()
+    {
+        int maxPackSize = 3;
+        float spawnChance = .5f;
+        foreach (Room room in dungeon.allRooms)
+        {
+            for (int i = 0; i <= Random.Range(0, maxPackSize); i++)
+            {
+                if(Random.value <= spawnChance)
+                    room.spawnObject(Skeleton, room.RoomContainer, getRandomPositionInRoom(room, Skeleton.GetComponent<CapsuleCollider>().radius));
+            }
+        }
+    }
+    private void spawnBoss()
+    {
+        BinaryRoom room = bsp.endRoom;
+        room.spawnObject(Crusader, room.RoomContainer, room.coords.getCenterPosition());
+    }
 
-    private Vector3 getRandomPositionInRoom(Room room)
+    private Vector3 getRandomPositionInRoom(Room room, float checkRadius)
     {
         Vector3 coords = room.coords.getRandomPosition();
         for (int j = 0; j < 100; j++)
         {
-            if (!Physics.CheckSphere(room.getPositionInWorldCoords(coords) + Vector3.up, Goblin.GetComponent<CapsuleCollider>().radius))
+            if (!room.checkCollision(coords, checkRadius))
                 return coords;
             else
                 coords = room.coords.getRandomPosition();
         }
         Debug.Log("couldn't find random position in room");
+        return coords;
+    }
+
+    public static Vector3 applyRandomOffset(Vector3 coords, float minOffset = 0, float maxOffset = 1)
+    {
+        coords += new Vector3(Random.Range(minOffset, maxOffset), 0, Random.Range(minOffset, maxOffset));
         return coords;
     }
 

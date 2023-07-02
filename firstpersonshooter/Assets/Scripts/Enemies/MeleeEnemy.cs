@@ -11,44 +11,60 @@ public class MeleeEnemy : Enemy
     public float movementSpeed = 1f; //how many nodes per second
     public float attackDelay = .2f; //how long in the animation til it hits
 
+    private float refreshRate = .5f;
+    private bool isColliding = false;
+
     public override IEnumerator Behavior()
     {
         while(true)
         {
             if (!bsp_manager.PlayerIsInRoom(bsp_manager.getRoomOf(gameObject)))
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(refreshRate);
                 continue;
             }
 
             CalculatePath();
             if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
             {
+                stopMove();
                 ChangeState(EnemyState.ATTACKING);
                 yield return new WaitForSeconds(0);
                 attack();
                 yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
             }
-            else if(path != null && path.Count > 0)
+            else if(path != null && path.Count > 0 && !isColliding)
             {
                 ChangeState(EnemyState.MOVING);
                 move();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(refreshRate);
             }
             else
             {
                 ChangeState(EnemyState.IDLE);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(refreshRate);
             }
         }
     }
 
+    private Tween moveTween;
     private void move()
     {
+        if (isColliding) return;
+        stopMove();
+
         Vector3 nextPos = path.Count > 1 ? path[1].worldPosition : path[0].worldPosition;
 
-        transform.DOMove(nextPos, 1 / movementSpeed).SetEase(Ease.Linear);
+        moveTween = transform.DOMove(nextPos, 1 / movementSpeed).SetEase(Ease.Linear);
         transform.DOLookAt(nextPos, .25f);
+    }
+
+    private void stopMove()
+    {
+        if(moveTween != null)
+        {
+            moveTween.Kill();
+        }
     }
 
     private void attack()
@@ -64,6 +80,26 @@ public class MeleeEnemy : Enemy
         {
             player.GetComponent<PlayerStats>().takeDamage(attackDamage);
         }
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        //check if other enemies are close => if so stop moving
+        int layermask = LayerMask.GetMask("enemy");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange / 2, layermask);
+        foreach(var hitCollider in  hitColliders)
+        {
+            if(hitCollider.gameObject != gameObject && 
+                Vector3.Distance(hitCollider.transform.position, player.transform.position) < Vector3.Distance(transform.position, player.transform.position))
+            {
+                stopMove();
+                isColliding = true;
+                return;
+            }
+        }
+        isColliding = false;
     }
 
 }

@@ -9,11 +9,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - dungeon
   - Water
   - UI
   - unwalkable
-  - 
+  - enemy
   - 
   - 
   - 

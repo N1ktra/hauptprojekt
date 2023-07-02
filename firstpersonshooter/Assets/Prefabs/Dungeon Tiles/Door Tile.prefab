@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 958887160333775667}
   - component: {fileID: 8758568550154294036}
   - component: {fileID: 5235354934992866093}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9127946882122491987}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Door Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

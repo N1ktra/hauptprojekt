@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7648224697211091811}
   - component: {fileID: 6815989323086080839}
   - component: {fileID: 8493293013622978775}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider_Wall_Entrance 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5510447709334893389}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Entrance Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,6 +186,10 @@ PrefabInstance:
     - target: {fileID: 1627759049453929299, guid: c1995981dd5baef459d0564229f65728, type: 3}
       propertyPath: m_Name
       value: Torch Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1627759049453929299, guid: c1995981dd5baef459d0564229f65728, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1995981dd5baef459d0564229f65728, type: 3}

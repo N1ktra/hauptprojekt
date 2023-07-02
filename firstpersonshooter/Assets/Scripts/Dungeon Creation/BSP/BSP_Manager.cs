@@ -52,7 +52,8 @@ public class BSP_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dungeon = CreateDungeon();
+        while (dungeon == null)
+            dungeon = CreateDungeon();
         OnDungeonCreated?.Invoke(dungeon);
     }
 
