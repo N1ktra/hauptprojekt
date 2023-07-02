@@ -11,6 +11,7 @@ Material:
   m_Shader: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
   m_ValidKeywords:
   - _ALPHABLEND_ON
+  - _EMISSION
   - _FADING_ON
   m_InvalidKeywords:
   - _USE_GRADIENT_ON
@@ -74,7 +75,7 @@ Material:
     - _DistortionStrengthScaled: 0
     - _DstBlend: 1
     - _EdgeSize: 0.2
-    - _EmissionEnabled: 0
+    - _EmissionEnabled: 1
     - _FlipbookMode: 0
     - _Glossiness: 0.5
     - _LightingEnabled: 0
@@ -94,6 +95,6 @@ Material:
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _EdgeColor1: {r: 1, g: 1, b: 1, a: 1}
     - _Emission: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 4, g: 2.3574986, b: 0, a: 1}
+    - _EmissionColor: {r: 1.6625506, g: 0.9836032, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
