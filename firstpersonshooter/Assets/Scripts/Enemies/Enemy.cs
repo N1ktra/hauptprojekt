@@ -60,7 +60,8 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
-        healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+        if(healthBar != null)
+            healthBar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
     }
 
     public void OnEnable()

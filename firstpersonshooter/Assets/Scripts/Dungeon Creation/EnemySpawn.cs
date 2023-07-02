@@ -12,6 +12,7 @@ public class EnemySpawn : MonoBehaviour
     public GameObject Goblin;
     public GameObject Skeleton;
     public GameObject Crusader;
+    public GameObject Golem;
 
     // Start is called before the first frame update
     void Awake()
@@ -45,7 +46,13 @@ public class EnemySpawn : MonoBehaviour
     private void spawnBoss()
     {
         BinaryRoom room = bsp.endRoom;
-        room.spawnObject(Crusader, room.RoomContainer, room.coords.getCenterPosition());
+        room.spawnObject(Golem
+            
+            
+            
+            
+            
+   , room.RoomContainer, room.coords.getCenterPosition());
     }
 
     private Vector3 getRandomPositionInRoom(Room room, float checkRadius)

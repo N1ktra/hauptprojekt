@@ -93,7 +93,7 @@ public class BSP_Manager : MonoBehaviour
                 corridor.RoomContainer.transform.SetParent(dungeonContainer.transform, true);
             }
         }
-        player = dungeon.spawnObject(playerPrefab, null, startRoom.coords.getCenterPosition());
+        player = dungeon.spawnObject(playerPrefab, null, endRoom.coords.getCenterPosition());
         return dungeon;
     }
 
