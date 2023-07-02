@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Melee : Weapon
 {
     public float recoverySpeed = 5f;
@@ -23,25 +24,21 @@ public class Melee : Weapon
     {
         if (Time.time >= nextTimeToAttack)
         {
-            swing();
+            swinging = true;
+            swing(() => swinging = false);
             nextTimeToAttack = Time.time + (1f / attackSpeed);
         }
     }
     private bool swinging = false;
-    private void swing()
+    public virtual void swing(Action OnComplete)
     {
-        //Camera cam = Camera.main;
-        //Vector3 hitPos = cam.transform.position + cam.transform.forward * 2;
-
         float duration = 1/attackSpeed;
-
-        swinging = true;
         Sequence swingSequence = DOTween.Sequence();
         swingSequence.Append(transform.DOLocalMove(new Vector3(.5f, .5f, 0), duration * 1 / 2));
         swingSequence.Join(transform.DOLocalRotate(new Vector3(-90, 0, 0), duration * 1 / 2));
         swingSequence.Append(transform.DOLocalMove(new Vector3(-.75f, 0, 2), duration * 1 / 2));
         swingSequence.Join(transform.DOLocalRotate(new Vector3(45, -30, 0), duration * 1 / 2));
-        swingSequence.OnComplete(() => { swinging = false; });
+        swingSequence.OnComplete(() => { OnComplete?.Invoke(); });
     }
 
     private void OnTriggerEnter(Collider other)
