@@ -11794,6 +11794,7 @@ GameObject:
   - component: {fileID: 95549024643180554}
   - component: {fileID: 1345949287534827342}
   - component: {fileID: -8217730884738805513}
+  - component: {fileID: -7385212790923951277}
   m_Layer: 0
   m_Name: Crusader tank_prefab
   m_TagString: Untagged
@@ -11863,7 +11864,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1949430161825482}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1daf34b639c80c948b3b210e6a65aee7, type: 3}
   m_Name: 
@@ -11878,6 +11879,28 @@ MonoBehaviour:
   attackRange: 2
   movementSpeed: 0.5
   attackDelay: 2
+--- !u!114 &-7385212790923951277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949430161825482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec382ef944809b94b85816408a5b4303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  maxHealth: 20
+  currentHealth: 0
+  attackDamage: 5
+  healthBar: {fileID: 8403028784415288154}
+  dropChances: []
+  dropItems: []
+  attackRange: 2
+  movementSpeed: 0.5
+  attackDelay: 0.5
 --- !u!1 &1953607639529104
 GameObject:
   m_ObjectHideFlags: 0
