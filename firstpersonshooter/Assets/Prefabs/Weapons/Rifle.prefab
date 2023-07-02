@@ -147,7 +147,7 @@ MonoBehaviour:
   cameraMovement: {fileID: 0}
   isAutomatic: 1
   attackSpeed: 10
-  damage: 10
+  damage: 20
   impactEffect: {fileID: 5322329409996373553, guid: cbb54cc38cc560741a30583f035f55ef, type: 3}
   Symbol: {fileID: 2800000, guid: b7dbaa88a6ed6a64491a009431023b76, type: 3}
   nextTimeToAttack: 0

@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.83346003, g: 0, b: 0.8980392, a: 1}
+  m_Color: {r: 0, g: 0.081451006, b: 0.8980392, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -772,6 +772,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2921088782207081534}
   - component: {fileID: 3014236606593520372}
+  - component: {fileID: 2940964868754487869}
   - component: {fileID: 6265648895119079664}
   m_Layer: 0
   m_Name: Golem
@@ -819,6 +820,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &2940964868754487869
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2919925554547369436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.4114553
+  m_Height: 4.1077785
+  m_Direction: 1
+  m_Center: {x: 0.021581054, y: 2.0461106, z: 0.23739088}
 --- !u!114 &6265648895119079664
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class EnemySpawn : MonoBehaviour
     public GameObject Goblin;
     public GameObject Skeleton;
     public GameObject Crusader;
+    public GameObject Monster;
     public GameObject Golem;
 
     // Start is called before the first frame update
@@ -26,7 +27,8 @@ public class EnemySpawn : MonoBehaviour
         this.dungeon = dungeon;
         spawnEnemyGroup(Goblin, 5, 1);
         spawnEnemyGroup(Skeleton, 3, .5f);
-        spawnEnemyGroup(Crusader, 1, .2f);
+        spawnEnemyGroup(Crusader, 2, .2f);
+        spawnEnemyGroup(Monster, 1, 1);
 
         spawnBoss();
     }
