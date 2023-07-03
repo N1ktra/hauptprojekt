@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 175156617616687389}
   - component: {fileID: 175156617616687386}
-  - component: {fileID: 175156617616687387}
+  - component: {fileID: 2030972081020260783}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -50,7 +50,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &175156617616687387
+--- !u!114 &2030972081020260783
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 175156617616687384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d179cf384c99d74299d624c5aa0a534, type: 3}
+  m_Script: {fileID: 11500000, guid: 2abc72ee508e2794188db8407be29ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 0}

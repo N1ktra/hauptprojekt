@@ -33,7 +33,7 @@ public abstract class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// Schießt (beachtet jedoch Feuerrate)
+    /// Führt einen Angriff aus
     /// </summary>
     /// <param name="isStart">auf true setzen, falls das der erste Schuss ist (bei automatik)</param>
     public abstract void Attack(bool isStart);

@@ -16,7 +16,7 @@ public class MeleeEnemy : Enemy
 
     public override IEnumerator Behavior()
     {
-        while(true)
+        while(state != EnemyState.DYING)
         {
             if (!bsp_manager.PlayerIsInRoom(bsp_manager.getRoomOf(gameObject)))
             {

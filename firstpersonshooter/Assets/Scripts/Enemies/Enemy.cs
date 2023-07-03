@@ -96,6 +96,7 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="amount">Menge an Schaden</param>
     public virtual void takeDamage(float amount)
     {
+        if (state == EnemyState.DYING) return;
         currentHealth -= amount;
         UpdateHealthBar();
         if (currentHealth <= 0)
@@ -107,7 +108,9 @@ public abstract class Enemy : MonoBehaviour
     public virtual void Die()
     {
         dropItem();
-        Destroy(gameObject);
+        healthBar.gameObject.SetActive(false);
+        ChangeState(EnemyState.DYING);
+        Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
     }
 
     public void dropItem()
