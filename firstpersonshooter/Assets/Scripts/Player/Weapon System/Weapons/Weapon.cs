@@ -33,7 +33,7 @@ public abstract class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// Führt einen Angriff aus
+    /// Fï¿½hrt einen Angriff aus
     /// </summary>
     /// <param name="isStart">auf true setzen, falls das der erste Schuss ist (bei automatik)</param>
     public abstract void Attack(bool isStart);
@@ -42,7 +42,9 @@ public abstract class Weapon : MonoBehaviour
     {
         Enemy enemy;
         if(e.EnemyHit(out enemy))
+        {
             enemy.takeDamage(damage);
+        }
     }
 
     protected void PlayImpactEffect(object sender, AttackEventArgs e)

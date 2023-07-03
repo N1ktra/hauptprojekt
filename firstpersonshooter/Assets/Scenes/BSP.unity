@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f07f8de4cc74b548b52f76abfd08781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 110, y: 110}
+  gridSize: {x: 200, y: 200}
   nodeRadius: 1
   unwalkableMask:
     serializedVersion: 2
@@ -336,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75269658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50, y: 0, z: 50}
+  m_LocalPosition: {x: 100, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -376,11 +376,11 @@ RectTransform:
   m_Father: {fileID: 1785314988}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20.599976, y: -7.19}
-  m_SizeDelta: {x: 1500, y: 300}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 7.500059, y: -5}
+  m_SizeDelta: {x: -14.999881, y: -10}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &868387397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,8 +428,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -651,8 +651,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: -200, y: -400}
+  m_AnchoredPosition: {x: 0, y: 25}
+  m_SizeDelta: {x: -100, y: -150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1785314989
 MonoBehaviour:
@@ -668,8 +668,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textComponent: {fileID: 868387397}
   lines:
-  - Hey, alles in  Ordnung?
-  textSpeed: 0.1
+  - Tapferer Krieger,
+  - "einst gefangen im dunklen Kerker, bev\xF6lkert von furchterregenden Monstern."
+  - "Du bist der Auserw\xE4hlte, um uns zu befreien und das Gleichgewicht wiederherzustellen."
+  - Mit einem einfachen Messer und ohne Kameraden musst du die dunkle Macht besiegen,
+  - "Kameraden finden und Waffen zur\xFCckerobern"
+  - Die Welt hofft auf dich, den Verlorenen Helden.
+  - Wage den Kampf gegen die Dunkelheit und erweise dich als wahrer Held.
+  - Das Abenteuer beginnt jetzt!
+  textSpeed: 0.05
 --- !u!114 &1785314990
 MonoBehaviour:
   m_ObjectHideFlags: 0

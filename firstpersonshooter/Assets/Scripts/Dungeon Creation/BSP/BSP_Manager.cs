@@ -72,8 +72,8 @@ public class BSP_Manager : MonoBehaviour
             torchPadding, pillarPadding,
             minWidth, maxWidth, minHeight, maxHeight, wallHeight,
             trimTilesIsRandom,
-            ((int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z, (int)trimTiles.w), 
-            minTrimTiles, maxTrimTiles, 
+            ((int)trimTiles.x, (int)trimTiles.y, (int)trimTiles.z, (int)trimTiles.w),
+            minTrimTiles, maxTrimTiles,
             corridorMargin, maxCorridorThickness
         );
         BinaryRoom dungeon = new BinaryRoom(new RoomCoords(width, height), design);
@@ -134,6 +134,7 @@ public class BSP_Manager : MonoBehaviour
 
     public bool PlayerIsInRoom(Room room)
     {
+        if(room == null){ return false; }
         Vector3 playerPos = dungeon.getPositionInRoomCoords(player.transform.position);
         return room.coords.Contains(playerPos, 1);
     }

@@ -23,6 +23,8 @@ public class BinaryRoom : Room
     }
     public List<Corridor> corridors { get; private set; } = new List<Corridor>();
 
+    public float distanceToStartRoom;
+
     //Splitting
     private bool horizontalSplit;
     private bool verticalSplit;
@@ -388,7 +390,7 @@ public class BinaryRoom : Room
     }
 
     /// <summary>
-    /// Fügt Korridore hinzu (Neighbor Liste muss vorher erstellt worden sein)
+    /// Fï¿½gt Korridore hinzu (Neighbor Liste muss vorher erstellt worden sein)
     /// </summary>
     public (BinaryRoom startRoom, BinaryRoom endRoom) AddCorridors()
     {
@@ -399,6 +401,7 @@ public class BinaryRoom : Room
         visitedRooms.Add(currentRoom);
 
         int iterations = 0;
+        int distance = 0;
         while(visitedRooms.Count < allRooms.Count)
         {
             if(iterations >= 1000)
@@ -413,6 +416,7 @@ public class BinaryRoom : Room
                 //go to a previously visited room
                 var possibleRooms = allRooms.Where(_ => _.neighborList.Select(_ => _.Item1).Contains(currentRoom));
                 currentRoom = possibleRooms.ElementAt(Random.Range(0, possibleRooms.Count()));
+                distance--;
             }
             else
             {
@@ -425,6 +429,7 @@ public class BinaryRoom : Room
                     currentRoom.AddCorridorToNeighbor(room, dir);
                     visitedRooms.Add(room);
                     currentRoom = room;
+                    currentRoom.distanceToStartRoom = ++distance;
                 }
             }
             iterations++;

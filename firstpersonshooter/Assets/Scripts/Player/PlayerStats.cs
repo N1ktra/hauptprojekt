@@ -10,9 +10,12 @@ public class PlayerStats : MonoBehaviour
     public float shield;
     public float stamina;
 
+    public float enemiesSlain;
+
     public void Start()
     {
         currentHealth = maxHealth;
+        enemiesSlain = 0;
     }
 
     public void takeDamage(float amount)

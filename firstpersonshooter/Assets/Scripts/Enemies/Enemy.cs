@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum EnemyState
 {
@@ -14,6 +16,8 @@ public enum EnemyState
 }
 public abstract class Enemy : MonoBehaviour
 {
+    public event Action OnEnemyDied;
+
     [Header("References")]
     protected Camera cam;
     protected GameObject player;
@@ -38,7 +42,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("A*")]
     public List<Node> path = new List<Node>();
-    
+
 
     public virtual void Awake()
     {
@@ -91,7 +95,7 @@ public abstract class Enemy : MonoBehaviour
         healthBar.value = currentHealth;
     }
     /// <summary>
-    /// Fügt dem Gegner Schaden zu
+    /// Fï¿½gt dem Gegner Schaden zu
     /// </summary>
     /// <param name="amount">Menge an Schaden</param>
     public virtual void takeDamage(float amount)
@@ -111,6 +115,7 @@ public abstract class Enemy : MonoBehaviour
         dropItem();
         healthBar.gameObject.SetActive(false);
         ChangeState(EnemyState.DYING);
+        OnEnemyDied?.Invoke();
         Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
     }
 
