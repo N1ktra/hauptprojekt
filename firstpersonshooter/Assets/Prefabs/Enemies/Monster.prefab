@@ -536,9 +536,9 @@ MonoBehaviour:
   attackDamage: 20
   healthBar: {fileID: 7426655538900853147}
   dropChances:
-  - 0.75
-  - 0.75
-  - 0.75
+  - 0.6
+  - 0.6
+  - 0.6
   dropItems:
   - {fileID: 4021974336058491174, guid: 26a135e706c2a994ebf6bfe37c97be69, type: 3}
   - {fileID: 7501442446645968843, guid: 1f4f6082d4f5893438da650ae62c3914, type: 3}

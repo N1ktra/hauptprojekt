@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public enum EnemyState
@@ -10,7 +9,8 @@ public enum EnemyState
     IDLE,
     MOVING,
     ATTACKING,
-    DYING
+    DYING,
+    HIT
 }
 public abstract class Enemy : MonoBehaviour
 {
@@ -97,6 +97,7 @@ public abstract class Enemy : MonoBehaviour
     public virtual void takeDamage(float amount)
     {
         if (state == EnemyState.DYING) return;
+        ChangeState(EnemyState.HIT);
         currentHealth -= amount;
         UpdateHealthBar();
         if (currentHealth <= 0)

@@ -23,6 +23,11 @@ public class MeleeEnemy : Enemy
                 yield return new WaitForSeconds(refreshRate);
                 continue;
             }
+            if(state == EnemyState.HIT && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+            {
+                yield return new WaitForSeconds(.1f);
+                continue;
+            }
 
             CalculatePath();
             if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)

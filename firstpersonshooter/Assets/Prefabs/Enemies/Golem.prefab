@@ -773,7 +773,7 @@ GameObject:
   - component: {fileID: 2921088782207081534}
   - component: {fileID: 3014236606593520372}
   - component: {fileID: 2940964868754487869}
-  - component: {fileID: 6265648895119079664}
+  - component: {fileID: 2741087150782671714}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -834,7 +834,7 @@ CapsuleCollider:
   m_Height: 4.1077785
   m_Direction: 1
   m_Center: {x: 0.021581054, y: 2.0461106, z: 0.23739088}
---- !u!114 &6265648895119079664
+--- !u!114 &2741087150782671714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -843,16 +843,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2919925554547369436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7dd26e7029c326479a15cad3165cfb2, type: 3}
+  m_Script: {fileID: 11500000, guid: ec382ef944809b94b85816408a5b4303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 500
+  maxHealth: 1000
   currentHealth: 0
   attackDamage: 50
   healthBar: {fileID: 3032529754844869665}
   dropChances: []
   dropItems: []
+  attackRange: 5
+  movementSpeed: 0.25
+  attackDelay: 1.8
 --- !u!1 &2919949201664793396
 GameObject:
   m_ObjectHideFlags: 0
