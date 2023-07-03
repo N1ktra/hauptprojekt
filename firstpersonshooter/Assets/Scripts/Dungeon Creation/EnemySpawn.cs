@@ -37,6 +37,7 @@ public class EnemySpawn : MonoBehaviour
     {
         foreach (Room room in dungeon.allRooms)
         {
+            if (room == bsp.startRoom) continue;
             Vector3 coords = getRandomPositionInRoom(room, enemy.GetComponent<CapsuleCollider>().radius);
             for (int i = 0; i <= Random.Range(0, maxPackSize); i++)
             {
