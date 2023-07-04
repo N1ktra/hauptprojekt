@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1627759048936659514}
   - component: {fileID: 1627759048936659513}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Area Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1627759049453929298}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Torch Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 7576584812565472903}
   - component: {fileID: 1031002833216194668}
   - component: {fileID: 8075974573221096112}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Lamp_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

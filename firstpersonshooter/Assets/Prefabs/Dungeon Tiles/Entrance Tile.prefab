@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7648224697211091811}
   - component: {fileID: 6815989323086080839}
   - component: {fileID: 8493293013622978775}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Collider_Wall_Entrance 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5510447709334893389}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Entrance Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
