@@ -1588,6 +1588,7 @@ MonoBehaviour:
   maxHealth: 100
   shield: 0
   stamina: 10
+  enemiesSlain: 0
 --- !u!1 &3919835061449645440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1839,7 +1840,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3920278092253063966}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 780f90e951d635f439326ea715cd97e9, type: 3}
   m_Name: 

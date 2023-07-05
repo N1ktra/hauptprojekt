@@ -74,7 +74,7 @@ public struct RoomCoords
     }
     public Vector3 getRandomPosition()
     {
-        return new Vector3(Random.Range(left, right + 1), 0, Random.Range(bottom, top + 1));
+        return new Vector3(Random.Range(left + 1, right), 0, Random.Range(bottom + 1, top));
     }
 }
 public struct RoomDesign

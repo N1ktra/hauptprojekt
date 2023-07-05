@@ -45,10 +45,10 @@ public class EnemySpawn : MonoBehaviour
             Vector3 coords = getRandomPositionInRoom(room, enemy.GetComponent<CapsuleCollider>().radius);
             for (int i = 0; i <= Mathf.Min(maxPackSize, Random.Range(0, maxPackSize + room.distanceToStartRoom)); i++)
             {
-                Debug.Log(enemy.name + ": " + (spawnChance + (room.distanceToStartRoom / 20f)));
+                //Debug.Log(enemy.name + ": " + (spawnChance + (room.distanceToStartRoom / 20f)));
                 if (Random.value <= spawnChance + (room.distanceToStartRoom / 20))
                 {
-                    GameObject enemyObj = room.spawnObject(enemy, room.RoomContainer, applyRandomOffset(coords));
+                    GameObject enemyObj = room.spawnObject(enemy, room.RoomContainer, applyRandomOffset(room, coords));
                     enemyObj.GetComponent<Enemy>().OnEnemyDied += () => player.GetComponent<PlayerStats>().enemiesSlain++;
                 }
             }
@@ -64,7 +64,7 @@ public class EnemySpawn : MonoBehaviour
     private Vector3 getRandomPositionInRoom(Room room, float checkRadius)
     {
         Vector3 coords = room.coords.getRandomPosition();
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < 1000; j++)
         {
             if (!room.checkCollision(coords, checkRadius))
                 return coords;
@@ -75,10 +75,9 @@ public class EnemySpawn : MonoBehaviour
         return coords;
     }
 
-    public static Vector3 applyRandomOffset(Vector3 coords, float minOffset = 0, float maxOffset = 1)
+    public Vector3 applyRandomOffset(BinaryRoom room, Vector3 coords, float minOffset = 0, float maxOffset = 1)
     {
-        coords += new Vector3(Random.Range(minOffset, maxOffset), 0, Random.Range(minOffset, maxOffset));
-        return coords;
+        return coords + new Vector3(Random.Range(minOffset, maxOffset), 0, Random.Range(minOffset, maxOffset));
     }
 
 }
