@@ -125,10 +125,10 @@ public class Pathfinding : MonoBehaviour
                     if (!neighbour.walkable || closedList.Contains(neighbour))
                     {
                         //not walkable node ist Player Position
-                        if(neighbour == grid.getPlayerNode())
+                        if(!neighbour.walkable && neighbour == grid.getPlayerNode())
                         {
                             neighbour.parent = currentNode;
-                            List<Node> path = getCalculatedPath(startNode, neighbour);
+                            List<Node> path = getCalculatedPath(startNode, currentNode);
                             return path;
                         }
 
