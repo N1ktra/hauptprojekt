@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour
     private float nodeLength; //simply 2*nodeRadius
     private Node[,] grid;
     public LayerMask unwalkableMask;
+    public int offset;
     private int gridAmountX, gridAmountY; //amount of nodes in X-Dimension / y-dimension
 
     public List<List<Node>> paths;
@@ -89,18 +90,16 @@ public class GridManager : MonoBehaviour
         //Vector3 newWorldPos = new Vector3(worldPos.x + gridSize.x / 2, worldPos.y, worldPos.z + gridSize.y / 2);
 
         //Debug.Log("berechne x");
-        float prozentualerWegX = newWorldPos.x / gridSize.x;
+        float prozentualerWegX = newWorldPos.x / (gridSize.x);
         //Debug.Log("proz X: " + prozentualerWegX.ToString());
-        int gridX = (int)Math.Round(prozentualerWegX * (gridAmountX ),0) ;    //vorher gridAmountX - 1
+        int gridX = (int)Math.Round(prozentualerWegX * (gridAmountX )+0.5,0)-1+offset ;    //vorher gridAmountX - 1
 
         //Debug.Log("berechne y");
-        float prozentualerWegY = newWorldPos.z / gridSize.y;
+        float prozentualerWegY = newWorldPos.z / (gridSize.y);
         //Debug.Log("proz Y: " + prozentualerWegY.ToString());
-        int gridY = (int)Math.Round(prozentualerWegY * (gridAmountY ),0);
+        int gridY = (int)Math.Round(prozentualerWegY * (gridAmountY ) + 0.5,0)-1+offset;
         
         Node x = grid[gridX, gridY];
-        //test
-        x = grid[(int)Math.Round(worldPos.x+0.5)-1, (int)Math.Round(worldPos.z+0.5)-1];
         //Debug.Log("Knoten gefunden!!  Position im Gird: x: " + gridX + " y: " + gridY + "  WorldPosition: " + x.worldPosition);
         return x;
     }
