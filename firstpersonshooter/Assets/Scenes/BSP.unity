@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f07f8de4cc74b548b52f76abfd08781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 200, y: 200}
+  gridSize: {x: 102, y: 102}
   nodeRadius: 1
   unwalkableMask:
     serializedVersion: 2
@@ -336,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75269658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 0, z: 100}
+  m_LocalPosition: {x: 50, y: 0, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

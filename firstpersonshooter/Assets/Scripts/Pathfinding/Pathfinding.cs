@@ -87,6 +87,7 @@ public class Pathfinding : MonoBehaviour
 
         //check ob Gegner in unwalkable steht
         //falls ja, dann suche benachbarten walkable Node und berechne von dort AStar
+        
         if (!startNode.walkable)
         {
             Debug.Log("NOT WALKABLE");
@@ -97,6 +98,7 @@ public class Pathfinding : MonoBehaviour
                 return null;
             }
         }
+        
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
         openList.Add(startNode);

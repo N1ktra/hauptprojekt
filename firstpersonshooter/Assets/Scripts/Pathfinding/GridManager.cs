@@ -23,8 +23,8 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         nodeLength = 2 * nodeRadius;
-        gridAmountX = Mathf.RoundToInt(gridSize.x / nodeLength);
-        gridAmountY = Mathf.RoundToInt(gridSize.y / nodeLength);
+        gridAmountX = (int)Math.Round(gridSize.x / nodeLength, 0);
+        gridAmountY = (int)Math.Round(gridSize.y / nodeLength, 0);
         //CreateGrid();
         paths = new List<List<Node>>();
         bsp_manager.OnDungeonCreated += CreateGrid;
@@ -64,7 +64,7 @@ public class GridManager : MonoBehaviour
                 Vector3 worldPosition = worldBottomLeft + new Vector3(1, 0, 0) * (x * nodeLength + nodeRadius)
                                                         + new Vector3(0, 0, 1) * (y * nodeLength + nodeRadius);
                 //check if walkable or obstacle
-                bool walkable = !(Physics.CheckSphere(worldPosition, nodeRadius+0.15f, unwalkableMask));
+                bool walkable = !(Physics.CheckSphere(worldPosition, nodeRadius, unwalkableMask));
 
                 //create Node in grid
                 grid[x, y] = new Node(walkable, worldPosition, x, y);
@@ -91,17 +91,19 @@ public class GridManager : MonoBehaviour
         //Debug.Log("berechne x");
         float prozentualerWegX = newWorldPos.x / gridSize.x;
         //Debug.Log("proz X: " + prozentualerWegX.ToString());
-        int gridX = Mathf.RoundToInt(prozentualerWegX * (gridAmountX )) ;    //vorher gridAmountX - 1
+        int gridX = (int)Math.Round(prozentualerWegX * (gridAmountX ),0) ;    //vorher gridAmountX - 1
 
         //Debug.Log("berechne y");
         float prozentualerWegY = newWorldPos.z / gridSize.y;
         //Debug.Log("proz Y: " + prozentualerWegY.ToString());
-        int gridY = Mathf.RoundToInt(prozentualerWegY * (gridAmountY)) ;
+        int gridY = (int)Math.Round(prozentualerWegY * (gridAmountY),0) ;
 
         Node x = grid[gridX, gridY];
         //Debug.Log("Knoten gefunden!!  Position im Gird: x: " + gridX + " y: " + gridY + "  WorldPosition: " + x.worldPosition);
         return x;
     }
+
+    
 
     //returns a List of the neighbour nodes from the grid, so the 8 nodes around activeNode
     public List<Node> getNeighbours(Node activeNode)
