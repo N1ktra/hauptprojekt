@@ -77,7 +77,7 @@ public abstract class Enemy : MonoBehaviour
 
     public void ChangeState(EnemyState state)
     {
-        if (this.state == state) return;
+        if (this.state == state && animator.GetInteger("State") == (int)state) return;
         this.state = state;
         animator.StopPlayback();
         animator.SetInteger("State", (int)state);

@@ -1585,7 +1585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6533eb405cc6d40b451fc6de8acfd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 5000
   shield: 0
   stamina: 10
   enemiesSlain: 0
@@ -1867,9 +1867,9 @@ MonoBehaviour:
     m_Bits: 4294967295
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
-  antialiasingMode: 0
+  antialiasingMode: 3
   temporalAntialiasing:
-    jitterSpread: 0.75
+    jitterSpread: 0.651
     sharpness: 0.25
     stationaryBlending: 0.95
     motionBlending: 0.85
