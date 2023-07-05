@@ -70,7 +70,19 @@ public abstract class Enemy : MonoBehaviour
 
     public void OnEnable()
     {
-        StartCoroutine(Behavior());
+        StartBehavior();
+    }
+
+    private Coroutine behavior;
+    protected event Action OnBehaviorStarted;
+    public void StartBehavior()
+    {
+        if(behavior != null)
+        {
+            StopCoroutine(behavior);
+        }
+        behavior = StartCoroutine(Behavior());
+        OnBehaviorStarted?.Invoke();
     }
 
     public abstract IEnumerator Behavior();
@@ -102,6 +114,7 @@ public abstract class Enemy : MonoBehaviour
     {
         if (state == EnemyState.DYING) return;
         ChangeState(EnemyState.HIT);
+        StartBehavior();
         currentHealth -= amount;
         UpdateHealthBar();
         if (currentHealth <= 0)

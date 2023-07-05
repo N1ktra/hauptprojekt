@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -58,7 +59,11 @@ public class EnemySpawn : MonoBehaviour
     {
         BinaryRoom room = bsp.endRoom;
         GameObject BossObj = room.spawnObject(Golem, room.RoomContainer, room.coords.getCenterPosition());
-        BossObj.GetComponent<Enemy>().OnEnemyDied += () => SceneManager.LoadScene("Menu");
+        BossObj.GetComponent<Enemy>().OnEnemyDied += () =>
+        {
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("Menu");
+        };
     }
 
     private Vector3 getRandomPositionInRoom(Room room, float checkRadius)

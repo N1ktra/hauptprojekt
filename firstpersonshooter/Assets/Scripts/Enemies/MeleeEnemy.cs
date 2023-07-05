@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MeleeEnemy : Enemy
 {
@@ -18,10 +17,12 @@ public class MeleeEnemy : Enemy
     {
         base.Start();
         movementSpeed /= pathfinding.grid.nodeRadius;
+        OnBehaviorStarted += stopAttack;
     }
 
     public override IEnumerator Behavior()
     {
+        yield return new WaitForSeconds(0.1f);
         while(state != EnemyState.DYING)
         {
             if (!bsp_manager.PlayerIsInRoom(bsp_manager.getRoomOf(gameObject)))
@@ -29,9 +30,10 @@ public class MeleeEnemy : Enemy
                 yield return new WaitForSeconds(refreshRate);
                 continue;
             }
-            if(state == EnemyState.HIT && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+            AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+            if (state == EnemyState.HIT && info.normalizedTime < 1)
             {
-                yield return new WaitForSeconds(.1f);
+                yield return new WaitForSeconds(info.length - info.length * info.normalizedTime);
                 continue;
             }
 
@@ -78,12 +80,17 @@ public class MeleeEnemy : Enemy
         }
     }
 
+    Coroutine attackCoroutine = null;
     private void attack()
     {
         transform.DOLookAt(player.transform.position, .25f);
-        StartCoroutine(DelayAttack());
+        attackCoroutine = StartCoroutine(DelayAttack());
     }
-
+    private void stopAttack()
+    {
+        if(attackCoroutine != null)
+            StopCoroutine(attackCoroutine);
+    }
     private IEnumerator DelayAttack()
     {
         yield return new WaitForSeconds(attackDelay);
