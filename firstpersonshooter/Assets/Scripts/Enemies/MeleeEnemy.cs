@@ -27,6 +27,7 @@ public class MeleeEnemy : Enemy
         {
             if (!bsp_manager.PlayerIsInRoom(bsp_manager.getRoomOf(gameObject)))
             {
+                ChangeState(EnemyState.IDLE);
                 yield return new WaitForSeconds(refreshRate);
                 continue;
             }
