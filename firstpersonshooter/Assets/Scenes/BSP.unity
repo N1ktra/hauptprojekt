@@ -321,11 +321,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f07f8de4cc74b548b52f76abfd08781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 100, y: 100}
+  gridSize: {x: 104, y: 104}
   nodeRadius: 0.5
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 64
+  offset: 2
   showGizmos: 0
   bsp_manager: {fileID: 1027587733}
 --- !u!4 &75269660
