@@ -13,6 +13,8 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private List<Weapon> weapons = new List<Weapon>();
     [SerializeField] private Weapon currentWeapon;
     [SerializeField] private GameObject weaponHolder;
+    [SerializeField] private GameObject equippedWeaponsDisplay;
+    [SerializeField] private WeaponDisplayElement equippedWeaponsDisplayElement;
 
     private KeyCode[] keyCodes;
     // Start is called before the first frame update
@@ -33,6 +35,7 @@ public class WeaponHandler : MonoBehaviour
         {
             weapon.transform.gameObject.SetActive(weapon == currentWeapon);
             uiManager.SetWeaponSymbol(currentWeapon.Symbol);
+            addWeaonDisplayElement(weapon);
             weapon.OnHit += uiManager.showHitmarker;
         }
     }
@@ -69,11 +72,20 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="weapon"></param>
     public void addWeapon(Weapon weapon)
     {
+        addWeaonDisplayElement(weapon);
+
         Weapon newWeapon = Instantiate(weapon, Vector3.zero, Quaternion.identity, weaponHolder.transform);
         newWeapon.gameObject.SetActive(false);
         weapons.Add(newWeapon);
         newWeapon.OnHit += uiManager.showHitmarker;
         switchWeapon(weapons.Count - 1);
+    }
+
+    public void addWeaonDisplayElement(Weapon weapon)
+    {
+        WeaponDisplayElement element = Instantiate(equippedWeaponsDisplayElement, equippedWeaponsDisplay.transform);
+        element.transform.SetSiblingIndex(0);
+        element.Init(equippedWeaponsDisplay.transform.childCount.ToString(), weapon.Symbol);
     }
 
     public bool WeaponIsAlreadyEquipped(Weapon weapon, out Weapon equippedWeapon)
