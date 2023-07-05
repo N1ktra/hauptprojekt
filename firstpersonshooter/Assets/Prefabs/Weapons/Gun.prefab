@@ -54,7 +54,7 @@ MonoBehaviour:
   Symbol: {fileID: 2800000, guid: f2fd050bc5555e04daf33b29ae5e654c, type: 3}
   nextTimeToAttack: 0
   shootBehavior: {fileID: 11400000, guid: f15ea15d316956648bc642a679a56c5d, type: 2}
-  maxAmmo: 36
+  maxAmmo: 60
   magSize: 12
   currentAmmo: 0
   reloadTime: 1.5
