@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
+    public GameObject MenuObjects;
+    public GameObject InfoObjects;
+
     public void BSPScene()
     {
         SceneManager.LoadScene(1);
@@ -12,8 +15,13 @@ public class MenuScript : MonoBehaviour
 
     public void InfoScene()
     {
-        SceneManager.LoadScene(2);
+        MenuObjects.SetActive(false);
+        InfoObjects.SetActive(true);
     }
 
-    public void MenuScene() { SceneManager.LoadScene(0); }
+    public void MenuScene() 
+    {
+        InfoObjects.SetActive(false);
+        MenuObjects.SetActive(true);
+    }
 }
