@@ -96,9 +96,11 @@ public class GridManager : MonoBehaviour
         //Debug.Log("berechne y");
         float prozentualerWegY = newWorldPos.z / gridSize.y;
         //Debug.Log("proz Y: " + prozentualerWegY.ToString());
-        int gridY = (int)Math.Round(prozentualerWegY * (gridAmountY),0) ;
-
+        int gridY = (int)Math.Round(prozentualerWegY * (gridAmountY ),0);
+        
         Node x = grid[gridX, gridY];
+        //test
+        x = grid[(int)Math.Round(worldPos.x+0.5)-1, (int)Math.Round(worldPos.z+0.5)-1];
         //Debug.Log("Knoten gefunden!!  Position im Gird: x: " + gridX + " y: " + gridY + "  WorldPosition: " + x.worldPosition);
         return x;
     }
