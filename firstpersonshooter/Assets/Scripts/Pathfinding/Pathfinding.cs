@@ -8,7 +8,7 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour
 {
 
-    private GridManager grid;
+    public GridManager grid;
 
 
 

@@ -14,6 +14,12 @@ public class MeleeEnemy : Enemy
     private float refreshRate = .5f;
     private bool isColliding = false;
 
+    public override void Start()
+    {
+        base.Start();
+        movementSpeed /= pathfinding.grid.nodeRadius;
+    }
+
     public override IEnumerator Behavior()
     {
         while(state != EnemyState.DYING)
